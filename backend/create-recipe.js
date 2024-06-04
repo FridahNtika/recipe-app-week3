@@ -20,3 +20,5 @@ router.post("/create-recipe", async (req, res) => {
         res.status(500).json();
     }
 })
+
+module.exports = router;
