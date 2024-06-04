@@ -4,10 +4,8 @@ import { AiOutlineHome } from "react-icons/ai";
 import { AiOutlineCompass } from "react-icons/ai";
 import { IoHeartOutline } from "react-icons/io5";
 import { useMediaQuery } from "@chakra-ui/react";
-
-
-
-const NavBar = () => {
+import { Box, Flex, Icon, useColorModeValue} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
   const LinkItems = [
     { name: 'Home', icon: AiOutlineHome },
@@ -106,6 +104,5 @@ const NavBar = () => {
       </>
     );
   };
-}
 
 export default NavBar;
