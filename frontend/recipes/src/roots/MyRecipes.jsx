@@ -1,22 +1,4 @@
 import React from 'react'
-import NavBar from '../components/NavBar';
-import {
-  Container,
-  Card,
-  Box,
-  Text,
-  Spinner,
-  VStack,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Textarea,
-  HStack,
-  Flex,
-  IconButton,
-  useToast
-} from '@chakra-ui/react';
 
 const MyRecipes = () => {
   return (
