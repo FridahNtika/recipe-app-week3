@@ -20,7 +20,7 @@ import NavBar from "./components/NavBar.jsx"
 const router = createBrowserRouter([
   {
     path: "/",
-    element:<Home></Home>,
+    element:<Home/>,
   },
   {
     path: "/recipes",
