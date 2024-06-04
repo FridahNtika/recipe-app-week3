@@ -11,7 +11,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./roots/Home.jsx";
 import Recipes from "./roots/Recipes.jsx";
 import MyRecipes from "./roots/MyRecipes.jsx";
-import CreateRecipe from "./roots/CreateRecipe.jsx";
+import {CreateRecipe} from "./roots/CreateRecipe.jsx";
 import RecipeDetails from "./roots/RecipeDetails.jsx";
 import Admin from "./roots/AdminPage.jsx";
 import NavBar from "./components/NavBar.jsx"
@@ -20,7 +20,7 @@ import NavBar from "./components/NavBar.jsx"
 const router = createBrowserRouter([
   {
     path: "/",
-    element:<Home></Home>,
+    element:<Home/>,
   },
   {
     path: "/recipes",
