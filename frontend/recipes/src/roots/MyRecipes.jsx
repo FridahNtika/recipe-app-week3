@@ -1,25 +1,8 @@
-/* import React from 'react'
-import NavBar from '../components/NavBar';
-import {
-  Container,
-  Card,
-  Box,
-  Text,
-  Spinner,
-  VStack,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Textarea,
-  HStack,
-  Flex,
-  IconButton,
-  useToast
-} from '@chakra-ui/react';
+import React from 'react'
 
 const MyRecipes = () => {
   return (
+    
     <div>
       <h1>My Recipe Page</h1>
       <VStack spacing={4} align="stretch">
@@ -40,9 +23,8 @@ const MyRecipes = () => {
           <Text color="white">Test Card</Text>
         </Box>
       </VStack>
-    </>
+    </div>
   )
 }
 
 export default MyRecipes
- */

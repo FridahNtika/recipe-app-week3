@@ -20,7 +20,7 @@ const NavItem = ({ icon, path, ...rest }) => (
   <Link to={path} style={{ textDecoration: 'none' }}>
     <Flex
       align="center"
-      p="6"
+      p="4"
       borderRadius="lg"
       role="group"
       className="nav-item"
@@ -34,8 +34,8 @@ const NavItem = ({ icon, path, ...rest }) => (
     >
       {icon && (
         <Icon
-          mr="3"
-          ml="3"
+          mr="2"
+          ml="2"
           mt="2"
           fontSize="45"
           style={iconStyle}
@@ -52,9 +52,9 @@ const SideBarContent = () => (
     bg="#D9D9D9" 
     borderRight="1px"
     borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-    w={{ base: 'full', md: 60 }}
-    paddingRight="5px"
-    paddingLeft="5px"
+    w={{ base: 'full', md: '100px' }}
+    paddingRight="2px"
+    paddingLeft="2px"
     paddingTop="8px"
     pos="fixed"
     top="0"
