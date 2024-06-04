@@ -10,4 +10,11 @@ body {
   html, body {
     height: 100%;
   }
+
+  @media screen and (max-width: 600px) {
+    .chakra-tooltip {
+      placement: top;
+    }
+    
+  }
   
