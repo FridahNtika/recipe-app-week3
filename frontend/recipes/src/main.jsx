@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import { ChakraProvider } from '@chakra-ui/react'
+
 
 import { createRoot } from "react-dom/client";
 
@@ -20,7 +22,7 @@ import NavBar from "./components/NavBar.jsx"
 const router = createBrowserRouter([
   {
     path: "/",
-    element:<Home></Home>,
+    element:<Home/>,
   },
   {
     path: "/recipes",
@@ -46,9 +48,10 @@ const router = createBrowserRouter([
 const container = document.getElementById("root");
 const root = createRoot(container);
 
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+      <ChakraProvider>
+        <RouterProvider router={router}/>
+      </ChakraProvider>
   </React.StrictMode>,
 )
