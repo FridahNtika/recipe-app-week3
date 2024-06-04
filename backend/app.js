@@ -1,4 +1,3 @@
-
 const express = require("express");
 const recipeRouter = require('./recipes');
 
@@ -25,6 +24,13 @@ app.get('/test', async (req, res) => {
         res.status(500).send({ error: 'Error fetching messages' });
     }
 });
+
+//import routes
+const create = ("/create-recipe");
+
+//initialize routes
+app.use("/create-recipe", create); 
+
 
 app.use("/recipes", recipeRouter);
 

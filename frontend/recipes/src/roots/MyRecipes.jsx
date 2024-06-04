@@ -1,4 +1,5 @@
 import React from 'react'
+import NavBar from '../components/NavBar';
 import {
   Container,
   Card,
@@ -19,7 +20,7 @@ import {
 
 const MyRecipes = () => {
   return (
-    <>
+    <div>
       <h1>My Recipe Page</h1>
       <VStack spacing={4} align="stretch">
       <Box 

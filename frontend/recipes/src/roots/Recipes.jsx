@@ -1,3 +1,5 @@
+import React from 'react'
+import NavBar from '../components/NavBar';
 import React, {useState, useEffect} from 'react';
 import '../styles/recipes.css';
 import axios from 'axios';
@@ -28,6 +30,7 @@ async function fetchAllRecipes(){
 
   return (
     <div>
+      <NavBar/>
       <h1>Recipes Page</h1>
     </div>
   )

@@ -1,0 +1,25 @@
+.landing-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    background-image: url('https://www.health.com/thmb/wfkIOj5dW5H6QLhXqEFHw87ow08=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Health-GettyImages-1477430966-506a007e48744d5488a6ee1c0b729134.jpg'); /* Set the background image */
+    background-size: cover; /* Ensure the image covers the whole div */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-color: rgba(0, 0, 0, 0.5); /* Add a black overlay */
+    background-blend-mode: darken; /* Blend the image with the overlay to dim it */
+    overflow: hidden;
+}
+
+h1{
+    color:white;
+    font-weight: bold;
+    font-size: 70px;
+}
+
+h2 {
+    color: white;
+    font-size: 40px;
+}
