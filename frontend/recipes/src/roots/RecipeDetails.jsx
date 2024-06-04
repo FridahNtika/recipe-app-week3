@@ -1,10 +1,18 @@
 import React from 'react'
+import NavBar from '../components/NavBar'
 
 const RecipeDetails = () => {
+
   return (
-    <div>
+    <>
+    {/* <div className='temp-navbar'></div> */}
+      <NavBar/>
+      <div>
       <h1>Recipe Details Page</h1>
-    </div>
+      </div>
+    </>
+
+  
   )
 }
 
