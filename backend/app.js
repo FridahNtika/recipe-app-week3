@@ -7,7 +7,7 @@ const { collection, getDocs, updateDoc, doc, addDoc, deleteDoc } = require("fire
 
 const cors = require("cors");
 app.use(cors());
-app.get('/test', async (req, res) => {
+/* app.get('/test', async (req, res) => {
     try {
         const snapshot = await getDocs(collection(db, 'test'));
         const messages = snapshot.docs.map(doc => ({
@@ -18,10 +18,10 @@ app.get('/test', async (req, res) => {
     } catch (error) {
         res.status(500).send({ error: 'Error fetching messages' });
     }
-});
+}); */
 
 //import routes
-const create = ("/create-recipe");
+const create = ("./create-recipe");
 
 //initialize routes
 app.use("/create-recipe", create); 

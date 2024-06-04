@@ -1,8 +1,8 @@
-import dotenv from "dotenv";
-import express from "express";
-
+const express = require("express");
+const request = require('request');
 const router = express.Router();
-dotenv.config();
+const db = require("./firebase");
+const { collection, getDocs, updateDoc, doc, addDoc, deleteDoc } = require("firebase/firestore");;
 
 router.post("/create-recipe", async (req, res) => {
     try {
