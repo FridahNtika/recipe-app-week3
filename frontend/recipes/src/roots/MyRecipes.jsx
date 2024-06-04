@@ -40,7 +40,7 @@ const MyRecipes = () => {
           <Text color="white">Test Card</Text>
         </Box>
       </VStack>
-    </>
+    </div>
   )
 }
 
