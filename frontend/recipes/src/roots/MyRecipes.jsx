@@ -1,4 +1,5 @@
 import React from 'react'
+import { VStack, Box, Text } from '@chakra-ui/react';
 
 const MyRecipes = () => {
   return (

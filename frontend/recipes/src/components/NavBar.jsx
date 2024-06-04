@@ -4,47 +4,49 @@ import { AiOutlineHome } from "react-icons/ai";
 import { AiOutlineCompass } from "react-icons/ai";
 import { IoHeartOutline } from "react-icons/io5";
 import { useMediaQuery } from "@chakra-ui/react";
-import { Box, Flex, Icon, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Icon, useColorModeValue, Tooltip } from "@chakra-ui/react"; 
 import { Link } from "react-router-dom";
 
 const LinkItems = [
-  { name: 'Home', path: '/', icon: AiOutlineHome },
-  { name: 'Recipes', path: '/recipes', icon: AiOutlineCompass },
-  { name: 'MyRecipes', path: '/my-recipes', icon: IoHeartOutline },
+  { name: 'Home', path: '/', icon: AiOutlineHome, tooltip: 'Home' },
+  { name: 'Recipes', path: '/recipes', icon: AiOutlineCompass, tooltip: 'All Recipes' },
+  { name: 'MyRecipes', path: '/my-recipes', icon: IoHeartOutline, tooltip: 'My Recipes' },
 ];
 
 const iconStyle = { color: "black" };
 const iconStyleHover = { color: "white" };
 
-const NavItem = ({ icon, path, ...rest }) => (
-  <Link to={path} style={{ textDecoration: 'none' }}>
-    <Flex
-      align="center"
-      p="4"
-      borderRadius="lg"
-      role="group"
-      className="nav-item"
-      cursor="pointer"
-      _hover={{
-        bg: '#C5D4DF',
-        color: 'white',
-        borderRadius: '25px',
-      }}
-      {...rest}
-    >
-      {icon && (
-        <Icon
-          mr="2"
-          ml="2"
-          mt="2"
-          fontSize="45"
-          style={iconStyle}
-          _groupHover={iconStyleHover}
-          as={icon}
-        />
-      )}
-    </Flex>
-  </Link>
+const NavItem = ({ icon, path, tooltip, ...rest }) => (
+  <Tooltip label={tooltip} placement='right' fontSize={25} backgroundColor= '#C5D4DF' color='black' borderRadius={15}> 
+    <Link to={path} style={{ textDecoration: 'none' }}>
+      <Flex
+        align="center"
+        p="4"
+        borderRadius="lg"
+        role="group"
+        className="nav-item"
+        cursor="pointer"
+        _hover={{
+          bg: '#C5D4DF',
+          color: 'white',
+          borderRadius: '25px',
+        }}
+        {...rest}
+      >
+        {icon && (
+          <Icon
+            mr="2"
+            ml="2"
+            mt="2"
+            fontSize="45"
+            style={iconStyle}
+            _groupHover={iconStyleHover}
+            as={icon}
+          />
+        )}
+      </Flex>
+    </Link>
+  </Tooltip>
 );
 
 const SideBarContent = () => (
@@ -66,7 +68,7 @@ const SideBarContent = () => (
   >
     <Box flex="1">
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} path={link.path} />
+        <NavItem key={link.name} icon={link.icon} path={link.path} tooltip={link.tooltip} />
       ))}
     </Box>
   </Box>
@@ -88,7 +90,7 @@ const BottomBarContent = () => (
     className="bottombar"
   >
     {LinkItems.map((link) => (
-      <NavItem key={link.name} icon={link.icon} path={link.path} />
+      <NavItem key={link.name} icon={link.icon} path={link.path} tooltip={link.tooltip} />
     ))}
   </Box>
 );
@@ -99,6 +101,7 @@ const NavBar = () => {
   return (
     <>
       {isMobile ? <BottomBarContent /> : <SideBarContent />}
+      
     </>
   );
 };
