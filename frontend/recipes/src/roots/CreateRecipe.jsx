@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as React from "react";
 import {useState} from "react";
-import {useToast} from '@chakra-ui/react';
+import { Stack, Box, Button, useToast } from '@chakra-ui/react';
 
 export const CreateRecipe = () => {
     //initializes variables
@@ -83,7 +83,20 @@ export const CreateRecipe = () => {
           <br></br>
           <p>Ingredients</p>
           <p>+ Add ingredients</p>
-          <button id="save" type="submit" onClick={handleSave}>SAVE</button>
+          <Button  bg='#9EAFBB' 
+                    border="4px solid white" 
+                    color="white" 
+                    fontSize={30}
+                    borderRadius="20px"
+                    _hover={{ bg: 'white', color: '#9EAFBB', border: '4px solid #9EAFBB', cursor: 'pointer'}}
+                    height="60px" 
+                    paddingX="40px"
+                    paddingY="20px"
+                    size="lg" 
+                    onClick={handleSave}
+                >
+                    Save
+                </Button>
           <button id="cancel" type="submit" onClick={handleCancel}>CANCEL</button>
         </form>
         </>
