@@ -12,7 +12,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Home from "./roots/Home.jsx";
 import Recipes from "./roots/Recipes.jsx";
-import MyRecipes from "./roots/MyRecipes.jsx";
+//import MyRecipes from "./roots/MyRecipes.jsx";
 import { CreateRecipe } from "./roots/CreateRecipe.jsx";
 import RecipeDetails from "./roots/RecipeDetails.jsx";
 import Admin from "./roots/AdminPage.jsx";
@@ -28,10 +28,10 @@ const router = createBrowserRouter([
     path: "/recipes",
     element:<Recipes/>,    
   },
-  {
+/*   {
     path: "/my-recipes",
     element:<MyRecipes/>,    
-  },
+  }, */
   {
     path: "/create-recipe",
     element:<CreateRecipe/>,    
