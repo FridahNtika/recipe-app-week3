@@ -7,9 +7,8 @@ const { collection, updateDoc, doc, addDoc } = require("firebase/firestore");;
 router.post("/", async (req, res) => {
     try {
         const data = req.body;
-        const date = new Date();
-        //console.log(data);
-        const docRef = await addDoc(collection(db, "Recipes"), {
+        const date = new Date().toDateString();
+        const recipe = {
             author: "",
             averageRating: "",
             dateCreated: date,
@@ -18,10 +17,12 @@ router.post("/", async (req, res) => {
             cookTime: data.cookTime,
             servings: data.servings,
             ingredients: data.ingredients,
-            instructions: data.instructions,
+            instructions: data.instr,
             source: data.source
-        })
-        res.status(200).json({message: `Successfully added document with id ${docRef.id}`});
+        };
+        console.log(recipe);
+        const docRef = await addDoc(collection(db, "Recipes"), recipe);
+        res.status(201).json({message: `Successfully added document with id ${docRef.id}`});
     } catch (error) {
         console.log("Error creating recipe: ", error);
         res.status(500).json({error: error.message});
