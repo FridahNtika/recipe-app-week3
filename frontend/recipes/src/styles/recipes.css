@@ -1,6 +1,25 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
+.input-search {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 
-/* Other existing styles */
+.sorting-dropdown {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
 .AllRecipes {
   display: flex;
   flex-wrap: wrap;
@@ -9,10 +28,12 @@
   padding: 20px; /* Padding around the container */
 }
 
-.recipe-name{
-  color:black;
+.recipesh1,
+.recipe-name {
+  color: black;
   font-size: 36px;
 }
+
 .IndividualRecipe {
   display: flex;
   flex-direction: column;
@@ -45,6 +66,7 @@
 .bookmark-icon {
   margin-top: 10px;
 }
+
 /* Styles for star rating */
 .star-rating {
   display: flex;
@@ -85,6 +107,7 @@
 .star.three-quarter {
   background: linear-gradient(to right, #FFD700 65%, #e0e0e0 65%);
 }
+
 .rating {
   display: flex;
   align-items: center;
@@ -103,4 +126,26 @@
   margin-left: auto; /* Push the reviews count to the right */
   font-size: 14px; /* Adjust font size as needed */
   color: #666; /* Adjust color as needed */
+}
+
+.timer-image {
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.time-and-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ensures time on the left and author on the right */
+  width: 100%; /* Ensure it takes the full width of the parent container */
+}
+
+.time-and-author p {
+  margin: 0; /* Remove default margin for the paragraphs */
+}
+
+.time-and-author .author {
+  margin-left: auto; /* Pushes the author to the right */
 }
