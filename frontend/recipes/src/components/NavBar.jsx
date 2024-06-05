@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import '../styles/NavBar.css';
-import { AiOutlineHome } from "react-icons/ai";
-import { AiOutlineCompass } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineCompass } from "react-icons/ai";
 import { IoHeartOutline } from "react-icons/io5";
 import { useMediaQuery } from "@chakra-ui/react";
 import { Box, Flex, Icon, useColorModeValue, Tooltip } from "@chakra-ui/react"; 
-import { Link , useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const LinkItems = [
   { name: 'Home', path: '/', icon: AiOutlineHome, tooltip: 'Home' },
@@ -98,9 +97,10 @@ const BottomBarContent = () => (
 const NavBar = () => {
   const [isMobile] = useMediaQuery("(max-width: 600px)");
   const location = useLocation();
+
   useEffect(() => {
     const body = document.body;
-    if (location.pathname !== '/') {
+    if (location.pathname !== '/' && !isMobile) {
       body.style.paddingLeft = '120px'; // Adjust as needed
     } else {
       body.style.paddingLeft = '0';
@@ -108,13 +108,11 @@ const NavBar = () => {
     return () => {
       body.style.paddingLeft = '0';
     };
-  }, [location.pathname]);
+  }, [location.pathname, isMobile]); // Include isMobile in the dependency array
 
   return (
     <>
-
       {isMobile ? <BottomBarContent /> : <SideBarContent />}
-      
     </>
   );
 };
