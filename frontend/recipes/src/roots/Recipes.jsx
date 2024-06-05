@@ -2,6 +2,7 @@ import NavBar from '../components/NavBar';
 import React, {useState, useEffect} from 'react';
 import '../styles/recipes.css';
 import axios from 'axios';
+import katsucurry from '../images/katsucurry.jpg';
 
 const Recipe = () => {
   const [loading, setLoading] = useState(true);
@@ -38,7 +39,7 @@ const Recipe = () => {
           {filteredRecipes.map((currentRecipe, index) => (
             <div key={`${currentRecipe.recipeName}-${index}`} className="IndividualRecipe">
               <a href={`/recipes/${currentRecipe.id}`} className="recipe-link">
-                <img className="recipe-image" alt={currentRecipe.recipeName} />
+                <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
                 <p>{currentRecipe.recipeName}</p>
               </a>
               <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
