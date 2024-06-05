@@ -16,6 +16,7 @@ import MyRecipes from "./roots/MyRecipes.jsx";
 import { CreateRecipe } from "./roots/CreateRecipe.jsx";
 import RecipeDetails from "./roots/RecipeDetails.jsx";
 import Admin from "./roots/AdminPage.jsx";
+import ChatBot from './components/ChatBot.jsx';
 import NavBar from "./components/NavBar.jsx";
 
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
     path: "/admin",
     element:<Admin/>,    
   },
+  {
+    path: "/temp-chatbot",
+    element:<ChatBot/>
+  }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
