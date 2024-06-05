@@ -64,6 +64,7 @@ const Recipe = () => {
                 <div className="rating">
                   <StarRating rating={currentRecipe.averageRating} />
                   <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
+                  <p className='number-of-reviews'>{currentRecipe.userReviewIds.length} Reviews</p>
                 </div>
                 <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
               </a>
