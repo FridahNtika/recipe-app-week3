@@ -1,2 +1,14 @@
-@import '../variables.css'
+@import '../variables.css';
 
+.main-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    margin-left: 110px;
+}
+
+.card {
+    background-color: var(--card);
+}

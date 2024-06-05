@@ -42,7 +42,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element:<Admin/>,    
+    element:<Admin/>,
   },
 ])
 const container = document.getElementById("root");
