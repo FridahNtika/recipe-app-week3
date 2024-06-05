@@ -1,15 +1,15 @@
 const express = require("express");
+const cors = require("cors");
 const recipeRouter = require('./recipes');
+const myRecipesRouter = require("./my-recipes");
+const createRecipeRouter = require("./create-recipe");
+const db = require("./firebase");
+const { collection, getDocs } = require("firebase/firestore");
 
 const app = express();
 const port = 5001;
+
 app.use(express.json());
-
-
-const db = require("./firebase");
-const { collection, getDocs, updateDoc, doc, addDoc, deleteDoc } = require("firebase/firestore");
-
-const cors = require("cors");
 app.use(cors());
 
 app.get('/test', async (req, res) => {
@@ -25,15 +25,10 @@ app.get('/test', async (req, res) => {
     }
 });
 
-//import routes
-const create = require("./create-recipe");
-
-//initialize routes
-app.use("/create-recipe", create); 
+app.use("/create-recipe", createRecipeRouter); 
 app.use("/recipes", recipeRouter);
-
+app.use('/my-recipes', myRecipesRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-

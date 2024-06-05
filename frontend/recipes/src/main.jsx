@@ -12,11 +12,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Home from "./roots/Home.jsx";
 import Recipes from "./roots/Recipes.jsx";
-//import MyRecipes from "./roots/MyRecipes.jsx";
+import MyRecipes from "./roots/MyRecipes.jsx";
 import { CreateRecipe } from "./roots/CreateRecipe.jsx";
 import RecipeDetails from "./roots/RecipeDetails.jsx";
 import Admin from "./roots/AdminPage.jsx";
-import NavBar from "./components/NavBar.jsx"
+import NavBar from "./components/NavBar.jsx";
 
 
 const router = createBrowserRouter([
@@ -28,10 +28,10 @@ const router = createBrowserRouter([
     path: "/recipes",
     element:<Recipes/>,    
   },
-/*   {
+   {
     path: "/my-recipes",
     element:<MyRecipes/>,    
-  }, */
+  }, 
   {
     path: "/create-recipe",
     element:<CreateRecipe/>,    
@@ -45,8 +45,6 @@ const router = createBrowserRouter([
     element:<Admin/>,    
   },
 ])
-const container = document.getElementById("root");
-const root = createRoot(container);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
