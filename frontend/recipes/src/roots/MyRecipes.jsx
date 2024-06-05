@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Box, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { Container, Box, Text, Wrap, WrapItem, Center, Button, Flex } from '@chakra-ui/react';
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -21,23 +21,34 @@ const MyRecipes = () => {
   }, []);
 
   return (
-    <Container>
-      <Text fontSize="2xl" mb={4}>My Recipe Page</Text>
+    <>
+      <Text fontSize="4xl" mb={4}>My Recipes</Text>
       <Wrap spacing="30px">
         {recipes.map(recipe => (
           <WrapItem key={recipe.id}>
             <Box
               p={6}
-              bg="blue.500"
+              bg="#90B4CE"
               borderRadius="md"
-              width="200px"
-              _hover={{ boxShadow: 'dark-lg' }}>
-              <Text color="white">{recipe.name}</Text>
+              width="20vw"
+              height="40vh"
+              _hover={{ boxShadow: 'dark-lg' }}
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+            >
+              <Text>Picture goes here</Text>
+              <Center>
+                <Text fontSize={24}>{recipe.name}</Text>
+              </Center>
+              <Flex justifyContent="flex-end" mt={4}>
+                <Button>Save</Button>
+              </Flex>
             </Box>
           </WrapItem>
         ))}
       </Wrap>
-    </Container>
+    </>
   );
 };
 
