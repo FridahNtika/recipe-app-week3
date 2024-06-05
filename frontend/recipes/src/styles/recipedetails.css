@@ -1,21 +1,60 @@
 @import '../variables.css';
 
+h1,h2,h3 {
+    color: black;
+}
+
+
+
 .main-page {
     display: flex;
     flex-direction: column;
 }
 
-.main-content {
-    margin-left: 110px;
-    margin-right: 15px;
+.header {
+    margin-top: 20px;
+    margin-bottom: 25px;
 }
 
-.header {
-background-color: pink !important;
-max-height: 80px;
+.main-content {
+    margin-right: 15px;
 }
 
 .card {
     background-color: var(--card);
     border-radius: 20px;
+}
+
+.ingredients-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-container {
+    margin: 15px;
+    margin-bottom: 0px;
+    width: 450px;
+    height: 300px;
+    overflow: hidden; 
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+.ingredients {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    /* background-color: blueviolet; */
+}
+
+.ingredients-list {
+    padding-left: 15px;
+    padding-right: 15px;
 }
