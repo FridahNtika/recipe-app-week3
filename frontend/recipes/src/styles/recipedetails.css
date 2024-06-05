@@ -12,7 +12,7 @@
 
 .header {
 background-color: pink !important;
-/* m-width: none; */
+max-height: 80px;
 }
 
 .card {
