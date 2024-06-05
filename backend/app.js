@@ -1,5 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const recipeRouter = require('./recipes');
+const myRecipesRouter = require("./my-recipes");
+const createRecipeRouter = require("./create-recipe");
+const db = require("./firebase");
+const { collection, getDocs } = require("firebase/firestore");
+const openaiRouter = require('./openai');
+
 const app = express();
 const port = 5001;
 const myRecipesRouter = require("./my-recipes");
@@ -25,6 +32,7 @@ app.get('/test', async (req, res) => {
 
 // Use the my-recipes router
 app.use('/my-recipes', myRecipesRouter);
+app.use('/openai', openaiRouter); 
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
