@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input } from '@chakra-ui/react';
 import { IoIosHeart } from 'react-icons/io';
+import { EditIcon } from '@chakra-ui/icons';
 import NavBar from '../components/NavBar';
 import StarRating from '../components/StarRating';
+import { useNavigate } from 'react-router-dom';
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
   const [activeTab, setActiveTab] = useState('created'); // State to track the active tab
   const [searchQuery, setSearchQuery] = useState(''); // State to track the search query
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -37,7 +41,7 @@ const MyRecipes = () => {
       <HStack spacing={50} mb={2} alignItems="center">
         <Text
           fontSize="2xl"
-          p={4}
+          p={3}
           cursor="pointer"
           bg={activeTab === 'created' ? '#90B4CE' : 'transparent'}
           _hover={{ bg: '#90B4CE' }}
@@ -50,7 +54,7 @@ const MyRecipes = () => {
         </Text>
         <Text
           fontSize="2xl"
-          p={4}
+          p={3}
           cursor="pointer"
           bg={activeTab === 'saved' ? '#90B4CE' : 'transparent'}
           _hover={{ bg: '#90B4CE' }}
@@ -68,7 +72,7 @@ const MyRecipes = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           width="200px"
         />
-        <Button colorScheme="red" ml="auto">Create +</Button>
+        <Button colorScheme="red" mr="2vw" ml="auto" onClick={() => navigate('/create-recipe')}>Create +</Button>
       </HStack>
 
       <Wrap spacing="30px">
@@ -84,7 +88,20 @@ const MyRecipes = () => {
               display="flex"
               flexDirection="column"
               justifyContent="space-between"
+              position="relative"
             >
+              {recipe.source === 'user' && (
+                <IconButton
+                  icon={<EditIcon />}
+                  aria-label="Edit Recipe"
+                  colorScheme="teal"
+                  size="sm"
+                  position="absolute"
+                  top="5px"
+                  right="5px"
+                  onClick={() => navigate(`/edit-recipe/${recipe.id}`)} // Navigate to edit page
+                />
+              )}
               <Text>Picture goes here</Text>
               <Center>
                 <Text fontSize={24}>{recipe.name}</Text>
