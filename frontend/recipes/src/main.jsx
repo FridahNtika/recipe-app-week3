@@ -45,8 +45,6 @@ const router = createBrowserRouter([
     element:<Admin/>,
   },
 ])
-const container = document.getElementById("root");
-const root = createRoot(container);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
