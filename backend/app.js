@@ -25,13 +25,11 @@ app.get('/test', async (req, res) => {
     }
 });
 
-// //import routes
-// const create = ("/create-recipe");
+//import routes
+const create = require("./create-recipe");
 
-// //initialize routes
-// app.use("/create-recipe", create); 
-
-
+//initialize routes
+app.use("/create-recipe", create); 
 app.use("/recipes", recipeRouter);
 
 
