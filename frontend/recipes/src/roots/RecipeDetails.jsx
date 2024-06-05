@@ -1,9 +1,11 @@
 import React from 'react'
+import NavBar from '../components/NavBar'
 
 const RecipeDetails = () => {
   return (
     <div>
-      <h1>Recipe Details Page</h1>
+      <NavBar/>
+      <p>Recipe Details Page</p>
     </div>
   )
 }
