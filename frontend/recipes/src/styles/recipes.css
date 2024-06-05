@@ -88,10 +88,19 @@
 .rating {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Ensures space between elements */
+  width: 100%; /* Take full width of parent container */
+  padding: 5px;
 }
 
 .rating-text {
   margin-left: 10px; /* Add some spacing between stars and text */
   font-size: 16px; /* Adjust font size as needed */
   color: #333; /* Adjust color as needed */
+}
+
+.number-of-reviews {
+  margin-left: auto; /* Push the reviews count to the right */
+  font-size: 14px; /* Adjust font size as needed */
+  color: #666; /* Adjust color as needed */
 }
