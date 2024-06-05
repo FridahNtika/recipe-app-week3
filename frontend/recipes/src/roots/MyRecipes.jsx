@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Box, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { Container, Box, Text, Wrap, WrapItem, Center } from '@chakra-ui/react';
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -21,8 +21,8 @@ const MyRecipes = () => {
   }, []);
 
   return (
-    <Container>
-      <Text fontSize="2xl" mb={4}>My Recipe Page</Text>
+    <>
+    <Text fontSize="2xl" mb={4}>My Recipes</Text>
       <Wrap spacing="30px">
         {recipes.map(recipe => (
           <WrapItem key={recipe.id}>
@@ -30,14 +30,47 @@ const MyRecipes = () => {
               p={6}
               bg="blue.500"
               borderRadius="md"
-              width="200px"
+              width="20vw"
+              height="35vh"
               _hover={{ boxShadow: 'dark-lg' }}>
-              <Text color="white">{recipe.name}</Text>
+              <Center>
+              <Text color="white" alignContent={"center"}>{recipe.name}</Text>
+              </Center>
+            </Box>
+          </WrapItem>
+        ))}
+          {recipes.map(recipe => (
+          <WrapItem key={recipe.id}>
+            <Box
+              p={6}
+              bg="blue.500"
+              borderRadius="md"
+              width="20vw"
+              height="35vh"
+              _hover={{ boxShadow: 'dark-lg' }}>
+              <Center>
+              <Text color="white" alignContent={"center"}>{recipe.name}</Text>
+              </Center>
+            </Box>
+          </WrapItem>
+        ))}
+        {recipes.map(recipe => (
+          <WrapItem key={recipe.id}>
+            <Box
+              p={6}
+              bg="blue.500"
+              borderRadius="md"
+              width="20vw"
+              height="35vh"
+              _hover={{ boxShadow: 'dark-lg' }}>
+              <Center>
+              <Text color="white" alignContent={"center"}>{recipe.name}</Text>
+              </Center>
             </Box>
           </WrapItem>
         ))}
       </Wrap>
-    </Container>
+    </>
   );
 };
 
