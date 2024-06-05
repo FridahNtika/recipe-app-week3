@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import '../styles/NavBar.css';
 import { AiOutlineHome, AiOutlineCompass } from "react-icons/ai";
 import { IoHeartOutline } from "react-icons/io5";
@@ -50,7 +50,7 @@ const NavItem = ({ icon, path, tooltip, ...rest }) => (
   </Tooltip>
 );
 
-const SideBarContent = () => (
+const SideBarContent = ({handleLogout}) => (
   <Box
     bg="#D9D9D9" 
     borderRight="1px"
@@ -71,6 +71,10 @@ const SideBarContent = () => (
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon} path={link.path} tooltip={link.tooltip} />
       ))}
+    </Box>
+
+    <Box marginBottom={20} >
+      <button className="logout-button" onClick={handleLogout}>Log out</button>
     </Box>
   </Box>
 );
@@ -93,12 +97,25 @@ const BottomBarContent = () => (
     {LinkItems.map((link) => (
       <NavItem key={link.name} icon={link.icon} path={link.path} tooltip={link.tooltip} />
     ))}
+     <button style={{ 
+        padding: '10px',
+        backgroundColor: '#2B6361',
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        textAlign: 'center',
+        marginBottom: '6px',
+      }}>
+        Log out
+      </button>
   </Box>
 );
 
 const NavBar = () => {
   const [isMobile] = useMediaQuery("(max-width: 600px)");
   const location = useLocation();
+  const { handleLogout } = useContext(AuthContext);
 
   useEffect(() => {
     const body = document.body;
@@ -114,7 +131,7 @@ const NavBar = () => {
 
   return (
     <>
-      {isMobile ? <BottomBarContent /> : <SideBarContent />}
+      {isMobile ? <BottomBarContent /> : <SideBarContent handleLogout={handleLogout}/>}
     </>
   );
 };
