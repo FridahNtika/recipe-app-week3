@@ -4,6 +4,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { AiOutlineCompass } from "react-icons/ai";
 import { IoHeartOutline } from "react-icons/io5";
 import { useMediaQuery } from "@chakra-ui/react";
+import { IoIosAddCircleOutline } from "react-icons/io";
 import { Box, Flex, Icon, useColorModeValue, Tooltip } from "@chakra-ui/react"; 
 import { Link } from "react-router-dom";
 
@@ -11,6 +12,7 @@ const LinkItems = [
   { name: 'Home', path: '/', icon: AiOutlineHome, tooltip: 'Home' },
   { name: 'Recipes', path: '/recipes', icon: AiOutlineCompass, tooltip: 'All Recipes' },
   { name: 'MyRecipes', path: '/my-recipes', icon: IoHeartOutline, tooltip: 'My Recipes' },
+  { name: 'CreateNewRecipe', path: '/create-recipe', icon: IoIosAddCircleOutline, tooltip: 'Create New Recipe' },
 ];
 
 const iconStyle = { color: "black" };
