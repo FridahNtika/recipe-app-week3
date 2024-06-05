@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/recipes.css';
 import axios from 'axios';
 import katsucurry from '../images/katsucurry.jpg';
-
+import timericon from '../images/timer_icon.png'
 const StarRating = ({ rating, outOf = 5 }) => {
   const fullStars = Math.floor(rating);
   const fractionalPart = rating - fullStars;
@@ -64,7 +64,7 @@ const Recipe = () => {
                 <div className="rating">
                   <StarRating rating={currentRecipe.averageRating} />
                   <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
-                  <p className='number-of-reviews'>{currentRecipe.userReviewIds.length} Reviews</p>
+                  <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
                 </div>
                 <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
               </a>
