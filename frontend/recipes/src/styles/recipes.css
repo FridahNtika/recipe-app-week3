@@ -1,0 +1,9 @@
+.recipe-image {
+    width: 350px;
+    height: 350px;
+    object-fit: cover; /* Optional: to maintain aspect ratio and fill the dimensions */
+  }
+
+.individual-recipe{
+    
+}
