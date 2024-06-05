@@ -41,7 +41,7 @@ const MyRecipes = () => {
       <HStack spacing={50} mb={2} alignItems="center">
         <Text
           fontSize="2xl"
-          p={4}
+          p={3}
           cursor="pointer"
           bg={activeTab === 'created' ? '#90B4CE' : 'transparent'}
           _hover={{ bg: '#90B4CE' }}
@@ -54,7 +54,7 @@ const MyRecipes = () => {
         </Text>
         <Text
           fontSize="2xl"
-          p={4}
+          p={3}
           cursor="pointer"
           bg={activeTab === 'saved' ? '#90B4CE' : 'transparent'}
           _hover={{ bg: '#90B4CE' }}
