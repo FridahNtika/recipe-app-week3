@@ -6,6 +6,7 @@ import { useMediaQuery } from "@chakra-ui/react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { Box, Flex, Icon, useColorModeValue, Tooltip } from "@chakra-ui/react"; 
 import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from '../contexts/authContext';
 
 const LinkItems = [
   { name: 'Home', path: '/', icon: AiOutlineHome, tooltip: 'Home' },
