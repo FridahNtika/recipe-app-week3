@@ -4,11 +4,14 @@ import { Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, In
 import { IoIosHeart } from 'react-icons/io';
 import NavBar from '../components/NavBar';
 import StarRating from '../components/StarRating';
+import { useNavigate } from 'react-router-dom';
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
   const [activeTab, setActiveTab] = useState('created'); // State to track the active tab
   const [searchQuery, setSearchQuery] = useState(''); // State to track the search query
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -68,7 +71,7 @@ const MyRecipes = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           width="200px"
         />
-        <Button colorScheme="red" ml="auto">Create +</Button>
+        <Button colorScheme="red" mr="2vw" ml="auto" onClick={() => navigate('/create-recipe')}>Create +</Button>
       </HStack>
 
       <Wrap spacing="30px">
