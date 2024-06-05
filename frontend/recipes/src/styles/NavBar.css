@@ -1,13 +1,21 @@
 body {
     margin: 0;
     overflow-x: hidden;
+    /* padding-left: 120px; */
   }
   
   .sidebar {
-    padding: 0;
+    padding: 120px;
   }
   
   html, body {
     height: 100%;
+  }
+
+  @media screen and (max-width: 600px) {
+    .chakra-tooltip {
+      placement: top;
+    }
+    
   }
   

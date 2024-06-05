@@ -23,7 +23,9 @@ const Home = () => {
                 <h2>
                     Something flavorful awaits...
                 </h2>
-                <Button  bg='#9EAFBB' 
+                <Button  
+                    className= "chakra-button"
+                    bg='#9EAFBB' 
                     border="4px solid white" 
                     color="white" 
                     fontSize={30}

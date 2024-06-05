@@ -11,7 +11,14 @@ router.get("/", async (req, res) => {
         recipeCollection.forEach((userDoc) => {
             const recipeData = userDoc.data();
             eachRecipeData.push({
+                recipeName: recipeData.name,
                 author: recipeData.author,
+                ingredients: recipeData.ingredients,
+                instructions: recipeData.instructions,
+                source: recipeData.source,
+                userReviewIds: recipeData.userReviewIds,
+                averageRating: recipeData.averageRating,
+                dateCreated: recipeData.dateCreated,
                 // Add other recipe fields here
             });
         });
