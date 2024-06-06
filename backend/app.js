@@ -6,7 +6,11 @@ const createRecipeRouter = require("./create-recipe");
 const db = require("./firebase");
 const { collection, getDocs } = require("firebase/firestore");
 const openaiRouter = require('./openai');
+<<<<<<< HEAD
 const edamamRouter = require('./edamam');
+=======
+const userRoutes =  require('./users');
+>>>>>>> anh
 
 const app = express();
 const port = 5001;
@@ -34,6 +38,8 @@ app.use('/my-recipes', myRecipesRouter);
 app.use('/openai', openaiRouter); 
 app.use('/edamam', edamamRouter);
 
+
+app.use('/api', userRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

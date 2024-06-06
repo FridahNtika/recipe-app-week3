@@ -122,19 +122,9 @@ const MyRecipes = () => {
   };
 
   // Filter recipes based on the search query
-  const filteredRecipes = recipes.filter(recipe => 
-    recipe.name && recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredRecipes = recipes.filter(recipe =>
+    recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  // Apply filtering based on the active tab
-  let displayedRecipes;
-  if (activeTab === 'created') {
-    displayedRecipes = filteredRecipes.filter(recipe => recipe.authorId === userId);
-  } else if (activeTab === 'saved') {
-    displayedRecipes = filteredRecipes.filter(recipe => Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId));
-  } else {
-    displayedRecipes = filteredRecipes;
-  }
 
   return (
     <>

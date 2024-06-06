@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { doSignInWithEmailAndPassword } from '../../firebase/firebase';
-import { FaRegCircleUser } from "react-icons/fa6";
+import { GiCook } from "react-icons/gi";
 import { AuthContext } from '../../contexts/authContext';
 import '../../styles/adminlogin.css';
 
 const Login = ({ toggleAdminModal }) => {
-    const { userLoggedIn } = useContext(AuthContext);
+    const { userLoggedIn, user } = useContext(AuthContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -29,6 +29,7 @@ const Login = ({ toggleAdminModal }) => {
         }
     };
 
+
     return (
         <div className="modal">
             <div onClick={toggleAdminModal} className="overlay"></div>
@@ -39,7 +40,7 @@ const Login = ({ toggleAdminModal }) => {
                     <div className="admin-login-form">
                         <div className="text-center">
                             <div className="user-icon" style={{display: "flex", justifyContent: "center", paddingBottom: 20}}>
-                               <FaRegCircleUser/>
+                               <GiCook/>
                             </div>
                         </div>
                         <form onSubmit={onSubmit} className="space-y-5">
