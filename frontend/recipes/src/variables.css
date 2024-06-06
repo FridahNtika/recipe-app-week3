@@ -2,7 +2,7 @@
     /* Color Variables */
 --main-bg-color: #F9F4EF; /*Main Background Color of all pages  */
 --main-fg-color: #D9D9D9; /*Main Foreground Color of all pages, used for the navbar and as a foreground for "create a recipe"  */
---card: #B5C7D3;  /*main color of all Cards  */
+--card: #C5D4DF;  /*main color of all Cards  */
 --confirmation-button: #90B4CE; /*Button color for confirmation action eg "save"  */
 --cancellation-button: #9C0F20; /*Button color for cancellation action eg "cancel"  */
 }

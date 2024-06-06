@@ -1,58 +1,62 @@
 import axios from "axios";
 import * as React from "react";
-import {useState} from "react";
-import { Heading,Box,NumberInput,NumberInputStepper,NumberInputField } from '@chakra-ui/react';
-import {
-  Button,
-  Text,
-  useToast,
-  useDisclosure,
-  FormControl,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Input,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-} from '@chakra-ui/react';
-import {Table,Thead,Tbody,Tfoot,Tr,Th,Td,TableCaption,TableContainer} from '@chakra-ui/react'
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  HStack,
-  VStack
-} from '@chakra-ui/react'
+import {useState, useEffect} from "react";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { Heading,NumberInput,NumberInputStepper,NumberInputField } from '@chakra-ui/react';
+import { Button,Text,useToast,OrderedList,ListItem,FormControl,
+  NumberIncrementStepper,NumberDecrementStepper,Input,FormLabel,
+  FormErrorMessage } from '@chakra-ui/react';
+import { Table,Thead,Tbody,Tr,Th,TableCaption,TableContainer} from '@chakra-ui/react'
+import { Popover,PopoverTrigger,PopoverContent,PopoverHeader,
+  PopoverBody,PopoverArrow,PopoverCloseButton,HStack, VStack } from '@chakra-ui/react'
 import NavBar from "../components/NavBar";
 
 export const CreateRecipe = () => {
     //initializes variables
+    //const { token, setToken } = useContext(AuthContext);
+    const [userId, setUserId] = useState("");
+    const [author, setAuthor] = useState("");
     const [name, setName] = useState("");
     const [prep, setPrep] = useState("");
     const [cooking, setCooking] = useState("");
-    const [serving, setServing] = useState(0);
+    const [serving, setServing] = useState(1);
     const [item, setItem] = useState("");
     const [unit, setUnit] = useState("");
     const [amount, setAmount] = useState(0);
+    const [cals, setCals] = useState(0);
     const [ingredients, setIngredients] = useState([]);
     const [instructions, setInstructions] = useState([]);
     const [servingsError, setServingsError] = useState(false);
+    const [steps, setSteps] = useState([{ id: 1, value: '' }, 
+    { id: 2, value: '' }, { id: 3, value: '' }, { id: 4, value: '' }]);
+    const [forbidden, setForbidden] = useState(null);
     const toast = useToast();
-    //const isError = input === ''
-    const { isOpen, onToggle, onClose } = useDisclosure()
+    
+    //listener to monitor the authentication state of the user.
+    useEffect(() => {
+      const auth = getAuth();
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const address = user.email.split("@");
+          setAuthor(address[0]);
+          setUserId(user.uid);
+        } else {
+          setUserId(null);
+          setAuthor(null);
+        }
+      });
+      return () => unsubscribe();
+    }, []);
     
     //clears all input when cancel button is clicked
     const handleCancel = () => {
       setName("");
       setPrep("");
       setCooking("");
-      setServing(0);
+      setServing(1);
       setIngredients([]);
+      setSteps([{ id: 1, value: '' }, 
+    { id: 2, value: '' }, { id: 3, value: '' }, { id: 4, value: '' }]);
       setInstructions([]);
     }
 
@@ -62,7 +66,7 @@ export const CreateRecipe = () => {
       const data = {recName: name, prepTime: prep,
         cookTime: cooking, servings: serving,
         ingredients: ingredients, instr: instructions,
-        source: "user"
+        authorId: userId, author: author, source: "user"
       };
       //console.log(data);
       const response = axios.post("http://localhost:5001/create-recipe", data);
@@ -85,14 +89,17 @@ export const CreateRecipe = () => {
         setName("");
         setPrep("");
         setCooking("");
-        setServing(0);
+        setServing(1);
         setIngredients([]);
         setInstructions([]);
+        setSteps([{ id: 1, value: '' }, 
+    { id: 2, value: '' }, { id: 3, value: '' }, { id: 4, value: '' }]);
       } catch (error) {
         console.log("Error saving the recipe: ", error);
       }
     };
 
+    //ensures that the input servings are positive integers
     const handleServing = (val) => {
       const num = parseInt(val);
       if (num >= 1) {
@@ -109,23 +116,54 @@ export const CreateRecipe = () => {
         setItem('');
         setUnit('');
         setAmount(0);
+        //setInstructions("");
       }
     };
 
+    /* allows the user to add a step when they click +
+    the list generates more items continuing from the first four */
+    const handleAddStep = () => {
+      setSteps((prevSteps) => [
+        ...prevSteps,
+        { id: prevSteps.length + 1, value: '' },
+        { id: prevSteps.length + 2, value: '' },
+        { id: prevSteps.length + 3, value: '' },
+        { id: prevSteps.length + 4, value: '' }
+      ]);
+    };
+
+    //keeps track of every step the user inputs
+    const handleAddInstruction = (id, value) => {
+      const updatedItems = steps.map((step) =>
+        step.id === id ? { ...step, value } : step
+      );
+      setSteps(updatedItems);
+      const updatedInstructions = updatedItems.map((item) => item.value);
+      setInstructions(updatedInstructions);
+    };
+
+    /* if (!token) {
+      setForbidden(true); // Make sure that only logged in users can access this page
+      window.location.href = '/';
+    }; */
+    
+    if (!forbidden) {
     return (
         <>
-        <Heading as='h2' size='xl' color={"black"} padding={3}>Create a recipe</Heading>
-        <div id="createRec">
         {/* <NavBar/> */}
-        <FormControl isRequired padding={5}>
+        <NavBar />
+        <Heading as='h2' size='xl' color={"black"} padding={2}>Create a recipe</Heading>
+        <div id="createRec">
+        
+        <FormControl isRequired padding={3} paddingRight={15}>
           <FormLabel>Recipe name</FormLabel>
           <Input type="text" value={name} onChange={(evt) => setName(evt.target.value)}/>
 
-          <FormLabel>Prep time</FormLabel>
-          <Input type="number" value={prep} onChange={(evt) => setPrep(evt.target.value)}/>
+          <FormLabel>Prep time (In minutes)</FormLabel>
+          <Input type="number" value={prep} onChange={(evt) => setPrep(evt.target.value)}/> 
 
-          <FormLabel>Cooking time</FormLabel>
-          <Input type="text" value={cooking} onChange={(evt) => setCooking(evt.target.value)}/>
+          <FormLabel>Cooking time (In minutes)</FormLabel>
+          <Input type="number" value={cooking} onChange={(evt) => setCooking(evt.target.value)}/> 
 
           <FormLabel>How many plates does it serve?</FormLabel>
           <NumberInput min={1} value={serving} onChange={(valueString) => handleServing(valueString)}>
@@ -136,11 +174,15 @@ export const CreateRecipe = () => {
             </NumberInputStepper>
           </NumberInput>
           {servingsError && <FormErrorMessage>Serving must be at least 1.</FormErrorMessage>}
+
+          <FormLabel>Calories</FormLabel>
+          <Input type="number" value={cals} onChange={(evt) => setCals(evt.target.value)}/>
+          <br></br>
           <br></br>
 
           {/*Popup to add ingredients*/}
           <HStack>
-            <Popover>
+            <Popover offset={[120,10]}>
               <PopoverTrigger>
                 <Button>+</Button>
               </PopoverTrigger>
@@ -197,6 +239,24 @@ export const CreateRecipe = () => {
             </Table>
           </TableContainer>
           
+          {/*Instructions to prepare the dish*/}
+          <FormLabel>Instructions</FormLabel>
+          <OrderedList>
+            {steps.map((step) => (
+              <div key={step.id}>
+                <ListItem>
+                  <Input type="text" value={step.value} 
+                    onChange={(evt) => handleAddInstruction(step.id, evt.target.value)}
+                  />
+                </ListItem>
+                <br />
+              </div>
+            ))}
+          </OrderedList>
+          <Button onClick={handleAddStep}>+</Button>
+          <br />
+
+          <br></br>
           <Button  bg='#9EAFBB' border="2px solid white" color="white" 
             fontSize={24} borderRadius="15px"
             _hover={{ bg: 'white', color: '#9EAFBB', border: '2px solid #9EAFBB', cursor: 'pointer'}}
@@ -215,4 +275,6 @@ export const CreateRecipe = () => {
         </div>
         </>
     )
-}
+} else {
+  return null;
+}}

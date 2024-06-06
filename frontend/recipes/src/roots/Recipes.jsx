@@ -4,6 +4,7 @@ import '../styles/recipes.css';
 import axios from 'axios';
 import katsucurry from '../images/katsucurry.jpg';
 import timericon from '../images/timer_icon.png';
+import { Link } from 'react-router-dom';
 
 const StarRating = ({ rating, outOf = 5 }) => {
   const fullStars = Math.floor(rating);
@@ -31,18 +32,31 @@ const Recipe = () => {
   const [recipeArray, setRecipeArray] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('name');
+  const [searchBarRecipe, setSearchBarRecipe] = useState('');
+
 
   async function fetchAllRecipes() {
     try {
       const res = await axios.get("http://localhost:5001/recipes");
       setRecipeArray(res.data);
       setLoading(false);
+      console.log("Retrieved recipes:",res.data)
     } catch (error) {
       console.error("Error fetching Recipes: ", error);
       setLoading(false);
     }
   }
 
+  // async function fetchEdamamSearch() {
+  //   try {
+  //     const res = await axios.get(`http://localhost:5001/edamam/recipe/search/${}`);
+  //     setRecipeArray(res.data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching Recipes: ", error);
+  //     setLoading(false);
+  //   }
+  // }
   useEffect(() => {
     fetchAllRecipes();
   }, []);
@@ -59,11 +73,12 @@ const Recipe = () => {
     }
     return 0;
   });
-
+  const checkImage = async (currentProfile) => {
+    console.log(currentProfile)
+  }
   return (
     <div>
       <NavBar />
-      <h1>Recipes Page</h1>
       <div className='topbar'>
         <h1 className='recipesh1'>Recipes</h1>
         <input
@@ -88,7 +103,7 @@ const Recipe = () => {
         <div className="AllRecipes">
           {sortedRecipes.map((currentRecipe, index) => (
             <div key={`${currentRecipe.recipeName}-${index}`} className="IndividualRecipe">
-              <a href={`/recipes/${currentRecipe.id}`} className="recipe-link">
+              {/* <a to={`/recipe/${currentRecipe.id}`} className="recipe-link">
                 <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
                 <div className="rating">
                   <StarRating rating={currentRecipe.averageRating} />
@@ -96,7 +111,16 @@ const Recipe = () => {
                   <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
                 </div>
                 <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
-              </a>
+              </a> */}
+              <Link to={{ pathname: `/recipe-details`, state: { currentRecipe } }}  className="recipe-link">
+                <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
+                <div className="rating">
+                  <StarRating rating={currentRecipe.averageRating} />
+                  <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
+                  <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
+                </div>
+                <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
+              </Link>
               <div className='time-and-author'>
                 <img className="timer-image" src={timericon} />
                 <p>≈{currentRecipe.duration} Minutes</p>

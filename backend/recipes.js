@@ -19,7 +19,8 @@ router.get("/", async (req, res) => {
                 userReviewIds: recipeData.userReviewIds,
                 averageRating: recipeData.averageRating,
                 dateCreated: recipeData.dateCreated,
-                duration: recipeData.duration
+                duration: recipeData.duration,
+                imageURL: recipeData.imageURL
                 // Add other recipe fields here
             });
         });
