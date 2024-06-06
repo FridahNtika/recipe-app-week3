@@ -5,6 +5,7 @@ import { AiOutlineHome, AiOutlineCompass } from "react-icons/ai";
 import { IoHeartOutline } from "react-icons/io5";
 import { useMediaQuery } from "@chakra-ui/react";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { GiCook } from "react-icons/gi";
 import { Box, Flex, Icon, useColorModeValue, Tooltip } from "@chakra-ui/react"; 
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from '../contexts/authContext';

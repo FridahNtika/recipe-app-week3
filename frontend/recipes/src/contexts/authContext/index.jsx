@@ -14,8 +14,11 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
+            // console.log(user);
+            console.log(user.uid);
+            if (user.uid) {
                 setCurrentUser({ ...user });
+                console.log("hi")
                 const isEmail = user.providerData.some(
                     (provider) => provider.providerId === 'password'
                 );
@@ -23,18 +26,19 @@ export function AuthProvider({ children }) {
                 setUserLoggedIn(true);
 
                 try {
-                    const response = await axios.get(`/api/users/${user.uid}`);
+                    const response = await axios.get(`http://localhost:5001/users/${user.uid}`);
                     const userData = response.data;
                     setIsAdmin(userData.isAdmin);
+                    
                 } catch (error) {
-                    console.error('Error fetching user data:', error);
-                    setIsAdmin(false);
+                    console.log('Error fetching user data:', error);
+                    setIsAdmin(false); //look here 
                 }
             } else {
                 setCurrentUser(null);
                 setUserLoggedIn(false);
                 setIsEmailUser(false);
-                setIsAdmin(false);
+                setIsAdmin(true);
             }
             setLoading(false);
         });

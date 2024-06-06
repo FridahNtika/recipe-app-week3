@@ -21,8 +21,8 @@ const Home = () => {
     return (
         <Box className="landing-page">
             <Stack spacing={6} align="center" textAlign="center">
-                <h1 color="white">This is FlavorFinder.</h1>
-                <h2>Something flavorful awaits...</h2>
+                <h1 className = "landingheader">This is FlavorFinder.</h1>
+                <h2 className = "landingheader">Something flavorful awaits...</h2>
                 <Button
                     className="chakra-button"
                     bg="#9EAFBB"
