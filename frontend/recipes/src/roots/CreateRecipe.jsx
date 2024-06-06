@@ -99,6 +99,7 @@ export const CreateRecipe = () => {
       }
     };
 
+    //ensures that the input servings are positive integers
     const handleServing = (val) => {
       const num = parseInt(val);
       if (num >= 1) {
@@ -143,7 +144,7 @@ export const CreateRecipe = () => {
 
     /* if (!token) {
       setForbidden(true); // Make sure that only logged in users can access this page
-      window.location.href = '/nosessiontoken';
+      window.location.href = '/';
     }; */
     
     if (!forbidden) {
@@ -158,15 +159,11 @@ export const CreateRecipe = () => {
           <FormLabel>Recipe name</FormLabel>
           <Input type="text" value={name} onChange={(evt) => setName(evt.target.value)}/>
 
-          <FormLabel>Prep time</FormLabel>
-          <Input type="number" value={prep} onChange={(evt) => setPrep(evt.target.value)}/> min
-          <br></br>
-          <br></br>
+          <FormLabel>Prep time (In minutes)</FormLabel>
+          <Input type="number" value={prep} onChange={(evt) => setPrep(evt.target.value)}/> 
 
-          <FormLabel>Cooking time</FormLabel>
-          <Input type="number" value={cooking} onChange={(evt) => setCooking(evt.target.value)}/> min
-          <br></br>
-          <br></br>
+          <FormLabel>Cooking time (In minutes)</FormLabel>
+          <Input type="number" value={cooking} onChange={(evt) => setCooking(evt.target.value)}/> 
 
           <FormLabel>How many plates does it serve?</FormLabel>
           <NumberInput min={1} value={serving} onChange={(valueString) => handleServing(valueString)}>
