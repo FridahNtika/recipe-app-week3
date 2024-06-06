@@ -18,6 +18,8 @@ router.post("/", async (req, res) => {
             servings: data.servings,
             ingredients: data.ingredients,
             instructions: data.instr,
+            isPublished: false,
+            isEdamam: false,
             source: data.source
         };
         console.log(recipe);
