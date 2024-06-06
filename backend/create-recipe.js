@@ -10,6 +10,7 @@ router.post("/", async (req, res) => {
         const date = new Date().toDateString();
         const recipe = {
             author: data.author,
+            authorId: data.authorId,
             averageRating: "",
             dateCreated: date,
             name: data.recName,
@@ -22,7 +23,7 @@ router.post("/", async (req, res) => {
             isEdamam: false,
             source: data.source
         };
-        //console.log(recipe);
+        console.log(recipe);
         const docRef = await addDoc(collection(db, "Recipes"), recipe);
         res.status(201).json({message: `Successfully added document with id ${docRef.id}`});
     } catch (error) {
