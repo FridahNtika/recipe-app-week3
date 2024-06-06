@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input, Modal,
   ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel
+  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel, useToast
 } from '@chakra-ui/react';
 import { IoIosHeart } from 'react-icons/io';
 import { EditIcon } from '@chakra-ui/icons';
@@ -19,7 +19,7 @@ const MyRecipes = () => {
   const [userId, setUserId] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const toast = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,6 +44,13 @@ const MyRecipes = () => {
         setRecipes(response.data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
+        toast({
+          title: "Error fetching recipes.",
+          description: "An error occurred while fetching recipes. Please try again later.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       }
     };
   
@@ -72,8 +79,23 @@ const MyRecipes = () => {
         }
         return recipe;
       }));
+
+      toast({
+        title: `Recipe ${isSaved ? 'unsaved' : 'saved'}.`,
+        description: `Recipe has been ${isSaved ? 'removed from' : 'added to'} your saved list.`,
+        status: isSaved ? 'info' : 'success',
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error('Error updating heart status:', error);
+      toast({
+        title: "Error.",
+        description: "An error occurred while updating the recipe status. Please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -109,8 +131,22 @@ const MyRecipes = () => {
       console.log('Recipe updated:', response.data);
       setRecipes(recipes.map(recipe => recipe.id === selectedRecipe.id ? selectedRecipe : recipe));
       onClose();
+      toast({
+        title: "Recipe updated.",
+        description: "The recipe has been updated successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error('Error updating recipe:', error);
+      toast({
+        title: "Error.",
+        description: "An error occurred while updating the recipe. Please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -298,7 +334,7 @@ const MyRecipes = () => {
                     onChange={(event) => handleIngredientChange(index, event)}
                     mr={3}
                   />
-                  <Button colorScheme="red" onClick={() => handleRemoveIngredient(index)}>Remove</Button>
+                  <Button colorScheme="red" onClick={() => handleRemoveIngredient(index)}>-</Button>
                 </Flex>
               ))}
               <Button colorScheme="teal" onClick={handleAddIngredient}>Add Ingredient</Button>
