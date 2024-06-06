@@ -57,7 +57,7 @@ const MyRecipes = () => {
     fetchRecipes();
   }, []);
 
-  const handleHeartClick = async (recipeId, isSaved) => {
+  const handleHeartClick = async (recipeId, isSaved, recipeName) => {
     try {
       const url = `http://localhost:5001/my-recipes/recipes/${recipeId}/${isSaved ? 'unheart' : 'heart'}`;
       const method = isSaved ? 'delete' : 'post';
@@ -82,7 +82,7 @@ const MyRecipes = () => {
 
       toast({
         title: `Recipe ${isSaved ? 'unsaved' : 'saved'}.`,
-        description: `Recipe has been ${isSaved ? 'removed from' : 'added to'} your saved list.`,
+        description: `${recipeName} has been ${isSaved ? 'removed from' : 'added to'} your saved list.`,
         status: isSaved ? 'info' : 'success',
         duration: 3000,
         isClosable: true,
@@ -91,7 +91,7 @@ const MyRecipes = () => {
       console.error('Error updating heart status:', error);
       toast({
         title: "Error.",
-        description: "An error occurred while updating the recipe status. Please try again later.",
+        description: `An error occurred while updating the status of ${recipeName}. Please try again later.`,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -133,7 +133,7 @@ const MyRecipes = () => {
       onClose();
       toast({
         title: "Recipe updated.",
-        description: "The recipe has been updated successfully.",
+        description: `${selectedRecipe.name} has been updated successfully.`,
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -142,7 +142,7 @@ const MyRecipes = () => {
       console.error('Error updating recipe:', error);
       toast({
         title: "Error.",
-        description: "An error occurred while updating the recipe. Please try again later.",
+        description: `An error occurred while updating ${selectedRecipe.name}. Please try again later.`,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -254,7 +254,7 @@ const MyRecipes = () => {
                   aria-label="Save Recipe"
                   colorScheme="blue"
                   variant={Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId) ? 'solid' : 'outline'}
-                  onClick={() => handleHeartClick(recipe.id, Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId))}
+                  onClick={() => handleHeartClick(recipe.id, Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId), recipe.name)}
                 />
               </Flex>
             </Box>
@@ -334,7 +334,7 @@ const MyRecipes = () => {
                     onChange={(event) => handleIngredientChange(index, event)}
                     mr={3}
                   />
-                  <Button colorScheme="red" onClick={() => handleRemoveIngredient(index)}>-</Button>
+                  <Button colorScheme="red" onClick={() => handleRemoveIngredient(index)}>Remove</Button>
                 </Flex>
               ))}
               <Button colorScheme="teal" onClick={handleAddIngredient}>Add Ingredient</Button>
