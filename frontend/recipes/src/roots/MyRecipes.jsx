@@ -53,6 +53,8 @@ const MyRecipes = () => {
   let displayedRecipes;
   if (activeTab === 'created') {
     displayedRecipes = filteredRecipes.filter(recipe => recipe.author === userId);
+  } else if (activeTab === 'saved') {
+    displayedRecipes = filteredRecipes.filter(recipe => Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId));
   } else {
     displayedRecipes = filteredRecipes;
   }
