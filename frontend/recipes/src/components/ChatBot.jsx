@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
+import MessageSend from './MessageSend';
+import Message from './Message';
+import { useEffect, useState, useRef } from "react";
 
 const ChatBot = () => {
   const [conversation, setConversation] = useState([]);
-  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const sendMessage = async () => {
-    if (input.trim() === '') return;
+  const chatContainerRef = useRef(null);
+  
+  const sendMessage = async (message) => {
+    console.log("Prompt: ", message)
     
-    const userMessage = { role: 'user', content: input };
+    // if (input.trim() === '') return;
+    const userMessage = { role: 'user', content: message };
     const updatedConversation = [...conversation, userMessage];
     setConversation(updatedConversation);
-    setInput('');
     setLoading(true);
-
+    console.log("Latest Conversation",conversation)
     try {
       const response = await axios.post('http://localhost:5001/openai/message', { conversation: updatedConversation });
       const botMessage = { role: 'system', content: response.data.botMessage };
@@ -26,68 +29,34 @@ const ChatBot = () => {
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      sendMessage();
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
-  };
+  }, [conversation]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '30vw', height: '80vh', margin: '2vh' }}>
-      <div style={{ flex: 1, overflowY: 'auto', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
-        {conversation.map((msg, index) => (
-          <div
-            key={index}
-            style={{
-              display: 'flex',
-              justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
-              margin: '5px 0',
-              marginBottom: '3vh'
-            }}
-          >
-            <div
-              style={{
-                padding: '10px',
-                borderRadius: '10px',
-                backgroundColor: msg.role === 'user' ? '#D1E8E4' : '#F7D9C4',
-                maxWidth: '60%',
-              }}
-            >
-              {msg.content}
-            </div>
+    // <div className="main-content">
+      // <div className="main-container">
+        <div className="parent-container">
+          <div className="chat-container" ref={chatContainerRef}>
+            {/* <div className="conversation-container"> */}
+              {conversation.map((message, index) => {
+                return (
+                  <>
+                    <Message key={index} user={message.role} message={message.content} />
+                  </>
+                );
+              })}
+            {/* </div> */}
           </div>
-        ))}
-        {loading && <div style={{ display: 'flex', justifyContent: 'flex-start', margin: '5px 0' }}>
-          <div style={{ padding: '10px', borderRadius: '10px', backgroundColor: '#F7D9C4', maxWidth: '60%' }}>
-            Typing...
+          <div className="send-container">
+            <MessageSend sendMessage={sendMessage} />
           </div>
-        </div>}
-      </div>
-      <div style={{ display: 'flex', marginTop: '10px' }}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="Type your message..."
-          style={{ flex: 1, padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-        />
-        <button
-          onClick={sendMessage}
-          style={{
-            marginLeft: '10px',
-            padding: '10px 20px',
-            borderRadius: '5px',
-            border: 'none',
-            backgroundColor: '#00B4D8',
-            color: 'white',
-            cursor: 'pointer',
-          }}
-        >
-          Send
-        </button>
-      </div>
-    </div>
+        </div>
+      // </div>
+    // </div> 
   );
 };
 

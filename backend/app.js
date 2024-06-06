@@ -14,6 +14,7 @@ const port = 5001;
 app.use(express.json());
 app.use(cors());
 
+// Define the /test route
 app.get('/test', async (req, res) => {
     try {
         const snapshot = await getDocs(collection(db, 'test'));
