@@ -22,16 +22,25 @@ router.get('/recipe', async (req, res) => {
     if (jsonData.hits && jsonData.hits.length > 0) {
         const recipe = jsonData.hits[0].recipe;
         const recipeDetails = {
-        label: recipe.label,
+        name: recipe.label,
         ingredients: recipe.ingredientLines,
-        caloires: recipe.calories,
+        calories: recipe.calories,
         totalNutrients: recipe.totalNutrients,
-        instructionsUrl: recipe.url
+        instructionsUrl: recipe.url,
+        duration: recipe.totalTime,
+        imageURL: recipe.images.LARGE.url,
+
+        isEdamamRecipe: true,
+        averageRating: 0,
+        author: "edamam",
+        source: "edamam",
+        userReviewIds: [],
+        savedUserIds: []
         };
 
         // Check if the recipe already exists in Firestore
-        const recipesRef = collection(db, "edamamRecipes");
-        const q = query(recipesRef, where("label", "==", recipeDetails.label));
+        const recipesRef = collection(db, "Recipes");
+        const q = query(recipesRef, where("name", "==", recipeDetails.name));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
@@ -53,4 +62,66 @@ router.get('/recipe', async (req, res) => {
     }
     });
 
+    const getImageUrl = (images) => {
+        if (images.LARGE && images.LARGE.url) {
+            return images.LARGE.url;
+        } else if (images.REGULAR && images.REGULAR.url) {
+            return images.REGULAR.url;
+        } else if (images.SMALL && images.SMALL.url) {
+            return images.SMALL.url;
+        } else {
+            return "";
+        }
+        };
+
+router.get('/recipe/search/:recipeText/:cuisineType', async (req, res) => {
+    const recipeText = req.params.recipeText;
+    const cuisineType = req.params.cuisineType;
+    let jsonURL = `https://api.edamam.com/api/recipes/v2?type=public&q=${recipeText}&app_id=${apiId}&app_key=${apiKey}`;
+    if(cuisineType != 'Any'){
+        jsonURL += `&cuisineType=${cuisineType}`;
+    } 
+    try {
+        const response = await fetch(jsonURL);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const jsonData = await response.json();
+
+        if (jsonData.hits && jsonData.hits.length > 0) {
+            const recipesArray = [];
+            for (const hit of jsonData.hits) {
+                const recipe = hit.recipe;
+                const recipeDetails = {
+                    name: recipe.label,
+                    ingredients: recipe.ingredientLines,
+                    calories: recipe.calories,
+                    totalNutrients: recipe.totalNutrients,
+                    instructionsUrl: recipe.url,
+                    duration: recipe.totalTime,
+                    imageURL: getImageUrl(recipe.images),
+                    isEdamamRecipe: true,
+                    averageRating: 0,
+                    author: "edamam",
+                    source: "edamam",
+                    userReviewIds: [],
+                    savedUserIds: []
+                };
+                // Add the recipeDetails to the array
+                recipesArray.push(recipeDetails);
+            }
+
+            // Return the array of recipes
+            res.json(recipesArray);
+        } else {
+            res.status(404).json({ error: 'Recipes not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching the JSON data:', error);
+        res.status(500).json({ error: 'Failed to fetch the JSON data' });
+    }
+});
+
+
+    
     module.exports = router;

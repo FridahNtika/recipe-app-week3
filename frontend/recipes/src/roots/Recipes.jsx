@@ -31,6 +31,8 @@ const Recipe = () => {
   const [recipeArray, setRecipeArray] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('name');
+  const [searchBarRecipe, setSearchBarRecipe] = useState('');
+
 
   async function fetchAllRecipes() {
     try {
@@ -43,6 +45,16 @@ const Recipe = () => {
     }
   }
 
+  // async function fetchEdamamSearch() {
+  //   try {
+  //     const res = await axios.get(`http://localhost:5001/edamam/recipe/search/${}`);
+  //     setRecipeArray(res.data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching Recipes: ", error);
+  //     setLoading(false);
+  //   }
+  // }
   useEffect(() => {
     fetchAllRecipes();
   }, []);
@@ -59,7 +71,9 @@ const Recipe = () => {
     }
     return 0;
   });
-
+  const checkImage = async (currentProfile) => {
+    console.log(currentProfile)
+  }
   return (
     <div>
       <NavBar />
@@ -87,8 +101,8 @@ const Recipe = () => {
         <div className="AllRecipes">
           {sortedRecipes.map((currentRecipe, index) => (
             <div key={`${currentRecipe.recipeName}-${index}`} className="IndividualRecipe">
-              <a href={`/recipes/${currentRecipe.id}`} className="recipe-link">
-                <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
+              <a className="recipe-link">
+                <img className="recipe-image" alt={currentRecipe.recipeName} src={currentRecipe.imageURL} />
                 <div className="rating">
                   <StarRating rating={currentRecipe.averageRating} />
                   <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
