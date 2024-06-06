@@ -55,7 +55,7 @@ const Home = () => {
                     top= "10px"
                     right= "10px"
                 >
-                      <span style={{ marginRight: '10px' }}>Admin Login</span>
+                      <span style={{ marginRight: '10px' }}>Admin/User Login</span>
                         <span><FaRegCircleUser /></span>
                 </Button>
                 {isModalOpen && <Login toggleAdminModal={toggleAdminModal} />}
