@@ -4,6 +4,7 @@ import '../styles/recipes.css';
 import axios from 'axios';
 import katsucurry from '../images/katsucurry.jpg';
 import timericon from '../images/timer_icon.png';
+import { Link } from 'react-router-dom';
 
 const StarRating = ({ rating, outOf = 5 }) => {
   const fullStars = Math.floor(rating);
@@ -109,7 +110,7 @@ const Recipe = () => {
       ) : (
         <div className="AllRecipes">
           {sortedRecipes.map((currentRecipe, index) => (
-            <a href={`/recipes/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
+            <Link to={`/recipe-details/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
               <div className="IndividualRecipe">
                 <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
                 <div className="rating">
@@ -127,7 +128,7 @@ const Recipe = () => {
                   <div className="bookmark" />
                 </a>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       )}

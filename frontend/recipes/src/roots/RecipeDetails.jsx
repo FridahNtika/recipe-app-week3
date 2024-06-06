@@ -8,19 +8,21 @@ import timericon from "../images/timer_icon.png";
 import saveFill from "../assets/saveFill.svg";
 import saveOutline from "../assets/saveOutline.svg";
 import { IconButton, Box, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast, useDisclosure } from "@chakra-ui/react";
 import BasicModal from "../components/BasicModal";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const RecipeDetails = () => {
   const [isSaved, setIsSaved] = useState(false);
+  const [recipe, setRecipe] = useState("");
+  // const [recipeID, setRecipeID] = useState("")
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const location = useLocation();
-  const { recipeDetails } = location.state || {};
-  
+  let { recipeID } = useParams();
 
+  console.log("recipe ID: ", recipeID);
   const handleSave = () => {
     if (!isSaved) {
       toast({
@@ -32,22 +34,43 @@ const RecipeDetails = () => {
     setIsSaved(!isSaved);
   };
 
+  const fetchRecipe = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5001/recipes/${recipeID}`
+      );
+      setRecipe(response.data);
+      console.log(response, " -> Recipe");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecipe();
+  }, []);
+
   return (
     <div className="main-page">
       <NavBar />
       <div className="header">
-        <div className="title-save">
+        <div className="title">
           <h2>
-            <strong> Grandma’s Quiche</strong>
+            {/* <strong> {recipe.recipeName} </strong> */}
+            <strong> Chicken</strong>
+
           </h2>
         </div>
 
         <div className="duration-and-author">
           <div className="duration">
             <img className="timer-image" src={timericon} />
-            <p>≈90 Minutes</p>
+            <p>≈{recipe.duration} Minutes</p>
           </div>
-          <p className="author">Author: Sarah</p>
+          <p className="author">
+            {" "}
+            {recipe.author ? `By ${recipe.author}` : `Author: Unknown`}
+          </p>
         </div>
 
         <div className="save-button-container">
@@ -85,16 +108,9 @@ const RecipeDetails = () => {
             <h2> Ingredients</h2>
             <div className="ingredients-list">
               <ul>
-                <li>
-                  2 1/2 tablespoons fresh blood orange juice from 1 blood orange
-                </li>
-                <li>1 tablespoon sherry vinegar</li>
-                <li>2 tablespoons minced shallot</li>
-                <li>1/2 teaspoon honey</li>
-                <li>3 tablspoons olive oil</li>
-                <li>Kosher salt</li>
-                <li>Freshly ground black peppe</li>
-                <li>1/2 teaspoon honey</li>
+                {recipe.ingredients?.map((ingr, index) => (
+                  <li key={index}> {ingr} </li>
+                ))}
               </ul>
             </div>
           </div>

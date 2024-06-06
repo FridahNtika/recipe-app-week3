@@ -67,6 +67,7 @@ h1,h2,h3 {
 
 .duration-and-author {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap:30px;
     margin-left: 50px;
@@ -94,10 +95,12 @@ h1,h2,h3 {
     justify-content: center;
 }
 
-.title-save {
+.title {
     display: flex;
+    width: 490px;
     justify-content: space-between;
     align-items: center;
+    background-color: bisque;
 }
 
 .save-button-container {
