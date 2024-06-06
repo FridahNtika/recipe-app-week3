@@ -5,4 +5,8 @@
   #save {
     margin-right: 20px;
   }
+
+  #createRec {
+    z-index: -1;
+  }
   

@@ -79,8 +79,10 @@ router.get('/recipe/search/:recipeText/:cuisineType', async (req, res) => {
     const cuisineType = req.params.cuisineType;
     let jsonURL = `https://api.edamam.com/api/recipes/v2?type=public&q=${recipeText}&app_id=${apiId}&app_key=${apiKey}`;
     if(cuisineType != 'Any'){
-        jsonURL += `&cuisineType=${cuisineType}`;
-    } 
+        jsonURL += `&cuisineType=${cuisineType}&imageSize=LARGE`;
+    } else{
+        jsonURL += `&imageSize=LARGE`;
+    }
     try {
         const response = await fetch(jsonURL);
         if (!response.ok) {
