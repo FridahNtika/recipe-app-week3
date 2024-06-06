@@ -99,6 +99,22 @@ export const CreateRecipe = () => {
       }
     };
 
+     //ensures that the input prep time is a positive integers
+    const handlePrep = (evt) => {
+      const value = evt.target.value;
+      if (value === '' || (Number.isInteger(Number(value)) && Number(value) > 0)) {
+        setPrep(value);
+      }
+    };
+  
+    //ensures that the input cooking time is a positive integers
+    const handleCooking = (evt) => {
+      const value = evt.target.value;
+      if (value === '' || (Number.isInteger(Number(value)) && Number(value) > 0)) {
+        setCooking(value);
+      }
+    };
+
     //ensures that the input servings are positive integers
     const handleServing = (val) => {
       const num = parseInt(val);
@@ -108,6 +124,14 @@ export const CreateRecipe = () => {
       } else {
         setServingsError(true);
       };
+    };
+
+    //ensures that the input calories is a positive integers
+    const handleCals = (evt) => {
+      const value = evt.target.value;
+      if (value === '' || (Number.isInteger(Number(value)) && Number(value) > 0)) {
+        setCooking(value);
+      }
     };
 
     const handleAddIngredient = () => {
@@ -160,10 +184,10 @@ export const CreateRecipe = () => {
           <Input type="text" value={name} onChange={(evt) => setName(evt.target.value)}/>
 
           <FormLabel>Prep time (In minutes)</FormLabel>
-          <Input type="number" value={prep} onChange={(evt) => setPrep(evt.target.value)}/> 
+          <Input type="number" value={prep} onChange={handlePrep}/> 
 
           <FormLabel>Cooking time (In minutes)</FormLabel>
-          <Input type="number" value={cooking} onChange={(evt) => setCooking(evt.target.value)}/> 
+          <Input type="number" value={cooking} onChange={handleCooking}/> 
 
           <FormLabel>How many plates does it serve?</FormLabel>
           <NumberInput min={1} value={serving} onChange={(valueString) => handleServing(valueString)}>
@@ -176,7 +200,7 @@ export const CreateRecipe = () => {
           {servingsError && <FormErrorMessage>Serving must be at least 1.</FormErrorMessage>}
 
           <FormLabel>Calories</FormLabel>
-          <Input type="number" value={cals} onChange={(evt) => setCals(evt.target.value)}/>
+          <Input type="number" value={cals} onChange={handleCals}/>
           <br></br>
           <br></br>
 
