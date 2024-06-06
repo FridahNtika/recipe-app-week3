@@ -10,6 +10,9 @@ h1,h2,h3 {
 }
 
 .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin-top: 20px;
     margin-bottom: 25px;
 }
@@ -55,4 +58,47 @@ h1,h2,h3 {
 .ingredients-list {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.duration-and-author {
+    display: flex;
+    align-items: center;
+    gap:30px;
+    margin-left: 50px;
+}
+
+.duration {
+    display: flex;
+    flex-direction: row;
+}
+
+.nutrition-facts-container {
+    margin-left: 15px;
+}
+
+.nutrients {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 200px;
+}
+
+.nutrient {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title-save {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.save-button-container {
+    margin-left: 800px;
+}
+
+.action-button {
+    background-color: var(--confirmation-button) !important;
 }
