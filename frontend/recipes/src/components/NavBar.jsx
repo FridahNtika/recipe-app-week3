@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate hook
 import '../styles/NavBar.css';
 import { AiOutlineHome, AiOutlineCompass } from "react-icons/ai";
 import { IoHeartOutline } from "react-icons/io5";
@@ -51,7 +52,7 @@ const NavItem = ({ icon, path, tooltip, ...rest }) => (
   </Tooltip>
 );
 
-const SideBarContent = ({handleLogout}) => (
+const SideBarContent = ({ handleLogout, userLoggedIn }) => (
   <Box
     bg="#D9D9D9" 
     borderRight="1px"
@@ -67,20 +68,22 @@ const SideBarContent = ({handleLogout}) => (
     className="sidebar"
     display="flex"
     flexDirection="column"
+    justifyContent="space-between"
   >
     <Box flex="1">
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon} path={link.path} tooltip={link.tooltip} />
       ))}
     </Box>
-
-    <Box marginBottom={20} >
-      <button className="logout-button" onClick={handleLogout}>Log out</button>
-    </Box>
+    {userLoggedIn && (
+      <Box display="flex" justifyContent="center" marginBottom={20}>
+        <button className="logout-button" onClick={handleLogout}>Log out</button>
+      </Box>
+    )}
   </Box>
 );
 
-const BottomBarContent = () => (
+const BottomBarContent = ({ handleLogout, userLoggedIn }) => (
   <Box
     bg="#D9D9D9"
     borderTop="1px"
@@ -98,25 +101,28 @@ const BottomBarContent = () => (
     {LinkItems.map((link) => (
       <NavItem key={link.name} icon={link.icon} path={link.path} tooltip={link.tooltip} />
     ))}
-     <button style={{ 
-        padding: '10px',
-        backgroundColor: '#2B6361',
-        color: 'white',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        textAlign: 'center',
-        marginBottom: '6px',
-      }}>
+    {userLoggedIn && (
+      <button
+        className="logout-button"
+        onClick={handleLogout}
+      >
         Log out
       </button>
+    )}
   </Box>
 );
 
 const NavBar = () => {
   const [isMobile] = useMediaQuery("(max-width: 600px)");
   const location = useLocation();
-  const { handleLogout } = useContext(AuthContext);
+  const navigate = useNavigate();  // Initialize useNavigate hook
+  const { handleLogout, userLoggedIn } = useContext(AuthContext);
+
+  // Update the handleLogout function to include navigation
+  const handleLogoutAndRedirect = () => {
+    handleLogout();  // Call the original handleLogout function
+    navigate('/');  // Redirect to /home
+  };
 
   useEffect(() => {
     const body = document.body;
@@ -132,7 +138,7 @@ const NavBar = () => {
 
   return (
     <>
-      {isMobile ? <BottomBarContent /> : <SideBarContent handleLogout={handleLogout}/>}
+      {isMobile ? <BottomBarContent handleLogout={handleLogoutAndRedirect} userLoggedIn={userLoggedIn} /> : <SideBarContent handleLogout={handleLogoutAndRedirect} userLoggedIn={userLoggedIn} />}
     </>
   );
 };
