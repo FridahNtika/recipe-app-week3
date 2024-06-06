@@ -6,10 +6,10 @@ const db = require('./firebase');
 
 router.use(cors());
 
-router.get('/users/:uid', async (req, res) => {
+router.get('/:uid', async (req, res) => {
     const uid = req.params.uid;
     try {
-        const userDocRef = doc(db, 'users', uid);
+        const userDocRef = doc(db, 'Users', uid);
         const userDocSnapshot = await getDoc(userDocRef);
 
         if (!userDocSnapshot.exists()) {
