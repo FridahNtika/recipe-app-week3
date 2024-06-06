@@ -46,16 +46,45 @@ const MyRecipes = () => {
 
   // Filter recipes based on the search query
   const filteredRecipes = recipes.filter(recipe => 
-    recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
+    recipe.name && recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Apply filtering based on the active tab
   let displayedRecipes;
   if (activeTab === 'created') {
-    displayedRecipes = filteredRecipes.filter(recipe => recipe.author === userId);
+    displayedRecipes = filteredRecipes.filter(recipe => recipe.authorId === userId);
+  } else if (activeTab === 'saved') {
+    displayedRecipes = filteredRecipes.filter(recipe => Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId));
   } else {
     displayedRecipes = filteredRecipes;
   }
+
+  const handleHeartClick = async (recipeId, isSaved) => {
+    try {
+      const url = `http://localhost:5001/my-recipes/recipes/${recipeId}/${isSaved ? 'unheart' : 'heart'}`;
+      const method = isSaved ? 'delete' : 'post';
+      const response = await axios({
+        method: method,
+        url: url,
+        data: { userId }
+      });
+      console.log('Heart action response:', response.data);
+
+      // Update local state to reflect changes
+      setRecipes(recipes.map(recipe => {
+        if (recipe.id === recipeId) {
+          if (isSaved) {
+            recipe.savedUserIds = recipe.savedUserIds.filter(id => id !== userId);
+          } else {
+            recipe.savedUserIds.push(userId);
+          }
+        }
+        return recipe;
+      }));
+    } catch (error) {
+      console.error('Error updating heart status:', error);
+    }
+  };
 
   return (
     <>
@@ -113,7 +142,7 @@ const MyRecipes = () => {
               justifyContent="space-between"
               position="relative"
             >
-              {recipe.source === 'user' && (
+              {recipe.authorId === userId && (
                 <IconButton
                   icon={<EditIcon />}
                   aria-label="Edit Recipe"
@@ -127,7 +156,7 @@ const MyRecipes = () => {
               )}
               <Text>Picture goes here</Text>
               <Center>
-                <Text fontSize={24}>{recipe.name}</Text>
+                <Text fontSize={24}>{recipe.name ? recipe.name : 'No label'}</Text>
               </Center>
               <Flex justifyContent="space-between" alignItems="center" mt={2}>
                 <StarRating rating={recipe.averageRating} />
@@ -138,7 +167,8 @@ const MyRecipes = () => {
                   icon={<IoIosHeart />}
                   aria-label="Save Recipe"
                   colorScheme="blue"
-                  variant="outline"
+                  variant={Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId) ? 'solid' : 'outline'}
+                  onClick={() => handleHeartClick(recipe.id, Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId))}
                 />
               </Flex>
             </Box>
