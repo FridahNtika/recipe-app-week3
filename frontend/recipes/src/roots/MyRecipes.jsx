@@ -6,13 +6,27 @@ import { EditIcon } from '@chakra-ui/icons';
 import NavBar from '../components/NavBar';
 import StarRating from '../components/StarRating';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
-  const [activeTab, setActiveTab] = useState('created'); // State to track the active tab
-  const [searchQuery, setSearchQuery] = useState(''); // State to track the search query
+  const [activeTab, setActiveTab] = useState('created');
+  const [searchQuery, setSearchQuery] = useState(''); 
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        setUserId(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -30,9 +44,17 @@ const MyRecipes = () => {
   }, []);
 
   // Filter recipes based on the search query
-  const filteredRecipes = recipes.filter(recipe =>
+  const filteredRecipes = recipes.filter(recipe => 
     recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Apply filtering based on the active tab
+  let displayedRecipes;
+  if (activeTab === 'created') {
+    displayedRecipes = filteredRecipes.filter(recipe => recipe.author === userId);
+  } else {
+    displayedRecipes = filteredRecipes;
+  }
 
   return (
     <>
@@ -76,7 +98,7 @@ const MyRecipes = () => {
       </HStack>
 
       <Wrap spacing="30px">
-        {filteredRecipes.map(recipe => (
+        {displayedRecipes.map(recipe => (
           <WrapItem key={recipe.id}>
             <Box
               p={6}
