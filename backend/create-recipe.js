@@ -10,6 +10,7 @@ router.post("/", async (req, res) => {
         const date = new Date().toDateString();
         const recipe = {
             author: data.author,
+            authorId: data.authorId,
             averageRating: "",
             dateCreated: date,
             name: data.recName,

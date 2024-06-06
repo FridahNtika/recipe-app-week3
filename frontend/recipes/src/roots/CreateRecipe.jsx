@@ -1,37 +1,21 @@
 import axios from "axios";
 import * as React from "react";
-import {useState} from "react";
-import { Heading,Box,NumberInput,NumberInputStepper,NumberInputField } from '@chakra-ui/react';
-import {
-  Button,
-  Text,
-  useToast,
-  OrderedList,
-  ListItem,
-  FormControl,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Input,
-  FormLabel,
-  FormErrorMessage,
-} from '@chakra-ui/react';
-import {Table,Thead,Tbody,Tr,Th,TableCaption,TableContainer} from '@chakra-ui/react'
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
-  HStack,
-  VStack
-} from '@chakra-ui/react'
+import {useState, useEffect} from "react";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { Heading,NumberInput,NumberInputStepper,NumberInputField } from '@chakra-ui/react';
+import { Button,Text,useToast,OrderedList,ListItem,FormControl,
+  NumberIncrementStepper,NumberDecrementStepper,Input,FormLabel,
+  FormErrorMessage } from '@chakra-ui/react';
+import { Table,Thead,Tbody,Tr,Th,TableCaption,TableContainer} from '@chakra-ui/react'
+import { Popover,PopoverTrigger,PopoverContent,PopoverHeader,
+  PopoverBody,PopoverArrow,PopoverCloseButton,HStack, VStack } from '@chakra-ui/react'
 import NavBar from "../components/NavBar";
 
 export const CreateRecipe = () => {
     //initializes variables
-    //const { token, setToken, userID, setUserID } = useContext(AuthContext);
+    //const { token, setToken } = useContext(AuthContext);
+    const [userId, setUserId] = useState("");
+    const [author, setAuthor] = useState("");
     const [name, setName] = useState("");
     const [prep, setPrep] = useState("");
     const [cooking, setCooking] = useState("");
@@ -47,7 +31,22 @@ export const CreateRecipe = () => {
     { id: 2, value: '' }, { id: 3, value: '' }, { id: 4, value: '' }]);
     const [forbidden, setForbidden] = useState(null);
     const toast = useToast();
-    //const isError = input === ''
+    
+    //listener to monitor the authentication state of the user.
+    useEffect(() => {
+      const auth = getAuth();
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const address = user.email.split("@");
+          setAuthor(address[0]);
+          setUserId(user.uid);
+        } else {
+          setUserId(null);
+          setAuthor(null);
+        }
+      });
+      return () => unsubscribe();
+    }, []);
     
     //clears all input when cancel button is clicked
     const handleCancel = () => {
@@ -67,7 +66,7 @@ export const CreateRecipe = () => {
       const data = {recName: name, prepTime: prep,
         cookTime: cooking, servings: serving,
         ingredients: ingredients, instr: instructions,
-        source: "user"
+        authorId: userId, author: author, source: "user"
       };
       //console.log(data);
       const response = axios.post("http://localhost:5001/create-recipe", data);
@@ -100,6 +99,7 @@ export const CreateRecipe = () => {
       }
     };
 
+    //ensures that the input servings are positive integers
     const handleServing = (val) => {
       const num = parseInt(val);
       if (num >= 1) {
@@ -144,25 +144,26 @@ export const CreateRecipe = () => {
 
     /* if (!token) {
       setForbidden(true); // Make sure that only logged in users can access this page
-      window.location.href = '/nosessiontoken';
+      window.location.href = '/';
     }; */
     
     if (!forbidden) {
     return (
         <>
+        {/* <NavBar/> */}
         <NavBar />
         <Heading as='h2' size='xl' color={"black"} padding={2}>Create a recipe</Heading>
         <div id="createRec">
-        {/* <NavBar/> */}
+        
         <FormControl isRequired padding={3} paddingRight={15}>
           <FormLabel>Recipe name</FormLabel>
           <Input type="text" value={name} onChange={(evt) => setName(evt.target.value)}/>
 
-          <FormLabel>Prep time</FormLabel>
-          <Input type="number" value={prep} onChange={(evt) => setPrep(evt.target.value)}/>
+          <FormLabel>Prep time (In minutes)</FormLabel>
+          <Input type="number" value={prep} onChange={(evt) => setPrep(evt.target.value)}/> 
 
-          <FormLabel>Cooking time</FormLabel>
-          <Input type="text" value={cooking} onChange={(evt) => setCooking(evt.target.value)}/>
+          <FormLabel>Cooking time (In minutes)</FormLabel>
+          <Input type="number" value={cooking} onChange={(evt) => setCooking(evt.target.value)}/> 
 
           <FormLabel>How many plates does it serve?</FormLabel>
           <NumberInput min={1} value={serving} onChange={(valueString) => handleServing(valueString)}>
@@ -251,18 +252,9 @@ export const CreateRecipe = () => {
                 <br />
               </div>
             ))}
-      </OrderedList>
-      <Button onClick={handleAddStep}>+</Button>
-      <br />
-          {/* <Textarea 
-            placeholder="Enter the instructions here"
-            size="md"
-          >
-            <Input type="text" value={instructions}
-            onChange={(evt) => setInstructions(instructions)}></Input>
-          </Textarea>
-          <br></br>
-          <br></br> */}
+          </OrderedList>
+          <Button onClick={handleAddStep}>+</Button>
+          <br />
 
           <br></br>
           <Button  bg='#9EAFBB' border="2px solid white" color="white" 
