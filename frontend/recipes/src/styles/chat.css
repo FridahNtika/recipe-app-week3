@@ -4,24 +4,6 @@
     opacity: 30%;
 }
 
-/* .navbar {
-  height: 100vh;
-  width: 280px;
-  background-color: var(--main-fg-color);
-  margin-left: 0px;
-} */
-
-/* .main-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-} */
-
-/* .main-title {
-  margin-left: 20px;
-} */
-
 .parent-container {
   display: flex;
   flex-direction: column;
