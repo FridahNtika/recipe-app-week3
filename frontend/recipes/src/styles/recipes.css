@@ -2,8 +2,12 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  padding-right: 20px;
+  padding-top: 40px;
 }
-
+.recipesh1{
+  padding-right:15px;
+}
 .input-search {
   flex: 1;
   padding: 10px;

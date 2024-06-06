@@ -63,7 +63,6 @@ const Recipe = () => {
   return (
     <div>
       <NavBar />
-      <h1>Recipes Page</h1>
       <div className='topbar'>
         <h1 className='recipesh1'>Recipes</h1>
         <input
