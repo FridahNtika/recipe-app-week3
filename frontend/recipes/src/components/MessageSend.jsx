@@ -1,7 +1,9 @@
 import "../styles/chat.css";
-import { Button, Form, InputGroup } from "react-bootstrap";
+// import { Button, Form, InputGroup } from "react-bootstrap";
 import sendIcon from "../assets/send.svg";
 import { useState } from "react";
+import { FormControl, Button, Input } from "@chakra-ui/react";
+// import { Field } from "formik";
 
 const MessageSend = ({ sendMessage }) => {
   const [message, setMessage] = useState("");
@@ -22,7 +24,7 @@ const MessageSend = ({ sendMessage }) => {
 
   return (
     <div>
-      <InputGroup className="form-container">
+      {/* <InputGroup className="form-container">
         <Form.Control
           className="send-message"
           placeholder="Type a message..."
@@ -36,7 +38,19 @@ const MessageSend = ({ sendMessage }) => {
         <Button onClick={handleSubmit} className="send-button">
           <img className="send-icon" src={sendIcon} alt="send icon" />
         </Button>
-      </InputGroup>
+      </InputGroup> */}
+      <FormControl isRequired className="form-container">
+        <Input
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => handleKeyPress(e)}
+          className="send-message"
+          placeholder="Type a message..."
+        />
+        <Button onClick={handleSubmit} className="send-button">
+          <img className="send-icon" src={sendIcon} alt="send icon" />
+        </Button>
+      </FormControl>
     </div>
   );
 };

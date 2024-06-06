@@ -19,7 +19,9 @@ const ChatBot = () => {
     setLoading(true);
     console.log("Latest Conversation",conversation)
     try {
-      const response = await axios.post('http://localhost:5001/openai/message', { conversation: updatedConversation });
+      // const response = await axios.post('http://localhost:5001/openai/message', { conversation: updatedConversation });
+      const response = await axios.post('', { conversation: updatedConversation });
+  
       const botMessage = { role: 'system', content: response.data.botMessage };
       setConversation([...updatedConversation, botMessage]);
     } catch (error) {
