@@ -6,6 +6,20 @@ const { collection, getDocs, doc, updateDoc, arrayUnion, arrayRemove } = require
 
 router.use(cors());
 
+router.put('/recipes/:id', async (req, res) => {
+    const { id } = req.params;
+    const recipe = req.body;
+
+    try {
+        const recipeRef = doc(db, 'Recipes', id);
+        await updateDoc(recipeRef, recipe);
+        res.status(200).send({ message: 'Recipe updated successfully' });
+    } catch (error) {
+        console.error('Error updating recipe:', error);
+        res.status(500).send({ error: 'Error updating recipe' });
+    }
+});
+
 router.get('/recipes', async (req, res) => {
     try {
         const snapshot = await getDocs(collection(db, 'Recipes'));
