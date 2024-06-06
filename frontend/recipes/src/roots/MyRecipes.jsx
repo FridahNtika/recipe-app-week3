@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input } from '@chakra-ui/react';
+import {
+  Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input, Modal,
+  ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
+  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel
+} from '@chakra-ui/react';
 import { IoIosHeart } from 'react-icons/io';
 import { EditIcon } from '@chakra-ui/icons';
 import NavBar from '../components/NavBar';
@@ -13,6 +17,8 @@ const MyRecipes = () => {
   const [activeTab, setActiveTab] = useState('created');
   const [searchQuery, setSearchQuery] = useState(''); 
   const [userId, setUserId] = useState('');
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const navigate = useNavigate();
 
@@ -44,21 +50,6 @@ const MyRecipes = () => {
     fetchRecipes();
   }, []);
 
-  // Filter recipes based on the search query
-  const filteredRecipes = recipes.filter(recipe => 
-    recipe.name && recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // Apply filtering based on the active tab
-  let displayedRecipes;
-  if (activeTab === 'created') {
-    displayedRecipes = filteredRecipes.filter(recipe => recipe.authorId === userId);
-  } else if (activeTab === 'saved') {
-    displayedRecipes = filteredRecipes.filter(recipe => Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId));
-  } else {
-    displayedRecipes = filteredRecipes;
-  }
-
   const handleHeartClick = async (recipeId, isSaved) => {
     try {
       const url = `http://localhost:5001/my-recipes/recipes/${recipeId}/${isSaved ? 'unheart' : 'heart'}`;
@@ -85,6 +76,65 @@ const MyRecipes = () => {
       console.error('Error updating heart status:', error);
     }
   };
+
+  const handleEditClick = (recipe) => {
+    setSelectedRecipe(recipe);
+    onOpen();
+  };
+
+  const handleIngredientChange = (index, event) => {
+    const updatedIngredients = selectedRecipe.ingredients.map((ingredient, i) => 
+      i === index ? { ...ingredient, [event.target.name]: event.target.value } : ingredient
+    );
+    setSelectedRecipe({ ...selectedRecipe, ingredients: updatedIngredients });
+  };
+
+  const handleAddIngredient = () => {
+    setSelectedRecipe({
+      ...selectedRecipe,
+      ingredients: [...selectedRecipe.ingredients, { name: '', quantity: '', unit: '' }]
+    });
+  };
+
+  const handleRemoveIngredient = (index) => {
+    setSelectedRecipe({
+      ...selectedRecipe,
+      ingredients: selectedRecipe.ingredients.filter((_, i) => i !== index)
+    });
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      const response = await axios.put(`http://localhost:5001/my-recipes/recipes/${selectedRecipe.id}`, selectedRecipe);
+      console.log('Recipe updated:', response.data);
+      setRecipes(recipes.map(recipe => recipe.id === selectedRecipe.id ? selectedRecipe : recipe));
+      onClose();
+    } catch (error) {
+      console.error('Error updating recipe:', error);
+    }
+  };
+
+  const handleFieldChange = (field, value) => {
+    setSelectedRecipe({
+      ...selectedRecipe,
+      [field]: value
+    });
+  };
+
+  // Filter recipes based on the search query
+  const filteredRecipes = recipes.filter(recipe => 
+    recipe.name && recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Apply filtering based on the active tab
+  let displayedRecipes;
+  if (activeTab === 'created') {
+    displayedRecipes = filteredRecipes.filter(recipe => recipe.authorId === userId);
+  } else if (activeTab === 'saved') {
+    displayedRecipes = filteredRecipes.filter(recipe => Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId));
+  } else {
+    displayedRecipes = filteredRecipes;
+  }
 
   return (
     <>
@@ -151,7 +201,7 @@ const MyRecipes = () => {
                   position="absolute"
                   top="5px"
                   right="5px"
-                  onClick={() => navigate(`/edit-recipe/${recipe.id}`)} // Navigate to edit page
+                  onClick={() => handleEditClick(recipe)} // Open edit modal
                 />
               )}
               <Text>Picture goes here</Text>
@@ -175,6 +225,93 @@ const MyRecipes = () => {
           </WrapItem>
         ))}
       </Wrap>
+
+      {selectedRecipe && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Edit Recipe</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <FormControl mb={3}>
+                <FormLabel>Recipe Name</FormLabel>
+                <Input
+                  value={selectedRecipe.name}
+                  onChange={(e) => handleFieldChange('name', e.target.value)}
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Prep Time</FormLabel>
+                <Input
+                  value={selectedRecipe.prepTime}
+                  onChange={(e) => handleFieldChange('prepTime', e.target.value)}
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Cooking Time</FormLabel>
+                <Input
+                  value={selectedRecipe.cookingTime}
+                  onChange={(e) => handleFieldChange('cookingTime', e.target.value)}
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Servings</FormLabel>
+                <NumberInput
+                  min={1}
+                  value={selectedRecipe.servings}
+                  onChange={(valueString) => handleFieldChange('servings', parseInt(valueString))}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Instructions</FormLabel>
+                <Input
+                  value={selectedRecipe.instructions}
+                  onChange={(e) => handleFieldChange('instructions', e.target.value)}
+                />
+              </FormControl>
+              {selectedRecipe.ingredients.map((ingredient, index) => (
+                <Flex key={index} mb={3}>
+                  <Input
+                    name="name"
+                    placeholder="Ingredient Name"
+                    value={ingredient.name}
+                    onChange={(event) => handleIngredientChange(index, event)}
+                    mr={3}
+                  />
+                  <Input
+                    name="quantity"
+                    placeholder="Quantity"
+                    value={ingredient.quantity}
+                    onChange={(event) => handleIngredientChange(index, event)}
+                    mr={3}
+                  />
+                  <Input
+                    name="unit"
+                    placeholder="Unit"
+                    value={ingredient.unit}
+                    onChange={(event) => handleIngredientChange(index, event)}
+                    mr={3}
+                  />
+                  <Button colorScheme="red" onClick={() => handleRemoveIngredient(index)}>Remove</Button>
+                </Flex>
+              ))}
+              <Button colorScheme="teal" onClick={handleAddIngredient}>Add Ingredient</Button>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={handleSaveChanges}>
+                Save Changes
+              </Button>
+              <Button variant="ghost" onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </>
   );
 };
