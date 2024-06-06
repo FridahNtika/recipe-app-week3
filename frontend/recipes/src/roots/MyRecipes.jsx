@@ -12,6 +12,7 @@ const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
   const [activeTab, setActiveTab] = useState('created');
   const [searchQuery, setSearchQuery] = useState(''); 
+  const [userId, setUserId] = useState('');
 
   const navigate = useNavigate();
 
