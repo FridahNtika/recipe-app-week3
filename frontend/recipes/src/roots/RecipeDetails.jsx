@@ -3,6 +3,7 @@ import NavBar from "../components/NavBar";
 import { Grid, GridItem } from "@chakra-ui/react";
 import "../styles/recipedetails.css";
 import curry from "../images/katsucurry.jpg";
+import ChatBot from "../components/ChatBot";
 
 const RecipeDetails = () => {
   return (
@@ -36,15 +37,17 @@ const RecipeDetails = () => {
                   <li>Kosher salt</li>
                   <li>Freshly ground black peppe</li>
                   <li>1/2 teaspoon honey</li>
-
                 </ul>
             </div>
-
           </div>
         </GridItem>
 
-        <GridItem className="card" rowSpan={1} colSpan={2} />
-        <GridItem className="card" rowSpan={3} colSpan={2} />
+        <GridItem className="card" rowSpan={1} colSpan={2}/>
+
+        <GridItem className="card"  rowSpan={3} colSpan={2} > 
+             <ChatBot/>
+        </GridItem>
+      
       </Grid>
     </div>
   );

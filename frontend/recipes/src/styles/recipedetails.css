@@ -4,8 +4,6 @@ h1,h2,h3 {
     color: black;
 }
 
-
-
 .main-page {
     display: flex;
     flex-direction: column;
