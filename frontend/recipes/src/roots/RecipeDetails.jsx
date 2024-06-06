@@ -94,6 +94,9 @@ const RecipeDetails = () => {
                 <li>Kosher salt</li>
                 <li>Freshly ground black peppe</li>
                 <li>1/2 teaspoon honey</li>
+              
+
+
               </ul>
             </div>
           </div>

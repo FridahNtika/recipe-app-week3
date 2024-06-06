@@ -6,8 +6,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
-  Button,
 } from "@chakra-ui/react";
 
 export default function BasicModal({ isOpen, onClose }) {
