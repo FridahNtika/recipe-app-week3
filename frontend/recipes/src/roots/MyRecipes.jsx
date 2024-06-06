@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input, Modal,
   ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel
+  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel, useToast, OrderedList, ListItem
 } from '@chakra-ui/react';
 import { IoIosHeart } from 'react-icons/io';
 import { EditIcon } from '@chakra-ui/icons';
@@ -18,8 +18,9 @@ const MyRecipes = () => {
   const [searchQuery, setSearchQuery] = useState(''); 
   const [userId, setUserId] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [steps, setSteps] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const toast = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,13 +45,20 @@ const MyRecipes = () => {
         setRecipes(response.data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
+        toast({
+          title: "Error fetching recipes.",
+          description: "An error occurred while fetching recipes. Please try again later.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       }
     };
   
     fetchRecipes();
   }, []);
 
-  const handleHeartClick = async (recipeId, isSaved) => {
+  const handleHeartClick = async (recipeId, isSaved, recipeName) => {
     try {
       const url = `http://localhost:5001/my-recipes/recipes/${recipeId}/${isSaved ? 'unheart' : 'heart'}`;
       const method = isSaved ? 'delete' : 'post';
@@ -72,13 +80,29 @@ const MyRecipes = () => {
         }
         return recipe;
       }));
+
+      toast({
+        title: `Recipe ${isSaved ? 'unsaved' : 'saved'}.`,
+        description: `${recipeName} has been ${isSaved ? 'removed from' : 'added to'} your saved list.`,
+        status: isSaved ? 'info' : 'success',
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error('Error updating heart status:', error);
+      toast({
+        title: "Error.",
+        description: `An error occurred while updating the status of ${recipeName}. Please try again later.`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   const handleEditClick = (recipe) => {
     setSelectedRecipe(recipe);
+    setSteps(recipe.instructions.map((instruction, index) => ({ id: index + 1, value: instruction })));
     onOpen();
   };
 
@@ -105,12 +129,30 @@ const MyRecipes = () => {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await axios.put(`http://localhost:5001/my-recipes/recipes/${selectedRecipe.id}`, selectedRecipe);
+      const updatedRecipe = {
+        ...selectedRecipe,
+        instructions: steps.map(step => step.value)
+      };
+      const response = await axios.put(`http://localhost:5001/my-recipes/recipes/${selectedRecipe.id}`, updatedRecipe);
       console.log('Recipe updated:', response.data);
-      setRecipes(recipes.map(recipe => recipe.id === selectedRecipe.id ? selectedRecipe : recipe));
+      setRecipes(recipes.map(recipe => recipe.id === selectedRecipe.id ? updatedRecipe : recipe));
       onClose();
+      toast({
+        title: "Recipe updated.",
+        description: `${selectedRecipe.name} has been updated successfully.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error('Error updating recipe:', error);
+      toast({
+        title: "Error.",
+        description: `An error occurred while updating ${selectedRecipe.name}. Please try again later.`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -119,6 +161,20 @@ const MyRecipes = () => {
       ...selectedRecipe,
       [field]: value
     });
+  };
+
+  const handleAddStep = () => {
+    setSteps((prevSteps) => [
+      ...prevSteps,
+      { id: prevSteps.length + 1, value: '' }
+    ]);
+  };
+
+  const handleAddInstruction = (id, value) => {
+    const updatedSteps = steps.map((step) =>
+      step.id === id ? { ...step, value } : step
+    );
+    setSteps(updatedSteps);
   };
 
   // Filter recipes based on the search query
@@ -135,8 +191,8 @@ const MyRecipes = () => {
           fontSize="2xl"
           p={3}
           cursor="pointer"
-          bg={activeTab === 'created' ? '#90B4CE' : 'transparent'}
-          _hover={{ bg: '#90B4CE' }}
+          bg={activeTab === 'created' ? 'lightblue' : 'transparent'}
+          _hover={{ bg: 'lightblue' }}
           onClick={() => setActiveTab('created')}
           borderRadius="md"
           border={activeTab === 'created' ? '2px' : 'none'}
@@ -148,8 +204,8 @@ const MyRecipes = () => {
           fontSize="2xl"
           p={3}
           cursor="pointer"
-          bg={activeTab === 'saved' ? '#90B4CE' : 'transparent'}
-          _hover={{ bg: '#90B4CE' }}
+          bg={activeTab === 'saved' ? 'lightblue' : 'transparent'}
+          _hover={{ bg: 'lightblue' }}
           onClick={() => setActiveTab('saved')}
           borderRadius="md"
           border={activeTab === 'saved' ? '2px' : 'none'}
@@ -172,7 +228,7 @@ const MyRecipes = () => {
           <WrapItem key={recipe.id}>
             <Box
               p={6}
-              bg="#90B4CE"
+              bg="lightblue"
               borderRadius="md"
               width="20vw"
               height="40vh"
@@ -208,7 +264,7 @@ const MyRecipes = () => {
                   aria-label="Save Recipe"
                   colorScheme="blue"
                   variant={Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId) ? 'solid' : 'outline'}
-                  onClick={() => handleHeartClick(recipe.id, Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId))}
+                  onClick={() => handleHeartClick(recipe.id, Array.isArray(recipe.savedUserIds) && recipe.savedUserIds.includes(userId), recipe.name)}
                 />
               </Flex>
             </Box>
@@ -260,10 +316,19 @@ const MyRecipes = () => {
               </FormControl>
               <FormControl mb={3}>
                 <FormLabel>Instructions</FormLabel>
-                <Input
-                  value={selectedRecipe.instructions}
-                  onChange={(e) => handleFieldChange('instructions', e.target.value)}
-                />
+                <OrderedList>
+                  {steps.map((step) => (
+                    <div key={step.id}>
+                      <ListItem>
+                        <Input type="text" value={step.value} 
+                          onChange={(evt) => handleAddInstruction(step.id, evt.target.value)}
+                        />
+                      </ListItem>
+                      <br />
+                    </div>
+                  ))}
+                </OrderedList>
+                <Button onClick={handleAddStep}>+</Button>
               </FormControl>
               {selectedRecipe.ingredients.map((ingredient, index) => (
                 <Flex key={index} mb={3}>
