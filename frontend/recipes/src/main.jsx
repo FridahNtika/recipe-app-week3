@@ -19,6 +19,7 @@ import RecipeDetails from "./roots/RecipeDetails.jsx";
 import Admin from "./roots/AdminPage.jsx";
 import ChatBot from './components/ChatBot.jsx';
 import NavBar from "./components/NavBar.jsx";
+import ProtectedRoute from "./components/login/ProtectedRoute.jsx";
 
 
 const router = createBrowserRouter([
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element:<Admin/>,    
+    element:  (<ProtectedRoute> <Admin /> </ProtectedRoute>),    
   },
   {
     path: "/temp-chatbot",

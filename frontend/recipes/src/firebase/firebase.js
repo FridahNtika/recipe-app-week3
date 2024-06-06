@@ -1,6 +1,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -15,6 +16,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const firestore = getFirestore(app);
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -25,20 +27,3 @@ export const doSignInWithEmailAndPassword = (email, password) => {
 export const doSignOut = () => {
   return auth.signOut();
 };
-
-
-// const { initializeApp } = require("firebase/app");
-// const { getFirestore } = require("firebase/firestore");
-// const { getAuth } = require("firebase/auth");
-
-
-// const serviceAccount = require("./permissions.json");
-
-
-// const app = initializeApp(serviceAccount);
-// const db = getFirestore(app);
-// const auth = getAuth(app);
-
-
-// module.exports = db, auth, app ;
-

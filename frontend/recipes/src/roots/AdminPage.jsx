@@ -1,9 +1,10 @@
+import { color } from 'framer-motion'
 import React from 'react'
 
 const AdminPage = () => {
   return (
-    <div>
-      <h1>Admin Page</h1>
+    <div className = 'header'>
+      Admin Page
     </div>
   )
 }
