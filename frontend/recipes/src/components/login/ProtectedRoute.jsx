@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
 import { useToast } from '@chakra-ui/react';
+
 const ProtectedRoute = ({ children }) => {
   const { userLoggedIn, isAdmin } = React.useContext(AuthContext);
   const [notAuthorized, setNotAuthorized] = useState(false);
   const toast = useToast();
+
   useEffect(() => {
     if (!userLoggedIn || !isAdmin) {
       setNotAuthorized(true);
     } else {
-      setNotAuthorized(false); 
+      setNotAuthorized(false); // Reset the notAuthorized state if the user becomes authorized
     }
   }, [userLoggedIn, isAdmin]);
+
   useEffect(() => {
     if (notAuthorized) {
       toast({
@@ -24,9 +27,11 @@ const ProtectedRoute = ({ children }) => {
       });
     }
   }, [notAuthorized, toast]);
+
   if (notAuthorized) {
     return <Navigate to="/" replace />;
   }
+
   return children;
 };
 export default ProtectedRoute;

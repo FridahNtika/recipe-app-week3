@@ -6,7 +6,7 @@ import { AuthContext } from '../../contexts/authContext';
 import '../../styles/adminlogin.css';
 
 const Login = ({ toggleAdminModal }) => {
-    const { userLoggedIn, user } = useContext(AuthContext);
+    const { userLoggedIn, user} = useContext(AuthContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

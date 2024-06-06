@@ -4,6 +4,7 @@ const cors = require('cors');
 const { doc, getDoc } = require('firebase/firestore');
 const db = require('./firebase');
 router.use(cors());
+
 router.get('/:uid', async (req, res) => {
     const uid = req.params.uid;
     try {
