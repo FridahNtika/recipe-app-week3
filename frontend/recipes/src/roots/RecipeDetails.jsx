@@ -22,15 +22,6 @@ const RecipeDetails = () => {
         duration: 1000,
         position: "bottom-left",
       });
-
-      // toast({
-      //   position: 'bottom-left',
-      //   render: () => (
-      //     <Box color='white' p={3} bg='#647d90' borderRadius={"10px"} duration= {"90"}>
-      //       Recipe Saved!
-      //     </Box>
-      //   ),
-      // })
     }
     setIsSaved(!isSaved);
   };
