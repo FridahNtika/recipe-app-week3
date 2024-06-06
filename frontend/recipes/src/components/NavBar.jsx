@@ -76,7 +76,7 @@ const SideBarContent = ({ handleLogout, userLoggedIn }) => (
       ))}
     </Box>
     {userLoggedIn && (
-      <Box display="flex" justifyContent="center" marginBottom={20}>
+      <Box display="flex" justifyContent="center" bottom = "0" position = "fixed" >
         <button className="logout-button" onClick={handleLogout}>Log out</button>
       </Box>
     )}

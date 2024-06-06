@@ -17,6 +17,8 @@ body {
     width: auto;
     padding: 10px;
     padding-left: 10px !important;
+    margin-left : 5px;
+    margin-bottom: 10px;
     background-color: #90B4CE;
     color: white;
     border: white 3px solid;
@@ -24,6 +26,7 @@ body {
     cursor: pointer;
     text-align: center;
     font-weight:bold;
+    
   }
   
   .logout-button:hover {
