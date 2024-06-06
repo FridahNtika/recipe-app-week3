@@ -8,11 +8,25 @@ router.use(cors());
 
 router.put('/recipes/:id', async (req, res) => {
     const { id } = req.params;
-    const recipe = req.body;
+    const {
+        name,
+        prepTime,
+        cookingTime,
+        servings,
+        ingredients,
+        instructions
+    } = req.body;
 
     try {
         const recipeRef = doc(db, 'Recipes', id);
-        await updateDoc(recipeRef, recipe);
+        await updateDoc(recipeRef, {
+            name,
+            prepTime,
+            cookingTime,
+            servings,
+            ingredients,
+            instructions
+        });
         res.status(200).send({ message: 'Recipe updated successfully' });
     } catch (error) {
         console.error('Error updating recipe:', error);

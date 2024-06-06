@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure } from '@chakra-ui/react';
+import {
+  Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input, Modal,
+  ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
+  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel
+} from '@chakra-ui/react';
 import { IoIosHeart } from 'react-icons/io';
 import { EditIcon } from '@chakra-ui/icons';
 import NavBar from '../components/NavBar';
@@ -88,7 +92,7 @@ const MyRecipes = () => {
   const handleAddIngredient = () => {
     setSelectedRecipe({
       ...selectedRecipe,
-      ingredients: [...selectedRecipe.ingredients, { name: '', quantity: '' }]
+      ingredients: [...selectedRecipe.ingredients, { name: '', quantity: '', unit: '' }]
     });
   };
 
@@ -108,6 +112,13 @@ const MyRecipes = () => {
     } catch (error) {
       console.error('Error updating recipe:', error);
     }
+  };
+
+  const handleFieldChange = (field, value) => {
+    setSelectedRecipe({
+      ...selectedRecipe,
+      [field]: value
+    });
   };
 
   // Filter recipes based on the search query
@@ -222,6 +233,48 @@ const MyRecipes = () => {
             <ModalHeader>Edit Recipe</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
+              <FormControl mb={3}>
+                <FormLabel>Recipe Name</FormLabel>
+                <Input
+                  value={selectedRecipe.name}
+                  onChange={(e) => handleFieldChange('name', e.target.value)}
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Prep Time</FormLabel>
+                <Input
+                  value={selectedRecipe.prepTime}
+                  onChange={(e) => handleFieldChange('prepTime', e.target.value)}
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Cooking Time</FormLabel>
+                <Input
+                  value={selectedRecipe.cookingTime}
+                  onChange={(e) => handleFieldChange('cookingTime', e.target.value)}
+                />
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Servings</FormLabel>
+                <NumberInput
+                  min={1}
+                  value={selectedRecipe.servings}
+                  onChange={(valueString) => handleFieldChange('servings', parseInt(valueString))}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Instructions</FormLabel>
+                <Input
+                  value={selectedRecipe.instructions}
+                  onChange={(e) => handleFieldChange('instructions', e.target.value)}
+                />
+              </FormControl>
               {selectedRecipe.ingredients.map((ingredient, index) => (
                 <Flex key={index} mb={3}>
                   <Input
@@ -235,6 +288,13 @@ const MyRecipes = () => {
                     name="quantity"
                     placeholder="Quantity"
                     value={ingredient.quantity}
+                    onChange={(event) => handleIngredientChange(index, event)}
+                    mr={3}
+                  />
+                  <Input
+                    name="unit"
+                    placeholder="Unit"
+                    value={ingredient.unit}
                     onChange={(event) => handleIngredientChange(index, event)}
                     mr={3}
                   />
