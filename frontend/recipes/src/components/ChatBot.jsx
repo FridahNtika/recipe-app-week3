@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import MessageSend from './MessageSend';
 import Message from './Message';
+import { useEffect, useState, useRef } from "react";
 
 const ChatBot = () => {
   const [conversation, setConversation] = useState([]);
-  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const chatContainerRef = useRef(null);
   
   const sendMessage = async (message) => {
     console.log("Prompt: ", message)
@@ -28,11 +29,18 @@ const ChatBot = () => {
     }
   };
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [conversation]);
+
   return (
     // <div className="main-content">
       // <div className="main-container">
         <div className="parent-container">
-          <div className="chat-container">
+          <div className="chat-container" ref={chatContainerRef}>
             {/* <div className="conversation-container"> */}
               {conversation.map((message, index) => {
                 return (

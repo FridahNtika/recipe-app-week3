@@ -42,7 +42,9 @@ const RecipeDetails = () => {
           </div>
         </GridItem>
 
-        <GridItem className="card" rowSpan={1} colSpan={2}/>
+        <GridItem className="card" rowSpan={1} colSpan={2}>
+          <h2> Nutrition Facts</h2>
+        </GridItem>
 
         <GridItem className="card"  rowSpan={3} colSpan={2} > 
              <ChatBot/>
