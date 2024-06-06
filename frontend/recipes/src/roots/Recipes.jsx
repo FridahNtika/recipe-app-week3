@@ -4,7 +4,6 @@ import '../styles/recipes.css';
 import axios from 'axios';
 import katsucurry from '../images/katsucurry.jpg';
 import timericon from '../images/timer_icon.png';
-import { Link } from 'react-router-dom';
 
 const StarRating = ({ rating, outOf = 5 }) => {
   const fullStars = Math.floor(rating);
@@ -33,10 +32,17 @@ const Recipe = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('name');
   const [searchBarRecipe, setSearchBarRecipe] = useState('');
-
-
+  const [searchBarCuisine, setSearchBarCuisine] = useState('');
+  const [edamamSearchArray, setEdamamSearchArray] = useState([]);
+  const cuisineTypes = [
+    "American", "Asian", "British", "Caribbean", "Central Europe", "Chinese", 
+    "Eastern Europe", "French", "Indian", "Italian", "Japanese", "Kosher", 
+    "Mediterranean", "Mexican", "Middle Eastern", "Nordic", "South American", 
+    "South East Asian"
+  ];
   async function fetchAllRecipes() {
     try {
+      
       const res = await axios.get("http://localhost:5001/recipes");
       setRecipeArray(res.data);
       setLoading(false);
@@ -47,16 +53,16 @@ const Recipe = () => {
     }
   }
 
-  // async function fetchEdamamSearch() {
-  //   try {
-  //     const res = await axios.get(`http://localhost:5001/edamam/recipe/search/${}`);
-  //     setRecipeArray(res.data);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error("Error fetching Recipes: ", error);
-  //     setLoading(false);
-  //   }
-  // }
+  async function fetchEdamamSearch(recipeText, cuisineType) {
+    try {
+      const res = await axios.get(`http://localhost:5001/edamam/recipe/search/${recipeText}/${cuisineType}`);
+      setEdamamSearchArray(res.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching Recipes: ", error);
+      setLoading(false);
+    }
+  }
   useEffect(() => {
     fetchAllRecipes();
   }, []);
@@ -97,13 +103,14 @@ const Recipe = () => {
           <option value="rating">Sort by Rating</option>
         </select>
       </div>
+      <button>Search on Edamam</button>
       {loading ? (
         <p>Loading...</p>
       ) : (
         <div className="AllRecipes">
           {sortedRecipes.map((currentRecipe, index) => (
-            <div key={`${currentRecipe.recipeName}-${index}`} className="IndividualRecipe">
-              {/* <a to={`/recipe/${currentRecipe.id}`} className="recipe-link">
+            <a href={`/recipes/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
+              <div className="IndividualRecipe">
                 <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
                 <div className="rating">
                   <StarRating rating={currentRecipe.averageRating} />
@@ -111,25 +118,16 @@ const Recipe = () => {
                   <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
                 </div>
                 <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
-              </a> */}
-              <Link to={{ pathname: `/recipe-details`, state: { currentRecipe } }}  className="recipe-link">
-                <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
-                <div className="rating">
-                  <StarRating rating={currentRecipe.averageRating} />
-                  <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
-                  <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
+                <div className='time-and-author'>
+                  <img className="timer-image" src={timericon} alt="timer icon" />
+                  <p>≈{currentRecipe.duration} Minutes</p>
+                  <p className="author">Author: {currentRecipe.author}</p>
                 </div>
-                <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
-              </Link>
-              <div className='time-and-author'>
-                <img className="timer-image" src={timericon} />
-                <p>≈{currentRecipe.duration} Minutes</p>
-                <p className="author">Author: {currentRecipe.author}</p>
+                <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
+                  <div className="bookmark" />
+                </a>
               </div>
-              <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
-                <div className="bookmark" />
-              </a>
-            </div>
+            </a>
           ))}
         </div>
       )}
