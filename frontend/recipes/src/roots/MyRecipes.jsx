@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input, Modal,
   ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel, useToast
+  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel, useToast, OrderedList, ListItem
 } from '@chakra-ui/react';
 import { IoIosHeart } from 'react-icons/io';
 import { EditIcon } from '@chakra-ui/icons';
@@ -18,6 +18,7 @@ const MyRecipes = () => {
   const [searchQuery, setSearchQuery] = useState(''); 
   const [userId, setUserId] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [steps, setSteps] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const navigate = useNavigate();
@@ -101,6 +102,7 @@ const MyRecipes = () => {
 
   const handleEditClick = (recipe) => {
     setSelectedRecipe(recipe);
+    setSteps(recipe.instructions.map((instruction, index) => ({ id: index + 1, value: instruction })));
     onOpen();
   };
 
@@ -127,9 +129,13 @@ const MyRecipes = () => {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await axios.put(`http://localhost:5001/my-recipes/recipes/${selectedRecipe.id}`, selectedRecipe);
+      const updatedRecipe = {
+        ...selectedRecipe,
+        instructions: steps.map(step => step.value)
+      };
+      const response = await axios.put(`http://localhost:5001/my-recipes/recipes/${selectedRecipe.id}`, updatedRecipe);
       console.log('Recipe updated:', response.data);
-      setRecipes(recipes.map(recipe => recipe.id === selectedRecipe.id ? selectedRecipe : recipe));
+      setRecipes(recipes.map(recipe => recipe.id === selectedRecipe.id ? updatedRecipe : recipe));
       onClose();
       toast({
         title: "Recipe updated.",
@@ -157,6 +163,20 @@ const MyRecipes = () => {
     });
   };
 
+  const handleAddStep = () => {
+    setSteps((prevSteps) => [
+      ...prevSteps,
+      { id: prevSteps.length + 1, value: '' }
+    ]);
+  };
+
+  const handleAddInstruction = (id, value) => {
+    const updatedSteps = steps.map((step) =>
+      step.id === id ? { ...step, value } : step
+    );
+    setSteps(updatedSteps);
+  };
+
   // Filter recipes based on the search query
   const filteredRecipes = recipes.filter(recipe => 
     recipe.name && recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -181,8 +201,8 @@ const MyRecipes = () => {
           fontSize="2xl"
           p={3}
           cursor="pointer"
-          bg={activeTab === 'created' ? '#90B4CE' : 'transparent'}
-          _hover={{ bg: '#90B4CE' }}
+          bg={activeTab === 'created' ? 'lightblue' : 'transparent'}
+          _hover={{ bg: 'lightblue' }}
           onClick={() => setActiveTab('created')}
           borderRadius="md"
           border={activeTab === 'created' ? '2px' : 'none'}
@@ -194,8 +214,8 @@ const MyRecipes = () => {
           fontSize="2xl"
           p={3}
           cursor="pointer"
-          bg={activeTab === 'saved' ? '#90B4CE' : 'transparent'}
-          _hover={{ bg: '#90B4CE' }}
+          bg={activeTab === 'saved' ? 'lightblue' : 'transparent'}
+          _hover={{ bg: 'lightblue' }}
           onClick={() => setActiveTab('saved')}
           borderRadius="md"
           border={activeTab === 'saved' ? '2px' : 'none'}
@@ -218,7 +238,7 @@ const MyRecipes = () => {
           <WrapItem key={recipe.id}>
             <Box
               p={6}
-              bg="#90B4CE"
+              bg="lightblue"
               borderRadius="md"
               width="20vw"
               height="40vh"
@@ -306,10 +326,19 @@ const MyRecipes = () => {
               </FormControl>
               <FormControl mb={3}>
                 <FormLabel>Instructions</FormLabel>
-                <Input
-                  value={selectedRecipe.instructions}
-                  onChange={(e) => handleFieldChange('instructions', e.target.value)}
-                />
+                <OrderedList>
+                  {steps.map((step) => (
+                    <div key={step.id}>
+                      <ListItem>
+                        <Input type="text" value={step.value} 
+                          onChange={(evt) => handleAddInstruction(step.id, evt.target.value)}
+                        />
+                      </ListItem>
+                      <br />
+                    </div>
+                  ))}
+                </OrderedList>
+                <Button onClick={handleAddStep}>+</Button>
               </FormControl>
               {selectedRecipe.ingredients.map((ingredient, index) => (
                 <Flex key={index} mb={3}>
