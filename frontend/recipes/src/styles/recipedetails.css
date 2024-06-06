@@ -56,8 +56,13 @@ h1,h2,h3 {
 }
 
 .ingredients-list {
+    display: flex;
+    flex-direction: column;
     padding-left: 15px;
     padding-right: 15px;
+    max-height: 350px;
+    /* background-color: blueviolet; */
+    overflow: auto;
 }
 
 .duration-and-author {
