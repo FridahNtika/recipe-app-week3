@@ -11,3 +11,23 @@ body {
   html, body {
     height: 100%;
   }
+
+
+  .logout-button {
+    width: auto;
+    padding: 10px;
+    padding-left: 10px !important;
+    background-color: #90B4CE;
+    color: white;
+    border: white 3px solid;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-weight:bold;
+  }
+  
+  .logout-button:hover {
+    background-color: white;
+    color: #90B4CE;
+    border: #90B4CE 3px solid;
+  }

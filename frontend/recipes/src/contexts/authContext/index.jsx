@@ -1,9 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { auth } from "../../firebase/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-;
-export const AuthContext = React.createContext();
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
+export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -18,10 +17,8 @@ export function AuthProvider({ children }) {
 
   async function initializeUser(user) {
     if (user) {
-
       setCurrentUser({ ...user });
 
-      // check if provider is email and password login
       const isEmail = user.providerData.some(
         (provider) => provider.providerId === "password"
       );
@@ -35,11 +32,21 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUserLoggedIn(false);
+      setCurrentUser(null);
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
   const value = {
     userLoggedIn,
     isEmailUser,
     currentUser,
-    setCurrentUser
+    handleLogout,
   };
 
   return (
