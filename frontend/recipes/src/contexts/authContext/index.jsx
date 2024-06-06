@@ -2,16 +2,13 @@ import React, { createContext, useState, useEffect } from 'react';
 import { auth } from '../../firebase/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import axios from 'axios';
-
 export const AuthContext = createContext();
-
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [isEmailUser, setIsEmailUser] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             // console.log(user);
@@ -24,7 +21,6 @@ export function AuthProvider({ children }) {
                 );
                 setIsEmailUser(isEmail);
                 setUserLoggedIn(true);
-
                 try {
                     const response = await axios.get(`http://localhost:5001/users/${user.uid}`);
                     const userData = response.data;
@@ -44,7 +40,6 @@ export function AuthProvider({ children }) {
         });
         return unsubscribe;
     }, []);
-
     const handleLogout = async () => {
         try {
             await signOut(auth);
@@ -56,7 +51,6 @@ export function AuthProvider({ children }) {
             console.error('Logout failed', error);
         }
     };
-
     const value = {
         userLoggedIn,
         isEmailUser,
@@ -64,7 +58,6 @@ export function AuthProvider({ children }) {
         currentUser,
         handleLogout,
     };
-
     return (
         <AuthContext.Provider value={value}>
             {!loading && children}

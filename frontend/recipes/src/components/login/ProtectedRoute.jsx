@@ -1,17 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
-
+import { useToast } from '@chakra-ui/react';
 const ProtectedRoute = ({ children }) => {
-    const { userLoggedIn, user, isAdmin } = React.useContext(AuthContext);
-    console.log(user)
-    console.log(isAdmin)
-
+  const { userLoggedIn, isAdmin } = React.useContext(AuthContext);
+  const [notAuthorized, setNotAuthorized] = useState(false);
+  const toast = useToast();
+  useEffect(() => {
     if (!userLoggedIn || !isAdmin) {
-        return <Navigate to='/' replace />;
+      setNotAuthorized(true);
+    } else {
+      setNotAuthorized(false); 
     }
-
-    return children;
+  }, [userLoggedIn, isAdmin]);
+  useEffect(() => {
+    if (notAuthorized) {
+      toast({
+        title: 'Access Denied!',
+        description: 'You must be logged in as an admin to access this page.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [notAuthorized, toast]);
+  if (notAuthorized) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
 };
-
 export default ProtectedRoute;

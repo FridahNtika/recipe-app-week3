@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getDocs, collection , getDoc, doc} = require('firebase/firestore');
+const { getDocs, collection, getDoc, doc } = require('firebase/firestore');
 const db = require("./firebase");
 
 router.get("/", async (req, res) => {
@@ -11,7 +11,6 @@ router.get("/", async (req, res) => {
         recipeCollection.forEach((userDoc) => {
             const recipeData = userDoc.data();
             eachRecipeData.push({
-                id: userDoc.id,
                 recipeName: recipeData.name,
                 author: recipeData.author,
                 ingredients: recipeData.ingredients,
@@ -20,8 +19,7 @@ router.get("/", async (req, res) => {
                 userReviewIds: recipeData.userReviewIds,
                 averageRating: recipeData.averageRating,
                 dateCreated: recipeData.dateCreated,
-                duration: recipeData.duration,
-                imageURL: recipeData.imageURL
+                duration: recipeData.duration
                 // Add other recipe fields here
             });
         });
@@ -51,7 +49,6 @@ router.get("/:id", async (req, res) => {
                 dateCreated: recipeData.dateCreated,
                 duration: recipeData.duration,
                 imageURL: recipeData.imageURL
-                // Add other recipe fields here
             };
             res.status(200).json(response);
         } else {
@@ -62,4 +59,5 @@ router.get("/:id", async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
 module.exports = router;

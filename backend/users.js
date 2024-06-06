@@ -3,21 +3,16 @@ const router = express.Router();
 const cors = require('cors');
 const { doc, getDoc } = require('firebase/firestore');
 const db = require('./firebase');
-
 router.use(cors());
-
-router.get('/users/:uid', async (req, res) => {
+router.get('/:uid', async (req, res) => {
     const uid = req.params.uid;
     try {
-        const userDocRef = doc(db, 'users', uid);
+        const userDocRef = doc(db, 'Users', uid);
         const userDocSnapshot = await getDoc(userDocRef);
-
         if (!userDocSnapshot.exists()) {
             return res.status(404).send({ error: 'User not found' });
         }
-
         const userData = userDocSnapshot.data();
-
         res.status(200).send({
             id: userDocSnapshot.id,
             username: userData.username,
@@ -29,5 +24,4 @@ router.get('/users/:uid', async (req, res) => {
         res.status(500).send({ error: error.message });
     }
 });
-
 module.exports = router;

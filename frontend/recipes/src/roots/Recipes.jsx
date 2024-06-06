@@ -34,6 +34,7 @@ const Recipe = () => {
   const [searchBarRecipe, setSearchBarRecipe] = useState('');
   const [searchBarCuisine, setSearchBarCuisine] = useState('');
   const [edamamSearchArray, setEdamamSearchArray] = useState([]);
+  const [isUserRecipes, setIsUserRecipes] = useState(false);
   const cuisineTypes = [
     "American", "Asian", "British", "Caribbean", "Central Europe", "Chinese", 
     "Eastern Europe", "French", "Indian", "Italian", "Japanese", "Kosher", 
@@ -106,30 +107,32 @@ const Recipe = () => {
       <button>Search on Edamam</button>
       {loading ? (
         <p>Loading...</p>
-      ) : (
-        <div className="AllRecipes">
-          {sortedRecipes.map((currentRecipe, index) => (
-            <a href={`/recipes/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
-              <div className="IndividualRecipe">
-                <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
-                <div className="rating">
-                  <StarRating rating={currentRecipe.averageRating} />
-                  <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
-                  <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
+      ) : ( isUserRecipes ? (
+          <div className="user-recipes">
+            {sortedRecipes.map((currentRecipe, index) => (
+              <a href={`/recipes/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
+                <div className="IndividualRecipe">
+                  <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
+                  <div className="rating">
+                    <StarRating rating={currentRecipe.averageRating} />
+                    <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
+                    <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
+                  </div>
+                  <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
+                  <div className='time-and-author'>
+                    <img className="timer-image" src={timericon} alt="timer icon" />
+                    <p>≈{currentRecipe.duration} Minutes</p>
+                    <p className="author">Author: {currentRecipe.author}</p>
+                  </div>
+                  <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
+                    <div className="bookmark" />
+                  </a>
                 </div>
-                <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
-                <div className='time-and-author'>
-                  <img className="timer-image" src={timericon} alt="timer icon" />
-                  <p>≈{currentRecipe.duration} Minutes</p>
-                  <p className="author">Author: {currentRecipe.author}</p>
-                </div>
-                <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
-                  <div className="bookmark" />
-                </a>
-              </div>
-            </a>
-          ))}
-        </div>
+              </a>
+            ))}
+          </div> ) : (
+            <h1></h1>
+          )
       )}
     </div>
   );
