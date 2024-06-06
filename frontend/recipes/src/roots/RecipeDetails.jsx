@@ -9,11 +9,16 @@ import saveFill from "../assets/saveFill.svg";
 import saveOutline from "../assets/saveOutline.svg";
 import { IconButton, Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
-import { useToast } from "@chakra-ui/react";
+import { useToast, useDisclosure } from "@chakra-ui/react";
+import BasicModal from "../components/BasicModal";
+
+
 
 const RecipeDetails = () => {
   const [isSaved, setIsSaved] = useState(false);
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
 
   const handleSave = () => {
     if (!isSaved) {
@@ -111,7 +116,8 @@ const RecipeDetails = () => {
                 <h2> 120</h2>
                 <h3> Calories</h3>
               </div>
-              <Button className="action-button">View All</Button>
+              <Button className="action-button"  onClick={onOpen}>View All</Button>
+              <BasicModal isOpen={isOpen} onClose={onClose}/>
             </div>
           </div>
         </GridItem>
