@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as React from "react";
 import {useState} from "react";
-import { Heading,Box,NumberInput,NumberInputStepper,NumberInputField, Textarea } from '@chakra-ui/react';
+import { Heading,Box,NumberInput,NumberInputStepper,NumberInputField } from '@chakra-ui/react';
 import {
   Button,
   Text,
@@ -14,16 +14,14 @@ import {
   Input,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
 } from '@chakra-ui/react';
-import {Table,Thead,Tbody,Tfoot,Tr,Th,Td,TableCaption,TableContainer} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,TableCaption,TableContainer} from '@chakra-ui/react'
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
   HStack,
@@ -183,7 +181,7 @@ export const CreateRecipe = () => {
 
           {/*Popup to add ingredients*/}
           <HStack>
-            <Popover sx={{ padding: '1rem' }}>
+            <Popover offset={[120,10]}>
               <PopoverTrigger>
                 <Button>+</Button>
               </PopoverTrigger>
