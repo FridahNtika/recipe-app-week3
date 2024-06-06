@@ -63,6 +63,20 @@ export const CreateRecipe = () => {
     //stores the recipe when save button is clicked
     const handleSave = async (evt) => {
       evt.preventDefault();
+
+      // Validate required fields
+      if (!name || !prep || !cooking || !serving || !ingredients || !instructions) {
+        toast({
+          title: 'Missing required fields',
+          description: 'Please fill in all the required fields.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-right',
+        });
+      return;
+      }
+
       const data = {recName: name, prepTime: prep,
         cookTime: cooking, servings: serving,
         ingredients: ingredients, instr: instructions,
