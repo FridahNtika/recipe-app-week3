@@ -11,6 +11,7 @@ import NavBar from '../components/NavBar';
 import StarRating from '../components/StarRating';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import "../styles/myrecipes.css";
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -195,7 +196,8 @@ const MyRecipes = () => {
   return (
     <>
       <NavBar />
-      <Text fontSize="4xl" mb={4}>My Recipes</Text>
+      <h1 style = {{fontWeight: "bold", fontSize:"35px", marginTop: "20px"}} mb={4}>My Recipes</h1>
+      <div className='topbar'>
       <HStack spacing={50} mb={2} alignItems="center">
         <Text
           fontSize="2xl"
@@ -224,14 +226,20 @@ const MyRecipes = () => {
           Saved Recipes
         </Text>
         <Input
-          placeholder="Search recipes"
+          placeholder="Search recipes..."
+          className='input-search'
+          fontSize={22}
           value={searchQuery}
+          height="50px"
+          paddingX="20px"
+          paddingY="15px"
           ml="auto"
           onChange={(e) => setSearchQuery(e.target.value)}
-          width="200px"
+          width="1100px"
         />
         <Button colorScheme="red" mr="2vw" ml="auto" onClick={() => navigate('/create-recipe')}>Create +</Button>
       </HStack>
+      </div>
 
       <Wrap spacing="30px">
         {displayedRecipes.map(recipe => (
@@ -242,7 +250,8 @@ const MyRecipes = () => {
               borderRadius="md"
               width="20vw"
               height="40vh"
-              _hover={{ boxShadow: 'dark-lg' }}
+               transition="transform 0.3s ease, background-color 0.3s ease"
+              _hover={{ transform: "scale(1.05)" }}
               display="flex"
               flexDirection="column"
               justifyContent="space-between"
