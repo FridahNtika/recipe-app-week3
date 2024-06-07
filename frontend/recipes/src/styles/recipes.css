@@ -13,6 +13,7 @@
   padding: 10px 20px;
   font-size: 16px;
   margin-right: 20px; /* Add margin to the right for spacing */
+  color: #6acc00;
 }
 
 
@@ -24,6 +25,9 @@
   margin-right: 20px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  width: 300px; /* Set a fixed width */
+  min-width: 300px; /* Ensure it doesn't shrink below this width */
+  max-width: 700px;
 }
 
 .search-button {
@@ -32,13 +36,17 @@
   margin-right: 20px;
 }
 
-.sorting-dropdown, .cuisine-type {
+.any-type{
+  min-width:200px;
+}
+.sorting-dropdown, .cuisine-type , .any-type{
   padding: 10px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 200px; /* Fixed width to maintain consistency */
+  min-width:200px;
   margin-right: 20px;
+  max-width:200px;
 }
 
 .user-recipes, .edamam-recipes {
@@ -180,3 +188,22 @@
   flex-direction: column;
   justify-content: space-between; 
 }
+.loader {
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 30px;
+  display: inline-grid;
+}
+.loader:before,
+.loader:after {
+  content:"Loading...";
+  grid-area: 1/1;
+  -webkit-mask:linear-gradient(90deg,#000 50%,#0000 0) 0 50%/2ch 100%;
+  animation: l11 1s infinite cubic-bezier(0.5,220,0.5,-220);
+}
+.loader:after {
+  -webkit-mask-position:1ch 50%;
+  --s:-1;
+}
+@keyframes l11 {100%{transform: translateY(calc(var(--s,1)*0.1%));}}
+

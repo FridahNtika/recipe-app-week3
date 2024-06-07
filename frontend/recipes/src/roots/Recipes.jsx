@@ -4,8 +4,9 @@ import '../styles/recipes.css';
 import axios from 'axios';
 import katsucurry from '../images/katsucurry.jpg';
 import timericon from '../images/timer_icon.png';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import {Button} from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 
 const StarRating = ({ rating, outOf = 5,}) => {
   const fullStars = Math.floor(rating);
@@ -38,6 +39,9 @@ const Recipe = () => {
   const [edamamSearchArray, setEdamamSearchArray] = useState([]);
   const [isUserRecipes, setIsUserRecipes] = useState(true);
   const [cuisineOption, setCuisineOption] = useState('Any');
+  const [edamamRecipe, setEdamamRecipe] = useState('');
+  const toast = useToast();
+  const navigate = useNavigate();
   const cuisineTypes = [
     "Any","American", "Asian", "British", "Caribbean", "Central Europe", "Chinese", 
     "Eastern Europe", "French", "Indian", "Italian", "Japanese", "Kosher", 
@@ -66,9 +70,24 @@ const Recipe = () => {
       setLoading(false);
     }
   }
+
+  async function fetchEdamamProfile(recipeText,cuisineType,profileName){
+    try {
+      const res = await axios.get(`http://localhost:5001/edamam/recipe/search/click/${recipeText}/${cuisineType}/${profileName}`);
+      setEdamamRecipe(res.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching Recipes: ", error);
+      setLoading(false);
+    }
+  }
+
+
+
   useEffect(() => {
     fetchAllRecipes();
   }, []);
+
 
   const filteredRecipes = recipeArray.filter(currentRecipe =>
     currentRecipe?.recipeName?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -94,22 +113,55 @@ const Recipe = () => {
   const handleFlavorFinderButtonClick = () => {
     setIsUserRecipes(true);
     setSearchQuery("");
+    setEdamamSearchArray([]);
+    setCuisineOption('Any');
   }
 
   const handleSearchButtonClickEdamam = () => {
+    setLoading(true);
     const recipeText = searchQuery;
     const cuisineType = cuisineOption;
+    setEdamamSearchArray([]);
     if(recipeText != '' && isUserRecipes != true){
       console.log("recipeText = ", recipeText ," cuisineOption=" , cuisineType )
       fetchEdamamSearch(recipeText, cuisineType);
     }
     }
 
+    const handleEdamamProfileClick = async (currentProfile) => {
+      const recipeText = searchQuery;
+      const cuisineType = cuisineOption;
+      const edamamRecipeName = currentProfile.name;
+      console.log("recipeText=", recipeText, cuisineType, edamamRecipeName);
+      await fetchEdamamProfile(recipeText, cuisineType, edamamRecipeName);
+
+      const res = await axios.get("http://localhost:5001/recipes");
+      const updatedRecipeArray = res.data;
+      console.log(updatedRecipeArray);
+      const filteredRecipe = updatedRecipeArray.find(recipe =>
+        recipe.recipeName.toLowerCase() === edamamRecipeName.toLowerCase()
+      )
+      console.log("recipeText=", recipeText, cuisineType, edamamRecipeName, filteredRecipe.id);
+      navigate(`/recipe-details/${filteredRecipe.id}`);
+    }
+
+    // const handleRedirection = async (recipeName) => {
+    //   const res = await axios.get("http://localhost:5001/recipes");
+    //   const updatedRecipeArray = res.data;
+    //   console.log(updatedRecipeArray);
+    //   const filteredRecipe = updatedRecipeArray.find(recipe =>
+    //     recipe.recipeName.toLowerCase() === edamamRecipeName.toLowerCase()
+    //   )
+    //   console.log("recipeText=", recipeText, cuisineType, edamamRecipeName, filteredRecipe.id);
+    //   navigate(`/recipe-details/${filteredRecipe.id}`);
+    // }
+
   return (
     <div>
       <NavBar />
+      <h1 className='recipesh1'>Recipes</h1>
+
       <div className='topbar'>
-        <h1 className='recipesh1'>Recipes</h1>
         <input
           type="text"
           className="input-search"
@@ -118,7 +170,7 @@ const Recipe = () => {
           onChange={e => setSearchQuery(e.target.value)}
         />
         {isUserRecipes ? (
-          <select className='cuisine-type'>
+          <select className='any-type'>
             <option value='any'>Any</option>
           </select>
         ) : (
@@ -132,7 +184,18 @@ const Recipe = () => {
             ))}
           </select>
         )}
-        <Button className='search-button' onClick={handleSearchButtonClickEdamam}>Search</Button>
+        <Button className='search-button' onClick={handleSearchButtonClickEdamam}                 
+                    bg="#9EAFBB"
+                    border="4px solid white"
+                    color="white"
+                    fontSize={20}
+                    borderRadius="20px"
+                    _hover={{ bg: 'white', color: '#9EAFBB', border: '4px solid #9EAFBB', cursor: 'pointer' }}
+                    height="45px"
+                    paddingX="20px"
+                    paddingY="15px"
+                    minWidth={75}
+                    >Search</Button>
         <select
           className='sorting-dropdown'
           value={sortOption}
@@ -142,11 +205,38 @@ const Recipe = () => {
           <option value="rating">Sort by Rating</option>
         </select>
       </div>
-      <Button className='edamam-button' onClick={handleEdamamFlavorFinderButtonClick}>Search on Edamam</Button>
-      <Button className="flavor-button" onClick={handleFlavorFinderButtonClick}>Search on FlavorFinder</Button>
+      <Button className='edamam-button' onClick={handleEdamamFlavorFinderButtonClick}                   
+                    bg="#6acc00"
+                    border="4px solid white"
+                    color="white"
+                    fontSize={20}
+                    sx={{
+                      textDecoration: isUserRecipes === true ? 'none' : 'underline',
+                    }}
+                    borderRadius="20px"
+                    _hover={{ bg: 'white', color: '#9EAFBB', border: '4px solid #9EAFBB', cursor: 'pointer' }}
+                    height="45px"
+                    paddingX="20px"
+                    paddingY="15px" >
+        Search on Edamam</Button>
+      <Button className="flavor-button" onClick={handleFlavorFinderButtonClick}                   
+                    bg="lightblue"
+                    border="4px solid white"
+                    color="white"
+                    fontSize={20}
+                    sx={{
+                      textDecoration: isUserRecipes === false ? 'none' : 'underline',
+                    }}
+                    borderRadius="20px"
+                    _hover={{ bg: 'white', color: '#9EAFBB', border: '4px solid #9EAFBB', cursor: 'pointer' }}
+                    height="45px"
+                    paddingX="20px"
+                    paddingY="15px">Search on FlavorFinder</Button>
   
       {loading ? (
-        <p>Loading...</p>
+        <div>
+        <p className='loader'/>
+        </div>
       ) : (
         <div className="AllRecipes">
           {isUserRecipes ? (
@@ -173,30 +263,35 @@ const Recipe = () => {
                 </Link>
               ))}
             </div>
-          ) : (
-            <div className="edamam-recipes">
-              {edamamSearchArray.map((currentRecipe, index) => (
-                <a href={`/recipes/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
-                  <div className="IndividualRecipe">
-                    <img className="recipe-image" alt={currentRecipe.name} src={katsucurry} />
-                    <div className="rating">
-                      <StarRating rating={currentRecipe.averageRating} />
-                      <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
-                      <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
-                    </div>
-                    <h1 className='recipe-name'>{currentRecipe.name}</h1>
-                    <div className='time-and-author'>
-                      <img className="timer-image" src={timericon} alt="timer icon" />
-                      <p>≈{currentRecipe.duration > 0 ? `${currentRecipe.duration} Minutes` : 'N/A'}</p>
-                      <p className="author">Author: {currentRecipe.author}</p>
-                    </div>
-                    <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
-                      <div className="bookmark" />
-                    </a>
+          ) : ( 
+          <div className="edamam-recipes">
+            {edamamSearchArray.map((currentRecipe, index) => (
+              <div
+                key={`${currentRecipe.recipeName}-${index}`}
+                className="recipe-link"
+                onClick={() => handleEdamamProfileClick(currentRecipe)}
+                style={{ cursor: 'pointer' }} // Add this line to indicate the item is clickable
+              >
+                <div className="IndividualRecipe">
+                  <img className="recipe-image" alt={currentRecipe.name} src={currentRecipe.imageURL} />
+                  <div className="rating">
+                    <StarRating rating={currentRecipe.averageRating} />
+                    <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
+                    <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
                   </div>
-                </a>
-              ))}
-            </div>
+                  <h1 className='recipe-name'>{currentRecipe.name}</h1>
+                  <div className='time-and-author'>
+                    <img className="timer-image" src={timericon} alt="timer icon" />
+                    <p>≈{currentRecipe.duration > 0 ? `${currentRecipe.duration} Minutes` : 'N/A'}</p>
+                    <p className="author">Author: {currentRecipe.author}</p>
+                  </div>
+                  <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
+                    <div className="bookmark" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
           )}
         </div>
       )}
