@@ -50,15 +50,16 @@ const AdminPage = () => {
     <div>
       <NavBar />
       <h2 className='header' style={{ fontWeight: 'bold' }}>
-        Admin Page
+        Welcome to the Admin Dashboard
       </h2>
+      <div className= 'page-container'>
       {loading ? (
         <Spinner />
       ) : (
         <VStack spacing={4}>
           {filteredRecipes.length > 0 ? (
             filteredRecipes.map((recipe) => (
-              <Box key={recipe.id} p={4} borderWidth="1px" borderRadius="md" width="100%" position="relative">
+              <Box key={recipe.id} p={4} backgroundColor="#C5D4DF" borderWidth="1px" borderRadius="md" width="100%" position="relative" className="individual-recipe">
                 <Text fontSize="25px" fontWeight="bold">{recipe.recipeName}</Text>
                 <Text fontSize="20px">Author: {recipe.author}</Text>
                 <Text fontSize="20px">Ingredients: {recipe.ingredients.map(ingredient => `${ingredient.name} (${ingredient.quantity} ${ingredient.unit})`).join(', ')}</Text>
@@ -98,6 +99,7 @@ const AdminPage = () => {
           )}
         </VStack>
       )}
+    </div>
     </div>
   );
 };
