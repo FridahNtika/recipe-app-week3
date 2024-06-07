@@ -260,9 +260,9 @@ const MyRecipes = () => {
                   onClick={() => handleEditClick(recipe)} // Open edit modal
                 />
               )}
-              {recipe.photoURL ? (
+              {recipe.imageURL ? (
                 <Image
-                  src={recipe.photoURL}
+                  src={recipe.imageURL}
                   alt={recipe.name}
                   borderRadius="md"
                   mb={3}

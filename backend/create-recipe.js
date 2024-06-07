@@ -10,7 +10,7 @@ router.post("/", upload.single('photo'), async (req, res) => {
     try {
         const data = req.body;
         const date = new Date().toDateString();
-        let photoURL = "";
+        let imageURL = "";
 
         // If a photo is uploaded, upload it to Firebase Storage
         if (req.file) {
@@ -31,7 +31,7 @@ router.post("/", upload.single('photo'), async (req, res) => {
                 // Make the file publically accessible
                 await blob.makePublic();
 
-                photoURL = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(blob.name)}?alt=media`;
+                imageURL = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(blob.name)}?alt=media`;
 
                 const recipe = {
                     author: data.author,
@@ -48,7 +48,7 @@ router.post("/", upload.single('photo'), async (req, res) => {
                     isEdamam: false,
                     source: data.source,
                     savedUserIds: [data.authorId],
-                    photoURL: photoURL // Store the photo URL in Firestore
+                    imageURL: imageURL // Store the photo URL in Firestore
                 };
 
                 const docRef = await db.collection("Recipes").add(recipe);
@@ -72,7 +72,7 @@ router.post("/", upload.single('photo'), async (req, res) => {
                 isEdamam: false,
                 source: data.source,
                 savedUserIds: [data.authorId],
-                photoURL: photoURL // Store the photo URL in Firestore
+                imageURL: imageURL // Store the photo URL in Firestore
             };
 
             const docRef = await db.collection("Recipes").add(recipe);
