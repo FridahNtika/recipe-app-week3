@@ -15,11 +15,17 @@ const ChatBot = ({recipe}) => {
   let ingredients = ''
   recipe.ingredients?.map((ingr) => ingredients += ingr)
 
+  // const messageHeader = `You are an assistant for a recipe website. Use the following information to assist the user with cooking instructions and any questions they might have related to the recipe. 
+  // Recipe name: ${recipeName}
+  // Ingredients: ${ingredients}
+  // Recipe author: ${recipeAuthor}
+  // `
+
   const messageHeader = `You are an assistant for a recipe website. Use the following information to assist the user with cooking instructions and any questions they might have related to the recipe. 
-  Recipe name: ${recipeName}
-  Ingredients: ${ingredients}
-  Recipe author: ${recipeAuthor}
+  Recipe name: ${recipe.recipeName}. Figure out the ingredients and tell the user if they ask.
   `
+
+  console.log("header: ", messageHeader)
 
   const sendMessage = async (message) => {
     
