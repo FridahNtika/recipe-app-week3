@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getDocs, collection, getDoc, doc } = require('firebase/firestore');
+const { getDocs, collection , getDoc, doc, deleteDoc, updateDoc} = require('firebase/firestore');
 const db = require("./firebase");
 
 router.get("/", async (req, res) => {
@@ -22,9 +22,10 @@ router.get("/", async (req, res) => {
                 dateCreated: recipeData.dateCreated,
                 duration: recipeData.duration,
                 imageURL: recipeData.imageURL,
+                // Add other recipe fields here
+
                 isEdamam: recipeData.isEdamam,
                 isPublished: recipeData.isPublished
-                // Add other recipe fields here
             });
         });
 
@@ -58,6 +59,7 @@ router.get("/:id", async (req, res) => {
                 totalNutrients: recipeData.totalNutrients,
                 savedUserIds: recipeData.savedUserIds
                 // Add other recipe fields here
+
             };
             res.status(200).json(response);
         } else {
@@ -69,4 +71,35 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+//admin approves user recipe to publish
+router.put("/:id/publish", async (req, res) => {
+    try {
+        const uniqueId = req.params.id;
+        const recipeDocRef = doc(db, "Recipes", uniqueId);
+
+        await updateDoc(recipeDocRef, {
+            isPublished: true
+        });
+
+        res.status(200).json({ message: "Recipe published successfully" });
+    } catch (error) {
+        console.error("Error publishing Recipe: ", error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Delete a recipe that admin doesn't want to publish
+router.delete("/:id", async (req, res) => {
+    try {
+        const uniqueId = req.params.id;
+        const recipeDocRef = doc(db, "Recipes", uniqueId);
+
+        await deleteDoc(recipeDocRef);
+
+        res.status(200).json({ message: "Recipe deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting Recipe: ", error);
+        res.status(400).json({ error: error.message });
+    }
+});
 module.exports = router;

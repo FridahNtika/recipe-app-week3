@@ -25,6 +25,7 @@ const AdminPage = () => {
   }, []);
 
   const handlePublish = async (recipeId) => {
+    console.log("Publishing recipe with id: ", recipeId)
     try {
       await axios.put(`http://localhost:5001/recipes/${recipeId}/publish`);
       // Update the local state to remove the published recipe
