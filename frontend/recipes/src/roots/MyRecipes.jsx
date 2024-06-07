@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   Box, Text, Wrap, WrapItem, Center, IconButton, Flex, HStack, Button, Input, Modal,
   ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel, useToast, OrderedList, ListItem
+  useDisclosure, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, FormControl, FormLabel, useToast, OrderedList, ListItem, Image
 } from '@chakra-ui/react';
 import { IoIosHeart } from 'react-icons/io';
 import { EditIcon } from '@chakra-ui/icons';
@@ -269,7 +269,18 @@ const MyRecipes = () => {
                   onClick={() => handleEditClick(recipe)} // Open edit modal
                 />
               )}
-              <Text>Picture goes here</Text>
+              {recipe.photoURL ? (
+                <Image
+                  src={recipe.photoURL}
+                  alt={recipe.name}
+                  borderRadius="md"
+                  mb={3}
+                  objectFit="cover"
+                  height="100px"
+                />
+              ) : (
+                <Text>Picture goes here</Text>
+              )}
               <Center>
                 <Text fontSize={24}>{recipe.name ? recipe.name : 'No label'}</Text>
               </Center>

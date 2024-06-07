@@ -1,12 +1,13 @@
-const { initializeApp } = require("firebase/app");
-const { getFirestore } = require("firebase/firestore");
+const admin = require('firebase-admin');
+const { getStorage } = require('firebase-admin/storage');
+const serviceAccount = require('./permissions.json');
 
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: 'swe-team-4-week-3.appspot.com' // Replace with your actual storage bucket
+});
 
-const serviceAccount = require("./permissions.json");
+const db = admin.firestore();
+const storage = admin.storage();
 
-
-const app = initializeApp(serviceAccount);
-const db = getFirestore(app);
-
-
-module.exports = db;
+module.exports = { db, storage, app: admin };

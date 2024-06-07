@@ -14,6 +14,8 @@ const port = 5001;
 
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+
 
 // Define the /test route
 app.get('/test', async (req, res) => {

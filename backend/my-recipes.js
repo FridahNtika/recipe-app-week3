@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const db = require('./firebase');
+const { db } = require('./firebase');
 const cors = require("cors");
-const { collection, getDocs, doc, updateDoc, arrayUnion, arrayRemove } = require("firebase/firestore");
+const { FieldValue } = require("firebase-admin/firestore");
 
 router.use(cors());
 
@@ -18,8 +18,8 @@ router.put('/recipes/:id', async (req, res) => {
     } = req.body;
 
     try {
-        const recipeRef = doc(db, 'Recipes', id);
-        await updateDoc(recipeRef, {
+        const recipeRef = db.collection('Recipes').doc(id);
+        await recipeRef.update({
             name,
             prepTime,
             cookingTime,
@@ -36,7 +36,7 @@ router.put('/recipes/:id', async (req, res) => {
 
 router.get('/recipes', async (req, res) => {
     try {
-        const snapshot = await getDocs(collection(db, 'Recipes'));
+        const snapshot = await db.collection('Recipes').get();
         const recipes = snapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),
@@ -53,9 +53,9 @@ router.post('/recipes/:id/heart', async (req, res) => {
     const { userId } = req.body;
 
     try {
-        const recipeRef = doc(db, 'Recipes', id);
-        await updateDoc(recipeRef, {
-            savedUserIds: arrayUnion(userId)
+        const recipeRef = db.collection('Recipes').doc(id);
+        await recipeRef.update({
+            savedUserIds: FieldValue.arrayUnion(userId)
         });
         res.status(200).send({ message: 'Recipe hearted successfully' });
     } catch (error) {
@@ -69,9 +69,9 @@ router.delete('/recipes/:id/unheart', async (req, res) => {
     const { userId } = req.body;
 
     try {
-        const recipeRef = doc(db, 'Recipes', id);
-        await updateDoc(recipeRef, {
-            savedUserIds: arrayRemove(userId)
+        const recipeRef = db.collection('Recipes').doc(id);
+        await recipeRef.update({
+            savedUserIds: FieldValue.arrayRemove(userId)
         });
         res.status(200).send({ message: 'Recipe unhearted successfully' });
     } catch (error) {
