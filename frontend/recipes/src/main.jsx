@@ -19,6 +19,7 @@ import Admin from "./roots/AdminPage.jsx";
 import ChatBot from './components/ChatBot.jsx';
 import NavBar from "./components/NavBar.jsx";
 import ProtectedRoute from "./components/login/ProtectedRoute.jsx";
+import ProtectedRouteUser from "./components/login/ProtectedRouteUser.jsx";
 
 
 const router = createBrowserRouter([
@@ -32,11 +33,11 @@ const router = createBrowserRouter([
   },
    {
     path: "/my-recipes",
-    element:<MyRecipes/>,    
+    element:<ProtectedRouteUser> <MyRecipes /> </ProtectedRouteUser>,    
   }, 
   {
     path: "/create-recipe",
-    element:<CreateRecipe/>,    
+    element:<ProtectedRouteUser> <CreateRecipe /> </ProtectedRouteUser>,    
   },
   {
     path: "/recipe-details/:recipeID",
