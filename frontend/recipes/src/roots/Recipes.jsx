@@ -47,7 +47,6 @@ const Recipe = () => {
       const res = await axios.get("http://localhost:5001/recipes");
       setRecipeArray(res.data);
       setLoading(false);
-      console.log("Retrieved recipes:",res.data)
     } catch (error) {
       console.error("Error fetching Recipes: ", error);
       setLoading(false);

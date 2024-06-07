@@ -8,7 +8,7 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 
-export default function BasicModal({ isOpen, onClose }) {
+export default function BasicModal({ totalNutrients, isOpen, onClose }) {
   return (
     <>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
@@ -16,15 +16,18 @@ export default function BasicModal({ isOpen, onClose }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Nutrition Facts</ModalHeader>
+          <ModalHeader>More Nutrients </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ul>
-              <li>120 Calories</li>
-              <li>120 Calories</li>
-              <li>120 Calories</li>
-              <li>120 Calories</li>
-              <li>120 Calories</li>
+            <ul className="all-nutrients">
+              {totalNutrients &&
+                Object.keys(totalNutrients).map((key) => (
+                  <li key={key} className="modal-nutrient">•{" "}
+                    {totalNutrients[`${key}`]?.label}:{" "}
+                    {Math.round(totalNutrients[`${key}`]?.quantity)}{" "}
+                    {totalNutrients[`${key}`]?.unit}
+                  </li>
+                ))}
             </ul>
           </ModalBody>
 

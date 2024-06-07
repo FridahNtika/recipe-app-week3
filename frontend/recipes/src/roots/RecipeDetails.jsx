@@ -17,12 +17,13 @@ import axios from "axios";
 const RecipeDetails = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [recipe, setRecipe] = useState("");
+  const [totalNutrients, setTotalNutrients] = useState({});
   // const [recipeID, setRecipeID] = useState("")
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   let { recipeID } = useParams();
 
-  console.log("recipe ID: ", recipeID);
+  // console.log("recipe ID: ", recipeID);
   const handleSave = () => {
     if (!isSaved) {
       toast({
@@ -40,7 +41,8 @@ const RecipeDetails = () => {
         `http://localhost:5001/recipes/${recipeID}`
       );
       setRecipe(response.data);
-      console.log(response, " -> Recipe");
+      setTotalNutrients(response.data.totalNutrients);
+      // console.log(response, " -> Recipe");
     } catch (e) {
       console.error(e);
     }
@@ -56,19 +58,16 @@ const RecipeDetails = () => {
       <div className="header">
         <div className="title">
           <h2>
-            {/* <strong> {recipe.recipeName} </strong> */}
-            <strong> Chicken</strong>
-
+            <strong> {recipe.recipeName} </strong>
           </h2>
         </div>
 
         <div className="duration-and-author">
           <div className="duration">
-            <img className="timer-image" src={timericon} />
-            <p>≈{recipe.duration} Minutes</p>
+            <img width="10px" className="timer-image" src={timericon} />
+            <p>≈{recipe.duration} minutes</p>
           </div>
           <p className="author">
-            {" "}
             {recipe.author ? `By ${recipe.author}` : `Author: Unknown`}
           </p>
         </div>
@@ -121,28 +120,46 @@ const RecipeDetails = () => {
             <h2 className="nutrition-facts"> Nutrition Facts</h2>
             <div className="nutrients">
               <div className="nutrient">
-                <h2> 120</h2>
-                <h3> Calories</h3>
-              </div>
-              <div className="nutrient">
-                <h2> 120</h2>
+                <h2> {Math.round(recipe.calories)}</h2>
                 <h3> Calories</h3>
               </div>
 
-              <div className="nutrient">
-                <h2> 120</h2>
-                <h3> Calories</h3>
-              </div>
+                  <div className="nutrient">
+                    <h2>
+                      {Math.round(totalNutrients["PROCNT"]?.quantity)}
+                      {totalNutrients["PROCNT"]?.unit}
+                    </h2>
+                    <h3> Protein </h3>
+                  </div>
+
+                  <div className="nutrient">
+                    <h2>
+
+                      {Math.round(totalNutrients["CHOCDF"]?.quantity)}
+                      {totalNutrients["NA"]?.unit}
+                    </h2>
+                    <h3> Carbs </h3>
+                  </div>
+
+                  <div className="nutrient">
+                    <h2>
+
+                      {Math.round(totalNutrients["FAT"]?.quantity)}
+                      {totalNutrients["FAT"]?.unit}
+                    </h2>
+                    <h3> Fat </h3>
+                  </div>
+
               <Button className="action-button" onClick={onOpen}>
                 View All
               </Button>
-              <BasicModal isOpen={isOpen} onClose={onClose} />
-            </div>
+              <BasicModal totalNutrients={totalNutrients} isOpen={isOpen} onClose={onClose} />
+            </div> 
           </div>
         </GridItem>
 
         <GridItem className="card" rowSpan={3} colSpan={2}>
-          <ChatBot />
+          <ChatBot recipe={recipe}/>
         </GridItem>
       </Grid>
     </div>
