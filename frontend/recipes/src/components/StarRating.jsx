@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/recipes.css';
 
-const StarRating = ({ rating, outOf = 5 }) => {
+const StarRating = ({ rating, outOf = 5, isRecipePage=false }) => {
   const fullStars = Math.floor(rating);
   const fractionalPart = rating - fullStars;
   const emptyStars = outOf - Math.ceil(rating);
@@ -12,11 +12,11 @@ const StarRating = ({ rating, outOf = 5 }) => {
   return (
     <div className="star-rating">
       {[...Array(fullStars)].map((_, index) => (
-        <div key={index} className="star full"></div>
+        <div key={index} className={isRecipePage ? "star-r full":"star full"}></div>
       ))}
       {fractionalPart > 0 && <div className={`star ${fractionClass}`}></div>}
       {[...Array(emptyStars)].map((_, index) => (
-        <div key={index} className="star empty"></div>
+        <div key={index} className={isRecipePage ? "star-r empty-r":"star empty"}></div>
       ))}
     </div>
   );

@@ -1,109 +1,265 @@
-@import '../variables.css';
+@import "../variables.css";
 
-h1,h2,h3 {
-    color: black;
+h1,
+h2,
+h3 {
+  color: black !important;
 }
 
 .main-page {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 25px;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  margin-right: 15px;
+  /* background-color: beige; */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
 }
 
-.main-content {
-    margin-right: 15px;
-}
+.title {
+  justify-self: start;
+  display: flex;
 
-.card {
-    background-color: var(--card);
-    border-radius: 20px;
-}
-
-.ingredients-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.image-container {
-    margin: 15px;
-    margin-bottom: 0px;
-    width: 450px;
-    height: 300px;
-    overflow: hidden; 
-}
-
-.image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-.ingredients {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
-    /* background-color: blueviolet; */
-}
-
-.ingredients-list {
-    display: flex;
-    flex-direction: column;
-    padding-left: 15px;
-    padding-right: 15px;
-    max-height: 350px;
-    /* background-color: blueviolet; */
-    overflow: auto;
+  align-items: center;
+  /* background-color: bisque; */
 }
 
 .duration-and-author {
-    display: flex;
-    align-items: center;
-    gap:30px;
-    margin-left: 50px;
-}
-
-.duration {
-    display: flex;
-    flex-direction: row;
-}
-
-.nutrition-facts-container {
-    margin-left: 15px;
-}
-
-.nutrients {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 200px;
-}
-
-.nutrient {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.title-save {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  /* background-color: aquamarine; */
 }
 
 .save-button-container {
-    margin-left: 800px;
+  justify-self: end;
+  background-color: azure;
+  /* margin-right: 800px; */
+}
+
+.save-button {
+  background-color: none !important;
+}
+
+.duration {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-content {
+  margin-right: 15px;
+  /* background-color: antiquewhite; */
+}
+
+.card {
+  background-color: var(--card);
+  border-radius: 20px;
+}
+
+.ingredients-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-container {
+  margin: 15px;
+  margin-bottom: 0px;
+  width: 450px;
+  height: 300px;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ingredients {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  /* background-color: blueviolet; */
+}
+
+.ingredients-list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+  padding-right: 15px;
+  max-height: 350px;
+  /* background-color: blueviolet; */
+  overflow: auto;
+}
+
+.nutrition-facts-container {
+  margin-left: 15px;
+}
+
+.nutrients {
+  /* display: flex;
+    flex-direction: row;
+    align-items: center; */
+  /* gap: 130px; */
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  /* background-color: aliceblue; */
+  margin-right: 15px;
+  margin-left: -65px;
+}
+
+.nutrient {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  /* background-color: blue; */
+}
+
+.all-nutrients {
+  max-height: 350px;
+  overflow: scroll;
+}
+
+.modal-nutrient {
+    font-size: large;
 }
 
 .action-button {
-    background-color: var(--confirmation-button) !important;
+  background-color: var(--confirmation-button) !important;
+  width: 150px !important;
+}
+
+.reviews-container {
+  display: flex;
+  gap: 15px; 
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-right: 15px;
+  overflow: scroll;
+}
+
+.review {
+  flex: 0 0 auto; 
+  width: 490px; 
+  height: 500px;
+  border-radius: 15px;
+  margin-top: 15px;
+  background-color: #D9D9D9;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+}
+
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: -180px;
+}
+
+.reviews-title {
+  margin-top: 20px;
+  margin-bottom: 25px;
+}
+
+.title {
+  font-size: 28px;
+  margin: none;
+    overflow-wrap: break-word; /* Allow the text to wrap if it overflows */
+  word-break: break-word; /* Ensure long words break */
+}
+
+.title-date {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 2:1 ratio */
+  gap: 10px; /* Optional: add some space between the columns */
+  align-items: start; 
+  /* background-color: antiquewhite; */
+}
+
+.date {
+  text-align: center;
+  margin-top: 2px;
+}
+
+.rating {
+  font-size: 28px;
+  margin: none;
+    overflow-wrap: break-word; /* Allow the text to wrap if it overflows */
+  word-break: break-word; /* Ensure long words break */
+}
+
+.rating-author {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 2:1 ratio */
+  gap: 10px; /* Optional: add some space between the columns */
+  align-items: start; 
+  margin-top: 15px;
+}
+
+.author {
+  text-align: center;
+  margin-top: 2px;
+}
+
+.description {
+  margin-top: 15px;
+}
+
+.reply-container {
+  display: inline;
+  display: grid;
+  grid-template-rows: 5fr 1fr;
+  gap: 10px; 
+  margin-left: 15px;
+}
+
+.reply-upvote {
+  display: inline;
+  display: grid;
+  grid-template-columns: 5fr 1fr; /* 2:1 ratio */
+  gap: 10px; 
+}
+
+.reply {
+  display: flex; /* Use flexbox to align items vertically */
+  /* margin-left: 10px; */
+  padding-left: 5px;
+  margin-top: 15px;
+  border-left: 2px solid #6c6c6c;
+  /* background-color: aquamarine; */
+}
+
+.upvote-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 15px;
+  /* background-color: bisque; */
+}
+
+.reply-author {
+
+}
+
+.author-date {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 2:1 ratio */
+  gap: 10px; /* Optional: add some space between the columns */
+  align-items: start; 
+  /* margin-top: 15px; */
+}
+
+.reply-date {
+  text-align: center;
+  margin-top: 2px;
 }

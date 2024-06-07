@@ -4,8 +4,9 @@ import '../styles/recipes.css';
 import axios from 'axios';
 import katsucurry from '../images/katsucurry.jpg';
 import timericon from '../images/timer_icon.png';
+import { Link } from 'react-router-dom';
 
-const StarRating = ({ rating, outOf = 5 }) => {
+const StarRating = ({ rating, outOf = 5,}) => {
   const fullStars = Math.floor(rating);
   const fractionalPart = rating - fullStars;
   const emptyStars = outOf - Math.ceil(rating);
@@ -16,11 +17,11 @@ const StarRating = ({ rating, outOf = 5 }) => {
   return (
     <div className="star-rating">
       {[...Array(fullStars)].map((_, index) => (
-        <div key={index} className="star full"></div>
+        <div key={index} className= "star full" ></div>
       ))}
       {fractionalPart > 0 && <div className={`star ${fractionClass}`}></div>}
       {[...Array(emptyStars)].map((_, index) => (
-        <div key={index} className="star empty"></div>
+        <div key={index} className= "star empty"></div>
       ))}
     </div>
   );
@@ -46,7 +47,6 @@ const Recipe = () => {
       const res = await axios.get("http://localhost:5001/recipes");
       setRecipeArray(res.data);
       setLoading(false);
-      console.log("Retrieved recipes:",res.data)
     } catch (error) {
       console.error("Error fetching Recipes: ", error);
       setLoading(false);
@@ -109,7 +109,7 @@ const Recipe = () => {
       ) : (
         <div className="AllRecipes">
           {sortedRecipes.map((currentRecipe, index) => (
-            <a href={`/recipes/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
+            <Link to={`/recipe-details/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
               <div className="IndividualRecipe">
                 <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
                 <div className="rating">
@@ -127,7 +127,7 @@ const Recipe = () => {
                   <div className="bookmark" />
                 </a>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       )}
