@@ -161,6 +161,9 @@ const RecipeDetails = () => {
         <GridItem className="card" rowSpan={3} colSpan={2}>
           <ChatBot recipe={recipe}/>
         </GridItem>
+        <GridItem className="card" rowSpan={2} colSpan={3}>
+            <h2>Test</h2>
+        </GridItem>
       </Grid>
     </div>
   );
