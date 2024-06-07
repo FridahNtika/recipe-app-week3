@@ -6,7 +6,7 @@ import katsucurry from '../images/katsucurry.jpg';
 import timericon from '../images/timer_icon.png';
 import { Link } from 'react-router-dom';
 
-const StarRating = ({ rating, outOf = 5 }) => {
+const StarRating = ({ rating, outOf = 5,}) => {
   const fullStars = Math.floor(rating);
   const fractionalPart = rating - fullStars;
   const emptyStars = outOf - Math.ceil(rating);
@@ -17,11 +17,11 @@ const StarRating = ({ rating, outOf = 5 }) => {
   return (
     <div className="star-rating">
       {[...Array(fullStars)].map((_, index) => (
-        <div key={index} className="star full"></div>
+        <div key={index} className= "star full" ></div>
       ))}
       {fractionalPart > 0 && <div className={`star ${fractionClass}`}></div>}
       {[...Array(emptyStars)].map((_, index) => (
-        <div key={index} className="star empty"></div>
+        <div key={index} className= "star empty"></div>
       ))}
     </div>
   );

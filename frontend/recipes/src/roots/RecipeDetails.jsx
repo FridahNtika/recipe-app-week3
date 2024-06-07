@@ -13,6 +13,9 @@ import { useToast, useDisclosure } from "@chakra-ui/react";
 import BasicModal from "../components/BasicModal";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import StarRating from "../components/StarRating";
+import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
+import MessageSend from "../components/MessageSend";
 
 const RecipeDetails = () => {
   const [isSaved, setIsSaved] = useState(false);
@@ -124,47 +127,113 @@ const RecipeDetails = () => {
                 <h3> Calories</h3>
               </div>
 
-                  <div className="nutrient">
-                    <h2>
-                      {Math.round(totalNutrients["PROCNT"]?.quantity)}
-                      {totalNutrients["PROCNT"]?.unit}
-                    </h2>
-                    <h3> Protein </h3>
-                  </div>
+              <div className="nutrient">
+                <h2>
+                  {Math.round(totalNutrients["PROCNT"]?.quantity)}
+                  {totalNutrients["PROCNT"]?.unit}
+                </h2>
+                <h3> Protein </h3>
+              </div>
 
-                  <div className="nutrient">
-                    <h2>
+              <div className="nutrient">
+                <h2>
+                  {Math.round(totalNutrients["CHOCDF"]?.quantity)}
+                  {totalNutrients["NA"]?.unit}
+                </h2>
+                <h3> Carbs </h3>
+              </div>
 
-                      {Math.round(totalNutrients["CHOCDF"]?.quantity)}
-                      {totalNutrients["NA"]?.unit}
-                    </h2>
-                    <h3> Carbs </h3>
-                  </div>
-
-                  <div className="nutrient">
-                    <h2>
-
-                      {Math.round(totalNutrients["FAT"]?.quantity)}
-                      {totalNutrients["FAT"]?.unit}
-                    </h2>
-                    <h3> Fat </h3>
-                  </div>
+              <div className="nutrient">
+                <h2>
+                  {Math.round(totalNutrients["FAT"]?.quantity)}
+                  {totalNutrients["FAT"]?.unit}
+                </h2>
+                <h3> Fat </h3>
+              </div>
 
               <Button className="action-button" onClick={onOpen}>
                 View All
               </Button>
-              <BasicModal totalNutrients={totalNutrients} isOpen={isOpen} onClose={onClose} />
-            </div> 
+              <BasicModal
+                totalNutrients={totalNutrients}
+                isOpen={isOpen}
+                onClose={onClose}
+              />
+            </div>
           </div>
         </GridItem>
 
         <GridItem className="card" rowSpan={3} colSpan={2}>
-          <ChatBot recipe={recipe}/>
-        </GridItem>
-        <GridItem className="card" rowSpan={2} colSpan={3}>
-            <h2>Test</h2>
+          <ChatBot recipe={recipe} />
         </GridItem>
       </Grid>
+
+      <div className="reviews-section">
+        <h2 className="reviews-title">
+          <strong> Reviews </strong>
+        </h2>
+        <div className="reviews-container card">
+          <div className="review">
+            <div className="title-date">
+              <p className="title">
+                <strong> Delicious Meal! </strong>
+              </p>
+              <p className="date">27/09/23</p>
+            </div>
+
+            <div className="rating-author">
+              <div className="rating">
+                <StarRating rating={3} isRecipePage={true} />
+              </div>
+
+              <p className="author">Milton</p>
+            </div>
+            <div className="description">
+              <p>
+                I tried this recipe with my aunt and it was totally mindblowing!
+                Got a little too much salt but it didn’t significanlty affect
+                the flavor much. I’m glad it turned out pretty go
+              </p>
+            </div>
+            <div className="replies">
+              <div className="reply-container">
+                <div className="reply-upvote">
+                  <p className="reply">
+                    I tried this recipe with my aunt and it was totally
+                    mindblowing! Got a little too much salt but it didn’t
+                    significanlty affect the flavor much. I’m glad it turned out
+                    pretty go
+                  </p>
+                  <div className="upvote-container">
+                  <IconButton variant={"outline"} aria-label='Upvote' icon={<ArrowUpIcon color={"#90B4CE"} />} />
+                  <IconButton variant={"outline"} aria-label='Downvote' icon={<ArrowDownIcon color={"#9C0F20"}/>} />
+                    
+                  </div>
+                </div>
+
+                <div className="author-date">
+                  <p className="reply-author">Annie</p>
+                  <p className="reply-date">03/32/54</p>
+                </div>
+              </div>
+            </div>
+            {/* <MessageSend /> */}
+            
+          </div>
+
+          <div className="review"></div>
+
+          <div className="review">
+            <p>test P</p>
+          </div>
+          <div className="review">
+            <p>test P</p>
+          </div>
+          <div className="review">
+            <p>test P</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
