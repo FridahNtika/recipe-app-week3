@@ -142,7 +142,7 @@ const Recipe = () => {
           <option value="rating">Sort by Rating</option>
         </select>
       </div>
-      <Button onClick={handleEdamamFlavorFinderButtonClick}>Search on Edamam</Button>
+      <Button className='edamam-button' onClick={handleEdamamFlavorFinderButtonClick}>Search on Edamam</Button>
       <Button className="flavor-button" onClick={handleFlavorFinderButtonClick}>Search on FlavorFinder</Button>
   
       {loading ? (
