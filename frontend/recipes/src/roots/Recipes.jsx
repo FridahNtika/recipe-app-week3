@@ -4,6 +4,7 @@ import '../styles/recipes.css';
 import axios from 'axios';
 import katsucurry from '../images/katsucurry.jpg';
 import timericon from '../images/timer_icon.png';
+import noimage from '../images/no_image.png';
 import { Link , useNavigate} from 'react-router-dom';
 import {Button} from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
@@ -244,7 +245,7 @@ const Recipe = () => {
               {sortedRecipes.map((currentRecipe, index) => (
                 <Link to={`/recipe-details/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
                   <div className="IndividualRecipe">
-                    <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
+                    <img className="recipe-image" alt={currentRecipe.recipeName} src={noimage} />
                     <div className="rating">
                       <StarRating rating={currentRecipe.averageRating} />
                       <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
