@@ -14,15 +14,16 @@ import BasicModal from "../components/BasicModal";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ReviewCard from "../components/ReviewCard";
-import NewReview from "../components/NewReview"
+import NewReview from "../components/NewReview";
 
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const RecipeDetails = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [recipe, setRecipe] = useState("");
   const [totalNutrients, setTotalNutrients] = useState({});
+  const [allReviews, setAllReviews] = useState([])
+  const [reviewsFound, setReviewsFound] = useState(false)
   // const [recipeID, setRecipeID] = useState("")
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,7 +31,6 @@ const RecipeDetails = () => {
 
   const [author, setAuthor] = useState("");
   const [userId, setUserId] = useState("");
-
 
   // console.log("recipe ID: ", recipeID);
   const handleSave = () => {
@@ -57,8 +57,28 @@ const RecipeDetails = () => {
     }
   };
 
+  const fetchReviews = async () => {
+    const reviewsList = recipe?.userReviewIds;
+    console.log("reviews list:", reviewsList);
+    if (reviewsList == []) {
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `http://localhost:5001/reviews/${recipeID}`
+      );
+
+      console.log("User reviews: ", response.data)
+      setAllReviews(response.data.reviews)
+      setReviewsFound(response.data.reviewsFound)
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     fetchRecipe();
+    fetchReviews();
   }, []);
 
   useEffect(() => {
@@ -76,9 +96,8 @@ const RecipeDetails = () => {
     return () => unsubscribe();
   }, []);
 
-  console.log("User ID in rD: ",  userId)
-  console.log("Author in rD: ",  author)
-
+  console.log("User ID in rD: ", userId);
+  console.log("Author in rD: ", author);
 
   return (
     <div className="main-page">
@@ -197,105 +216,18 @@ const RecipeDetails = () => {
         <h2 className="reviews-title">
           <strong> Reviews </strong>
         </h2>
-        {/* <div className="reviews-container card">
-          <div className="review">
-            <div className="title-date">
-              <p className="title">
-                <strong> Delicious Meal! </strong>
-              </p>
-              <p className="date">27/09/23</p>
-            </div>
 
-            <div className="rating-author">
-              <div className="rating">
-                <StarRating rating={3} isRecipePage={true} />
-              </div>
-              <p className="author">Milton</p>
-
-            </div>
-            <div className="description">
-              <p>
-                I tried this recipe with my aunt and it was totally mindblowing!
-                Got a little too much salt but it didn’t significanlty affect
-                the flavor much. I’m glad it turned out pretty go
-              </p>
-            </div>
-            <div className="replies">
-              <div className="reply-container">
-                <div className="reply-upvote">
-                  <p className="reply">
-                    I tried this recipe with my aunt and it was totally
-                    mindblowing! Got a little too much salt but it didn’t
-                    significanlty affect the flavor much. I’m glad it turned out
-                    pretty go
-                  </p>
-                  <div className="upvote-container">
-                    <strong> <p>4</p></strong>
-                  
-                  <IconButton variant={"outline"} aria-label='Upvote' icon={<ArrowUpIcon color={"#90B4CE"} />} />
-                  <IconButton variant={"outline"} aria-label='Downvote' icon={<ArrowDownIcon color={"#9C0F20"}/>} />
-                    
-                  </div>
-                </div>
-          
-                <div className="author-date">
-                  <p className="reply-author">Annie</p>
-                  <p className="reply-date">03/32/54</p>
-                </div>
-              </div>
-
-              <div className="reply-container">
-                <div className="reply-upvote">
-                  <p className="reply">
-                    I tried this recipe with my aunt and it was totally
-                    mindblowing! Got a little too much salt but it didn’t
-                    significanlty affect the flavor much. I’m glad it turned out
-                    pretty go
-                  </p>
-                  <div className="upvote-container">
-                    <strong> <p>4</p></strong>
-                  
-                  <IconButton variant={"outline"} aria-label='Upvote' icon={<ArrowUpIcon color={"#90B4CE"} />} />
-                  <IconButton variant={"outline"} aria-label='Downvote' icon={<ArrowDownIcon color={"#9C0F20"}/>} />
-                    
-                  </div>
-                </div>
-          
-
-                <div className="author-date">
-                  <p className="reply-author">Annie</p>
-                  <p className="reply-date">03/32/54</p>
-                </div>
-              </div>
-
-              
-
-      
-            </div>
-
-            <div className="reply-textfield">
-            <MessageSend />
-            </div>
-            
-          </div>
-
-          <div className="review"></div>
-
-          <div className="review">
-            <p>test P</p>
-          </div>
-          <div className="review">
-            <p>test P</p>
-          </div>
-          <div className="review">
-            <p>test P</p>
-          </div>
-        </div> */}
-        
         <div className="reviews-container card">
-        <ReviewCard/>
-        <ReviewCard/>
-        <NewReview/>
+
+{reviewsFound && 
+allReviews.map((review, key) => 
+  <ReviewCard reviewData={review} key={key} />
+)
+}
+
+          {/* <ReviewCard />
+          <ReviewCard /> */}
+          <NewReview fetchReviews={fetchReviews} recipeID={recipeID} userId={userId} author={author} />
         </div>
       </div>
     </div>

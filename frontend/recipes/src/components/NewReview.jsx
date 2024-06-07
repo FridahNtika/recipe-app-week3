@@ -15,7 +15,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useToast, useDisclosure } from "@chakra-ui/react";
 
-export default function ReviewCard() {
+export default function NewReview({fetchReviews, recipeID, userId, author}) {
 const [title, setTitle] = useState('')
 const [description, setDescription] = useState('')
 const [rating, setRating] = useState(3)
@@ -33,13 +33,31 @@ const handleRatingChange = (value) => {
     setRating(value)
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
     toast({
         title: "Review Submitted!",
         duration: 1000,
         position: "bottom-left",
       });
 
+      console.log("recipe id in createNew: ", recipeID)
+
+    const review = {
+        recipeId:recipeID,
+        author: author,
+        userId:userId,
+        title:title,
+        description:description,
+        rating:rating
+    }
+
+    try {
+        const response = await axios.post("http://localhost:5001/reviews/new-review", review);
+        
+      } catch (error) {
+        console.log("Error adding review: ", error);
+      }
+    fetchReviews()
     setTitle('')
     setDescription('')
     setRating(3)

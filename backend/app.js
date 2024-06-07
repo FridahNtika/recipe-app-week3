@@ -3,6 +3,7 @@ const cors = require("cors");
 const recipeRouter = require('./recipes');
 const myRecipesRouter = require("./my-recipes");
 const createRecipeRouter = require("./create-recipe");
+const reviewsRouter = require("./reviews");
 const db = require("./firebase");
 const { collection, getDocs } = require("firebase/firestore");
 const openaiRouter = require('./openai');
@@ -34,6 +35,7 @@ app.use("/recipes", recipeRouter);
 app.use('/my-recipes', myRecipesRouter);
 app.use('/openai', openaiRouter); 
 app.use('/edamam', edamamRouter);
+app.use('/reviews', reviewsRouter);
 
 
 app.use('/users', userRoutes);
