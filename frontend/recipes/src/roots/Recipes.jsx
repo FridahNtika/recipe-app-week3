@@ -131,7 +131,31 @@ const Recipe = () => {
               </a>
             ))}
           </div> ) : (
-            <h1></h1>
+            <div className="edamam-recipes">
+            {edamamSearchArray.map((currentRecipe, index) => (
+              <a href={`/recipes/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
+                <div className="IndividualRecipe">
+                  <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
+                  <div className="rating">
+                    <StarRating rating={currentRecipe.averageRating} />
+                    <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
+                    <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
+                  </div>
+                  <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
+                  <div className='time-and-author'>
+                    <img className="timer-image" src={timericon} alt="timer icon" />
+                    <p>≈{currentRecipe.duration} Minutes</p>
+                    <p className="author">Author: {currentRecipe.author}</p>
+                  </div>
+                  <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
+                    <div className="bookmark" />
+                  </a>
+                </div>
+              </a>
+            ))}
+            </div>
+          
+          
           )
       )}
     </div>
