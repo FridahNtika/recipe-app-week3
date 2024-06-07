@@ -34,7 +34,7 @@ const Recipe = () => {
   const [searchBarRecipe, setSearchBarRecipe] = useState('');
   const [searchBarCuisine, setSearchBarCuisine] = useState('');
   const [edamamSearchArray, setEdamamSearchArray] = useState([]);
-  const [isUserRecipes, setIsUserRecipes] = useState(false);
+  const [isUserRecipes, setIsUserRecipes] = useState(true);
   const cuisineTypes = [
     "American", "Asian", "British", "Caribbean", "Central Europe", "Chinese", 
     "Eastern Europe", "French", "Indian", "Italian", "Japanese", "Kosher", 
