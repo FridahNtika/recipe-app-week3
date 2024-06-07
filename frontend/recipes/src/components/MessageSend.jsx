@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FormControl, Button, Input } from "@chakra-ui/react";
 // import { Field } from "formik";
 
-const MessageSend = ({ sendMessage }) => {
+const MessageSend = ({ sendMessage, placeholder}) => {
   const [message, setMessage] = useState("");
 
   // handles message submission
@@ -30,7 +30,7 @@ const MessageSend = ({ sendMessage }) => {
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => handleKeyPress(e)}
           className="send-message"
-          placeholder="Type a message..."
+          placeholder= {placeholder}
         />
         <Button onClick={handleSubmit} className="send-button">
           <img className="send-icon" src={sendIcon} alt="send icon" />

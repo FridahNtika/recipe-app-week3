@@ -13,9 +13,11 @@ import { useToast, useDisclosure } from "@chakra-ui/react";
 import BasicModal from "../components/BasicModal";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import StarRating from "../components/StarRating";
-import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
-import MessageSend from "../components/MessageSend";
+import ReviewCard from "../components/ReviewCard";
+import NewReview from "../components/NewReview"
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 
 const RecipeDetails = () => {
   const [isSaved, setIsSaved] = useState(false);
@@ -25,6 +27,10 @@ const RecipeDetails = () => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   let { recipeID } = useParams();
+
+  const [author, setAuthor] = useState("");
+  const [userId, setUserId] = useState("");
+
 
   // console.log("recipe ID: ", recipeID);
   const handleSave = () => {
@@ -54,6 +60,25 @@ const RecipeDetails = () => {
   useEffect(() => {
     fetchRecipe();
   }, []);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const address = user.email.split("@");
+        setAuthor(address[0]);
+        setUserId(user.uid);
+      } else {
+        setUserId(null);
+        setAuthor(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  console.log("User ID in rD: ",  userId)
+  console.log("Author in rD: ",  author)
+
 
   return (
     <div className="main-page">
@@ -172,7 +197,7 @@ const RecipeDetails = () => {
         <h2 className="reviews-title">
           <strong> Reviews </strong>
         </h2>
-        <div className="reviews-container card">
+        {/* <div className="reviews-container card">
           <div className="review">
             <div className="title-date">
               <p className="title">
@@ -185,8 +210,8 @@ const RecipeDetails = () => {
               <div className="rating">
                 <StarRating rating={3} isRecipePage={true} />
               </div>
-
               <p className="author">Milton</p>
+
             </div>
             <div className="description">
               <p>
@@ -205,19 +230,52 @@ const RecipeDetails = () => {
                     pretty go
                   </p>
                   <div className="upvote-container">
+                    <strong> <p>4</p></strong>
+                  
                   <IconButton variant={"outline"} aria-label='Upvote' icon={<ArrowUpIcon color={"#90B4CE"} />} />
                   <IconButton variant={"outline"} aria-label='Downvote' icon={<ArrowDownIcon color={"#9C0F20"}/>} />
                     
                   </div>
                 </div>
+          
+                <div className="author-date">
+                  <p className="reply-author">Annie</p>
+                  <p className="reply-date">03/32/54</p>
+                </div>
+              </div>
+
+              <div className="reply-container">
+                <div className="reply-upvote">
+                  <p className="reply">
+                    I tried this recipe with my aunt and it was totally
+                    mindblowing! Got a little too much salt but it didn’t
+                    significanlty affect the flavor much. I’m glad it turned out
+                    pretty go
+                  </p>
+                  <div className="upvote-container">
+                    <strong> <p>4</p></strong>
+                  
+                  <IconButton variant={"outline"} aria-label='Upvote' icon={<ArrowUpIcon color={"#90B4CE"} />} />
+                  <IconButton variant={"outline"} aria-label='Downvote' icon={<ArrowDownIcon color={"#9C0F20"}/>} />
+                    
+                  </div>
+                </div>
+          
 
                 <div className="author-date">
                   <p className="reply-author">Annie</p>
                   <p className="reply-date">03/32/54</p>
                 </div>
               </div>
+
+              
+
+      
             </div>
-            {/* <MessageSend /> */}
+
+            <div className="reply-textfield">
+            <MessageSend />
+            </div>
             
           </div>
 
@@ -232,6 +290,12 @@ const RecipeDetails = () => {
           <div className="review">
             <p>test P</p>
           </div>
+        </div> */}
+        
+        <div className="reviews-container card">
+        <ReviewCard/>
+        <ReviewCard/>
+        <NewReview/>
         </div>
       </div>
     </div>

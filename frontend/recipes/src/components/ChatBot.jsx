@@ -68,7 +68,7 @@ const ChatBot = ({recipe}) => {
               })}
           </div>
           <div className="send-container">
-            <MessageSend sendMessage={sendMessage} />
+            <MessageSend sendMessage={sendMessage} placeholder={"Type a message..."}/>
           </div>
         </div>
   );

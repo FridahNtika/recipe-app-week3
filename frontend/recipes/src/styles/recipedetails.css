@@ -24,8 +24,8 @@ h3 {
 .title {
   justify-self: start;
   display: flex;
-
   align-items: center;
+
   /* background-color: bisque; */
 }
 
@@ -131,7 +131,7 @@ h3 {
 }
 
 .modal-nutrient {
-    font-size: large;
+  font-size: large;
 }
 
 .action-button {
@@ -139,9 +139,17 @@ h3 {
   width: 150px !important;
 }
 
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: -180px;
+  margin-bottom: 80px;
+}
+
 .reviews-container {
   display: flex;
-  gap: 15px; 
+  gap: 15px;
+  height: 650px;
   padding-left: 15px;
   padding-right: 15px;
   margin-right: 15px;
@@ -149,21 +157,28 @@ h3 {
 }
 
 .review {
-  flex: 0 0 auto; 
-  width: 490px; 
-  height: 500px;
+  flex: 0 0 auto;
+  width: 490px;
+  height: 580px;
   border-radius: 15px;
   margin-top: 15px;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 15px;
 }
 
-.reviews-section {
-  display: flex;
-  flex-direction: column;
-  margin-top: -180px;
+.new-review {
+  position: relative;
+  flex: 0 0 auto;
+  width: 490px;
+  height: 580px;
+  border-radius: 15px;
+  margin-top: 15px;
+  background-color: #d9d9d9;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
 }
 
 .reviews-title {
@@ -174,7 +189,7 @@ h3 {
 .title {
   font-size: 28px;
   margin: none;
-    overflow-wrap: break-word; /* Allow the text to wrap if it overflows */
+  overflow-wrap: break-word; /* Allow the text to wrap if it overflows */
   word-break: break-word; /* Ensure long words break */
 }
 
@@ -182,7 +197,7 @@ h3 {
   display: grid;
   grid-template-columns: 2fr 1fr; /* 2:1 ratio */
   gap: 10px; /* Optional: add some space between the columns */
-  align-items: start; 
+  align-items: start;
   /* background-color: antiquewhite; */
 }
 
@@ -194,7 +209,7 @@ h3 {
 .rating {
   font-size: 28px;
   margin: none;
-    overflow-wrap: break-word; /* Allow the text to wrap if it overflows */
+  overflow-wrap: break-word; /* Allow the text to wrap if it overflows */
   word-break: break-word; /* Ensure long words break */
 }
 
@@ -202,37 +217,45 @@ h3 {
   display: grid;
   grid-template-columns: 2fr 1fr; /* 2:1 ratio */
   gap: 10px; /* Optional: add some space between the columns */
-  align-items: start; 
+  align-items: start;
   margin-top: 15px;
 }
 
 .author {
   text-align: center;
   margin-top: 2px;
+  font-weight: 500;
 }
 
 .description {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.replies {
+  /* background-color: aqua; */
+  height: 260px;
+  overflow: scroll;
   margin-top: 15px;
 }
 
 .reply-container {
   display: inline;
   display: grid;
-  grid-template-rows: 5fr 1fr;
-  gap: 10px; 
+  grid-template-rows: auto auto;
+  gap: 10px;
   margin-left: 15px;
 }
 
 .reply-upvote {
   display: inline;
   display: grid;
-  grid-template-columns: 5fr 1fr; /* 2:1 ratio */
-  gap: 10px; 
+  grid-template-columns: 1fr auto;
+  gap: 10px;
 }
 
 .reply {
-  display: flex; /* Use flexbox to align items vertically */
-  /* margin-left: 10px; */
   padding-left: 5px;
   margin-top: 15px;
   border-left: 2px solid #6c6c6c;
@@ -243,23 +266,56 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin-top: 15px;
   /* background-color: bisque; */
 }
 
-.reply-author {
-
+.author-date {
+  /* display: grid;
+  grid-template-columns: 2fr 1fr;  */
+  display: flex;
+  gap: 10px;
+  align-items: end;
+  margin-top: -10px;
 }
 
-.author-date {
-  display: grid;
-  grid-template-columns: 2fr 1fr; /* 2:1 ratio */
-  gap: 10px; /* Optional: add some space between the columns */
-  align-items: start; 
-  /* margin-top: 15px; */
+.author-date p {
+  font-weight: 300;
 }
 
 .reply-date {
   text-align: center;
   margin-top: 2px;
+}
+
+.reply-textfield {
+  /* margin-top: 15px; */
+  max-width: 400px;
+  margin: 15px auto;
+}
+
+.form {
+  margin-top: 15px;
+}
+
+.new-rating {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.submit-review-button {
+  background-color: var(--confirmation-button) !important;
+}
+
+.submit-review-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  margin: auto; 
 }
