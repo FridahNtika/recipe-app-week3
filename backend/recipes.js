@@ -31,6 +31,7 @@ router.get("/", async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
 router.get("/:id", async (req, res) => {
     try {
         const uniqueId = req.params.id;
@@ -49,7 +50,11 @@ router.get("/:id", async (req, res) => {
                 averageRating: recipeData.averageRating,
                 dateCreated: recipeData.dateCreated,
                 duration: recipeData.duration,
-                imageURL: recipeData.imageURL
+                imageURL: recipeData.imageURL,
+                calories: recipeData.calories,
+                totalNutrients: recipeData.totalNutrients,
+                savedUserIds: recipeData.savedUserIds
+                // Add other recipe fields here
             };
             res.status(200).json(response);
         } else {

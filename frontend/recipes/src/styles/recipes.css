@@ -5,8 +5,8 @@
   padding-right: 20px;
   padding-top: 40px;
 }
-.recipesh1{
-  padding-right:15px;
+.recipesh1 {
+  padding-right: 15px;
 }
 .input-search {
   flex: 1;
@@ -84,17 +84,17 @@
   width: 20px;
   height: 20px;
   margin-right: 5px;
-  background-color: #FFD700;
+  background-color: #ffd700;
   clip-path: polygon(
-    50% 0%, 
-    61% 35%, 
-    98% 35%, 
-    68% 57%, 
-    79% 91%, 
-    50% 70%, 
-    21% 91%, 
-    32% 57%, 
-    2% 35%, 
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
     39% 35%
   );
 }
@@ -103,16 +103,41 @@
   background-color: #e0e0e0;
 }
 
+.star-r {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background-color: #9C0F20;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+}
+
+.star-r.empty-r {
+  background-color:  #fbf5da;
+}
+
+
+
 .star.quarter {
-  background: linear-gradient(to right, #FFD700 35%, #e0e0e0 35%);
+  background: linear-gradient(to right, #ffd700 35%, #e0e0e0 35%);
 }
 
 .star.half {
-  background: linear-gradient(to right, #FFD700 50%, #e0e0e0 50%);
+  background: linear-gradient(to right, #ffd700 50%, #e0e0e0 50%);
 }
 
 .star.three-quarter {
-  background: linear-gradient(to right, #FFD700 65%, #e0e0e0 65%);
+  background: linear-gradient(to right, #ffd700 65%, #e0e0e0 65%);
 }
 
 .rating {

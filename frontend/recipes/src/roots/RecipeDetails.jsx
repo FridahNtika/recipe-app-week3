@@ -8,19 +8,25 @@ import timericon from "../images/timer_icon.png";
 import saveFill from "../assets/saveFill.svg";
 import saveOutline from "../assets/saveOutline.svg";
 import { IconButton, Box, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast, useDisclosure } from "@chakra-ui/react";
 import BasicModal from "../components/BasicModal";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import StarRating from "../components/StarRating";
+import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
+import MessageSend from "../components/MessageSend";
 
 const RecipeDetails = () => {
   const [isSaved, setIsSaved] = useState(false);
+  const [recipe, setRecipe] = useState("");
+  const [totalNutrients, setTotalNutrients] = useState({});
+  // const [recipeID, setRecipeID] = useState("")
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const location = useLocation();
-  const { recipeDetails } = location.state || {};
-  
+  let { recipeID } = useParams();
 
+  // console.log("recipe ID: ", recipeID);
   const handleSave = () => {
     if (!isSaved) {
       toast({
@@ -32,22 +38,41 @@ const RecipeDetails = () => {
     setIsSaved(!isSaved);
   };
 
+  const fetchRecipe = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5001/recipes/${recipeID}`
+      );
+      setRecipe(response.data);
+      setTotalNutrients(response.data.totalNutrients);
+      // console.log(response, " -> Recipe");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecipe();
+  }, []);
+
   return (
     <div className="main-page">
       <NavBar />
       <div className="header">
-        <div className="title-save">
+        <div className="title">
           <h2>
-            <strong> Grandma’s Quiche</strong>
+            <strong> {recipe.recipeName} </strong>
           </h2>
         </div>
 
         <div className="duration-and-author">
           <div className="duration">
-            <img className="timer-image" src={timericon} />
-            <p>≈90 Minutes</p>
+            <img width="10px" className="timer-image" src={timericon} />
+            <p>≈{recipe.duration} minutes</p>
           </div>
-          <p className="author">Author: Sarah</p>
+          <p className="author">
+            {recipe.author ? `By ${recipe.author}` : `Author: Unknown`}
+          </p>
         </div>
 
         <div className="save-button-container">
@@ -85,16 +110,9 @@ const RecipeDetails = () => {
             <h2> Ingredients</h2>
             <div className="ingredients-list">
               <ul>
-                <li>
-                  2 1/2 tablespoons fresh blood orange juice from 1 blood orange
-                </li>
-                <li>1 tablespoon sherry vinegar</li>
-                <li>2 tablespoons minced shallot</li>
-                <li>1/2 teaspoon honey</li>
-                <li>3 tablspoons olive oil</li>
-                <li>Kosher salt</li>
-                <li>Freshly ground black peppe</li>
-                <li>1/2 teaspoon honey</li>
+                {recipe.ingredients?.map((ingr, index) => (
+                  <li key={index}> {ingr} </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -105,30 +123,117 @@ const RecipeDetails = () => {
             <h2 className="nutrition-facts"> Nutrition Facts</h2>
             <div className="nutrients">
               <div className="nutrient">
-                <h2> 120</h2>
-                <h3> Calories</h3>
-              </div>
-              <div className="nutrient">
-                <h2> 120</h2>
+                <h2> {Math.round(recipe.calories)}</h2>
                 <h3> Calories</h3>
               </div>
 
               <div className="nutrient">
-                <h2> 120</h2>
-                <h3> Calories</h3>
+                <h2>
+                  {Math.round(totalNutrients["PROCNT"]?.quantity)}
+                  {totalNutrients["PROCNT"]?.unit}
+                </h2>
+                <h3> Protein </h3>
               </div>
+
+              <div className="nutrient">
+                <h2>
+                  {Math.round(totalNutrients["CHOCDF"]?.quantity)}
+                  {totalNutrients["NA"]?.unit}
+                </h2>
+                <h3> Carbs </h3>
+              </div>
+
+              <div className="nutrient">
+                <h2>
+                  {Math.round(totalNutrients["FAT"]?.quantity)}
+                  {totalNutrients["FAT"]?.unit}
+                </h2>
+                <h3> Fat </h3>
+              </div>
+
               <Button className="action-button" onClick={onOpen}>
                 View All
               </Button>
-              <BasicModal isOpen={isOpen} onClose={onClose} />
+              <BasicModal
+                totalNutrients={totalNutrients}
+                isOpen={isOpen}
+                onClose={onClose}
+              />
             </div>
           </div>
         </GridItem>
 
         <GridItem className="card" rowSpan={3} colSpan={2}>
-          <ChatBot />
+          <ChatBot recipe={recipe} />
         </GridItem>
       </Grid>
+
+      <div className="reviews-section">
+        <h2 className="reviews-title">
+          <strong> Reviews </strong>
+        </h2>
+        <div className="reviews-container card">
+          <div className="review">
+            <div className="title-date">
+              <p className="title">
+                <strong> Delicious Meal! </strong>
+              </p>
+              <p className="date">27/09/23</p>
+            </div>
+
+            <div className="rating-author">
+              <div className="rating">
+                <StarRating rating={3} isRecipePage={true} />
+              </div>
+
+              <p className="author">Milton</p>
+            </div>
+            <div className="description">
+              <p>
+                I tried this recipe with my aunt and it was totally mindblowing!
+                Got a little too much salt but it didn’t significanlty affect
+                the flavor much. I’m glad it turned out pretty go
+              </p>
+            </div>
+            <div className="replies">
+              <div className="reply-container">
+                <div className="reply-upvote">
+                  <p className="reply">
+                    I tried this recipe with my aunt and it was totally
+                    mindblowing! Got a little too much salt but it didn’t
+                    significanlty affect the flavor much. I’m glad it turned out
+                    pretty go
+                  </p>
+                  <div className="upvote-container">
+                  <IconButton variant={"outline"} aria-label='Upvote' icon={<ArrowUpIcon color={"#90B4CE"} />} />
+                  <IconButton variant={"outline"} aria-label='Downvote' icon={<ArrowDownIcon color={"#9C0F20"}/>} />
+                    
+                  </div>
+                </div>
+
+                <div className="author-date">
+                  <p className="reply-author">Annie</p>
+                  <p className="reply-date">03/32/54</p>
+                </div>
+              </div>
+            </div>
+            {/* <MessageSend /> */}
+            
+          </div>
+
+          <div className="review"></div>
+
+          <div className="review">
+            <p>test P</p>
+          </div>
+          <div className="review">
+            <p>test P</p>
+          </div>
+          <div className="review">
+            <p>test P</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

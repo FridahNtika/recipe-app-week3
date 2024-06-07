@@ -4,8 +4,9 @@ import '../styles/recipes.css';
 import axios from 'axios';
 import katsucurry from '../images/katsucurry.jpg';
 import timericon from '../images/timer_icon.png';
+import { Link } from 'react-router-dom';
 
-const StarRating = ({ rating, outOf = 5 }) => {
+const StarRating = ({ rating, outOf = 5,}) => {
   const fullStars = Math.floor(rating);
   const fractionalPart = rating - fullStars;
   const emptyStars = outOf - Math.ceil(rating);
@@ -16,11 +17,11 @@ const StarRating = ({ rating, outOf = 5 }) => {
   return (
     <div className="star-rating">
       {[...Array(fullStars)].map((_, index) => (
-        <div key={index} className="star full"></div>
+        <div key={index} className= "star full" ></div>
       ))}
       {fractionalPart > 0 && <div className={`star ${fractionClass}`}></div>}
       {[...Array(emptyStars)].map((_, index) => (
-        <div key={index} className="star empty"></div>
+        <div key={index} className= "star empty"></div>
       ))}
     </div>
   );
@@ -47,7 +48,6 @@ const Recipe = () => {
       const res = await axios.get("http://localhost:5001/recipes");
       setRecipeArray(res.data);
       setLoading(false);
-      console.log("Retrieved recipes:",res.data)
     } catch (error) {
       console.error("Error fetching Recipes: ", error);
       setLoading(false);
@@ -107,6 +107,30 @@ const Recipe = () => {
       <button>Search on Edamam</button>
       {loading ? (
         <p>Loading...</p>
+      ) : (
+        <div className="AllRecipes">
+          {sortedRecipes.map((currentRecipe, index) => (
+            <Link to={`/recipe-details/${currentRecipe.id}`} className="recipe-link" key={`${currentRecipe.recipeName}-${index}`}>
+              <div className="IndividualRecipe">
+                <img className="recipe-image" alt={currentRecipe.recipeName} src={katsucurry} />
+                <div className="rating">
+                  <StarRating rating={currentRecipe.averageRating} />
+                  <p className='rating-text'>{currentRecipe.averageRating} / 5</p>
+                  <p className='number-of-reviews'>{currentRecipe.userReviewIds ? currentRecipe.userReviewIds.length : 0} Reviews</p>
+                </div>
+                <h1 className='recipe-name'>{currentRecipe.recipeName}</h1>
+                <div className='time-and-author'>
+                  <img className="timer-image" src={timericon} alt="timer icon" />
+                  <p>≈{currentRecipe.duration} Minutes</p>
+                  <p className="author">Author: {currentRecipe.author}</p>
+                </div>
+                <a href={`/save/${currentRecipe.id}`} className="bookmark-icon">
+                  <div className="bookmark" />
+                </a>
+              </div>
+            </Link>
+          ))}
+        </div>
       ) : ( isUserRecipes ? (
           <div className="user-recipes">
             {sortedRecipes.map((currentRecipe, index) => (
