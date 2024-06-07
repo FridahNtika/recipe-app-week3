@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as React from "react";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Heading,NumberInput,NumberInputStepper,NumberInputField } from '@chakra-ui/react';
 import { Button,Text,useToast,OrderedList,ListItem,FormControl,
@@ -13,7 +13,6 @@ import NavBar from "../components/NavBar";
 
 export const CreateRecipe = () => {
     //initializes variables
-    //const { token, setToken } = useContext(AuthContext);
     const [userId, setUserId] = useState("");
     const [author, setAuthor] = useState("");
     const [name, setName] = useState("");
@@ -180,11 +179,6 @@ export const CreateRecipe = () => {
       setInstructions(updatedInstructions);
     };
 
-    /* if (!token) {
-      setForbidden(true); // Make sure that only logged in users can access this page
-      window.location.href = '/';
-    }; */
-    
     if (!forbidden) {
     return (
         <>
@@ -313,6 +307,7 @@ export const CreateRecipe = () => {
         </div>
         </>
     )
-} else {
-  return null;
-}}
+    } else {
+      return null;
+    }
+    }

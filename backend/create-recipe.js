@@ -21,7 +21,8 @@ router.post("/", async (req, res) => {
             instructions: data.instr,
             isPublished: false,
             isEdamam: false,
-            source: data.source
+            source: data.source,
+            savedUserIds: [data.authorId]
         };
         //console.log(recipe);
         const docRef = await addDoc(collection(db, "Recipes"), recipe);
