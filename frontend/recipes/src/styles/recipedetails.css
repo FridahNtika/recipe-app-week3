@@ -157,6 +157,7 @@ h3 {
 }
 
 .review {
+  position: relative;
   flex: 0 0 auto;
   width: 490px;
   height: 580px;
@@ -289,10 +290,22 @@ h3 {
   margin-top: 2px;
 }
 
-.reply-textfield {
-  /* margin-top: 15px; */
+/* .reply-textfield {
   max-width: 400px;
   margin: 15px auto;
+} */
+
+.reply-textfield {
+  /* max-width: 400px !important; */
+  margin: 15px auto;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  margin: auto; 
 }
 
 .form {

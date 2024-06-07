@@ -1,6 +1,6 @@
 import StarRating from "../components/StarRating";
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
-import MessageSend from "../components/MessageSend";
+import MessageSendR from "../components/MessageSendR";
 import { IconButton } from "@chakra-ui/react";
 import axios from 'axios'
 
@@ -139,7 +139,7 @@ return (
       </div>
 
       <div className="reply-textfield">
-      <MessageSend sendMessage={sendMessage} placeholder={"Add a reply"} />
+      <MessageSendR style={{width:"300px"}} sendMessage={sendMessage} placeholder={"Add a reply"} />
       </div>
       
     </div>
