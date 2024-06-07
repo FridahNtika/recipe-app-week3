@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as React from "react";
+import "../styles/createrecipe.css";
 import {useState, useEffect, useContext} from "react";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Heading,NumberInput,NumberInputStepper,NumberInputField } from '@chakra-ui/react';
@@ -143,7 +144,7 @@ export const CreateRecipe = () => {
     const handleCals = (evt) => {
       const value = evt.target.value;
       if (value === '' || (Number.isInteger(Number(value)) && Number(value) > 0)) {
-        setCooking(value);
+        setCals(value);
       }
     };
 
@@ -188,18 +189,54 @@ export const CreateRecipe = () => {
         <div id="createRec">
         
         <FormControl isRequired padding={3} paddingRight={15}>
+          <div className="rec-details">
           <FormLabel>Recipe name</FormLabel>
-          <Input type="text" value={name} onChange={(evt) => setName(evt.target.value)}/>
+          <Input type="text" value={name} onChange={(evt) => setName(evt.target.value)} 
+          sx={{
+            border: '2px solid black',
+            padding: '10px',
+            borderRadius: '5px',
+            _focus: {
+              borderColor: '#007BFF',
+              boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+            },
+          }}/>
 
           <FormLabel>Prep time (In minutes)</FormLabel>
-          <Input type="number" value={prep} onChange={handlePrep}/> 
+          <Input type="number" value={prep} onChange={handlePrep}
+          sx={{
+            border: '2px solid black',
+            padding: '10px',
+            borderRadius: '5px',
+            _focus: {
+              borderColor: '#007BFF',
+              boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+            },
+          }}/> 
 
           <FormLabel>Cooking time (In minutes)</FormLabel>
-          <Input type="number" value={cooking} onChange={handleCooking}/> 
+          <Input type="number" value={cooking} onChange={handleCooking}
+          sx={{
+            border: '2px solid black',
+            padding: '10px',
+            borderRadius: '5px',
+            _focus: {
+              borderColor: '#007BFF',
+              boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+            },
+          }}/> 
 
           <FormLabel>How many plates does it serve?</FormLabel>
           <NumberInput min={1} value={serving} onChange={(valueString) => handleServing(valueString)}>
-            <NumberInputField />
+            <NumberInputField sx={{
+            border: '2px solid black',
+            padding: '10px',
+            borderRadius: '5px',
+            _focus: {
+              borderColor: '#007BFF',
+              boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+            },
+          }}/>
             <NumberInputStepper>
               <NumberIncrementStepper />
               <NumberDecrementStepper />
@@ -208,17 +245,28 @@ export const CreateRecipe = () => {
           {servingsError && <FormErrorMessage>Serving must be at least 1.</FormErrorMessage>}
 
           <FormLabel>Calories</FormLabel>
-          <Input type="number" value={cals} onChange={handleCals}/>
+          <Input type="number" value={cals} onChange={handleCals}
+          sx={{
+            border: '2px solid black',
+            padding: '10px',
+            borderRadius: '5px',
+            _focus: {
+              borderColor: '#007BFF',
+              boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+            },
+          }}/>
           <br></br>
+          </div>
           <br></br>
 
           {/*Popup to add ingredients*/}
+          <div className="ingredients">
           <HStack>
-            <Popover offset={[120,10]}>
+            <Popover offset={[120,10]} className="popover">
               <PopoverTrigger>
                 <Button>+</Button>
               </PopoverTrigger>
-              <PopoverContent bg='#D9D9D9'>
+              <PopoverContent bg='lightblue'>
               <PopoverArrow />
               <PopoverCloseButton />
               <PopoverHeader fontWeight='semibold'>Add Ingredient</PopoverHeader>
@@ -226,15 +274,39 @@ export const CreateRecipe = () => {
               <VStack spacing={3}>
                 <FormControl>
                   <FormLabel>Ingredient name</FormLabel>
-                  <Input type="text" value={item} onChange={(evt) => setItem(evt.target.value)} />
+                  <Input type="text" value={item} onChange={(evt) => setItem(evt.target.value)} sx={{
+            border: '2px solid black',
+            padding: '10px',
+            borderRadius: '5px',
+            _focus: {
+              borderColor: '#007BFF',
+              boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+            },
+          }}/>
                 </FormControl>
                 <FormControl>
                   <FormLabel>Quantity</FormLabel>
-                  <Input type="number" value={amount} onChange={(evt) => setAmount(evt.target.value)} />
+                  <Input type="number" value={amount} onChange={(evt) => setAmount(evt.target.value)} sx={{
+            border: '2px solid black',
+            padding: '10px',
+            borderRadius: '5px',
+            _focus: {
+              borderColor: '#007BFF',
+              boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+            },
+          }}/>
                 </FormControl>
                 <FormControl>
                   <FormLabel>Unit</FormLabel>
-                  <Input type="text" value={unit} onChange={(evt) => setUnit(evt.target.value)} />
+                  <Input type="text" value={unit} onChange={(evt) => setUnit(evt.target.value)} sx={{
+            border: '2px solid black',
+            padding: '10px',
+            borderRadius: '5px',
+            _focus: {
+              borderColor: '#007BFF',
+              boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+            },
+          }}/>
                 </FormControl>
                 <Button onClick={handleAddIngredient}
                 bg='#9EAFBB' border="2px solid white" color="white" 
@@ -270,8 +342,11 @@ export const CreateRecipe = () => {
               </Tbody>
             </Table>
           </TableContainer>
+          </div>
           
+          <br></br>
           {/*Instructions to prepare the dish*/}
+          <div className="instructions">
           <FormLabel>Instructions</FormLabel>
           <OrderedList>
             {steps.map((step) => (
@@ -279,7 +354,15 @@ export const CreateRecipe = () => {
                 <ListItem>
                   <Input type="text" value={step.value} 
                     onChange={(evt) => handleAddInstruction(step.id, evt.target.value)}
-                  />
+                    sx={{
+                      border: '2px solid black',
+                      padding: '10px',
+                      borderRadius: '5px',
+                      _focus: {
+                        borderColor: '#007BFF',
+                        boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
+                      },
+                    }}/>
                 </ListItem>
                 <br />
               </div>
@@ -287,6 +370,7 @@ export const CreateRecipe = () => {
           </OrderedList>
           <Button onClick={handleAddStep}>+</Button>
           <br />
+          </div>
 
           <br></br>
           <Button  bg='#9EAFBB' border="2px solid white" color="white" 
